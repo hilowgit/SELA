@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز صلة التدريبي الدولي</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Google Fonts (Tajawal for Arabic) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom Styles */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f7fafc;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 25px 25px;
+        }
+        .main-header {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+        }
+        .course-card-small {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        .course-card-small:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        /* NEW Tab styling */
+        .tabs-section {
+            background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+        }
+        .tab-button {
+            background-color: #ffffff;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease-in-out;
+        }
+        .tab-button:hover {
+            background-color: #eff6ff;
+            border-color: #93c5fd;
+        }
+        .tab-button.active {
+            background-color: #2563eb;
+            color: white;
+            border-color: #1d4ed8;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+            transform: translateY(-2px);
+        }
+        .main-view-button.active {
+            background-color: #1e3a8a;
+            color: white;
+            border-color: #1e3a8a;
+        }
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 50vh; /* ارتفاع البنر */
+            overflow: hidden;
+            border-radius: 1rem;
+            background-color: #e2e8f0; /* لون خلفية احتياطي أثناء تحميل الصور */
+        }
+        .slider-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* يجعل الصورة تغطي المساحة مع الحفاظ على الأبعاد */
+            transition: opacity 1s ease-in-out;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .slider-image.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+        .slider-button:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .slider-dots {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .slider-dot.active {
+            background-color: white;
+        }
+
+        .monthly-course-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .monthly-course-card:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        /* Social Icons Interaction */
+        .social-icon {
+            transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+        .social-icon:hover {
+            transform: translateY(-2px) scale(1.1);
+        }
+        /* Modal Base Style */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 5vh;
+            padding-bottom: 5vh;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 2.5rem;
+            border: none;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            animation: fadeInDown 0.5s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        @keyframes fadeInDown {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        .modal-close-button {
+            color: #aaa;
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem; /* For RTL */
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close-button:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header Section -->
+    <header class="main-header text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl md:text-3xl font-extrabold tracking-wide">مركز صلة التدريبي الدولي</h1>
+            <div class="flex items-center gap-x-6">
+                <a href="https://www.facebook.com/profile.php?id=61572455555070&sk=photos" target="_blank" class="text-2xl social-icon hover:text-blue-300"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/link.sila?igsh=aW82YmluY2JkYzJq" target="_blank" class="text-2xl social-icon hover:text-pink-400"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/+963991015651" target="_blank" class="text-2xl social-icon hover:text-green-400"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://t.me/LINKSELA25" target="_blank" class="text-2xl social-icon hover:text-blue-400"><i class="fab fa-telegram"></i></a>
+                <a href="#" id="tiktok-link" class="text-2xl social-icon hover:text-gray-300"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4 md:p-8">
+        <!-- Image Slider -->
+        <section class="mb-12 shadow-2xl rounded-2xl">
+            <div class="slider-container">
+                <!-- الصورة الأولى: ضع رابط صورتك هنا -->
+                <img src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=1200&auto=format&fit=crop" class="slider-image active" alt="دورات برمجية متقدمة">
+                
+                <!-- الصورة الثانية: ضع رابط صورتك هنا -->
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop" class="slider-image" alt="تنمية بشرية وإدارية">
+
+                <!-- الصورة الثالثة: ضع رابط صورتك هنا -->
+                <img src="https://images.unsplash.com/photo-1581093458791-9a6685a6fed5?q=80&w=1200&auto=format&fit=crop" class="slider-image" alt="كورسات هندسية وتقنية">
+                
+                <!-- الصورة الرابعة: ضع رابط صورتك هنا -->
+                <img src="https://images.unsplash.com/photo-1528747045269-390a322c39b9?q=80&w=1200&auto=format&fit=crop" class="slider-image" alt="تعلم لغات العالم">
+                
+                <!-- Navigation Buttons -->
+                <button id="prev-slide" class="slider-button right-4"><i class="fas fa-chevron-right"></i></button>
+                <button id="next-slide" class="slider-button left-4"><i class="fas fa-chevron-left"></i></button>
+
+                <!-- Pagination Dots -->
+                <div id="slider-dots" class="slider-dots"></div>
+            </div>
+        </section>
+
+        <!-- Main View Navigation -->
+        <section class="mb-10">
+            <div id="main-view-nav" class="flex justify-center bg-white p-2 rounded-xl shadow-md gap-2">
+                <button data-view="all-courses" class="main-view-button w-1/2 text-center py-3 px-4 rounded-lg font-bold text-lg border-2 border-transparent active">أقسام الدورات</button>
+                <button data-view="monthly-courses" class="main-view-button w-1/2 text-center py-3 px-4 rounded-lg font-bold text-lg border-2 border-transparent">دورات الشهر</button>
+            </div>
+        </section>
+
+        <!-- Main Views Container -->
+        <div id="views-container">
+            <!-- View 1: All Courses (New Card View) -->
+            <div id="view-all-courses">
+                <section class="tabs-section mb-8 p-6 rounded-2xl shadow-lg">
+                    <div id="tabs" class="flex flex-wrap justify-center gap-3 md:gap-4">
+                        <!-- Tab buttons will be inserted here by JavaScript -->
+                    </div>
+                </section>
+                <section id="courses-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    <!-- NEW Small Course cards will be inserted here by JavaScript -->
+                </section>
+            </div>
+
+            <!-- View 2: Monthly Courses -->
+            <div id="view-monthly-courses" class="hidden">
+                 <section class="mb-12">
+                    <h2 class="text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto">دورات الشهر الحالي</h2>
+                    <div id="current-month-courses" class="space-y-6"></div>
+                </section>
+                <section>
+                    <h2 class="text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto">دورات الشهر القادم</h2>
+                    <div id="next-month-courses" class="space-y-6"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modals Container -->
+    <div id="tiktok-modal" class="modal">
+        <div class="modal-content text-center relative">
+            <span class="modal-close-button" data-modal-id="tiktok-modal">&times;</span>
+            <p class="text-2xl font-bold text-gray-800 pt-4">قريباً على تيك توك</p>
+        </div>
+    </div>
+
+    <div id="course-details-modal" class="modal">
+        <div class="modal-content relative">
+            <span class="modal-close-button" data-modal-id="course-details-modal">&times;</span>
+            <div id="course-modal-body">
+                <!-- Dynamic content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12 p-6 text-center">
+        <p>&copy; 2024 مركز صلة التدريبي الدولي. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        // --- DATA ---
+        const allCourses = [
+            // ... (All course data remains the same)
+             // القسم البرمجي
+             { 
+                category: "القسم البرمجي",
+                title: "Cyber Security",
+                price: "500,000 ل.س",
+                hours: "30 ساعة تدريبية (15 جلسة)",
+                objectives: [
+                    "إجراء اختبارات الاختراق",
+                    "فحص الأمان للمواقع والسيرفرات وأجهزة الاندرويد والشبكات اللاسلكية والكاميرات وطرق الاختراق الشائعة لها."
+                ],
+                prerequisites: "تعلم الشبكات وفهم آلية عملها بشكل عميق.",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+            { 
+                category: "القسم البرمجي",
+                title: "برمجة المتحكمات المنطقية PLC",
+                price: "600,000 ل.س",
+                hours: "30 ساعة تدريبية (15 جلسة)",
+                objectives: [
+                    "معرفة المفاهيم الأساسية ومكونات أنظمة PLC.",
+                    "التعرف على لغات البرمجة المختلفة المستخدمة في PLCs.",
+                    "اكتساب المهارات العملية في برمجة وتشخيص PLCs."
+                ],
+                prerequisites: "أساسيات الكهرباء الصناعية.",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم البرمجي",
+                title: "تكنولوجيا المعلومات IT",
+                price: "450,000 ل.س",
+                hours: "30 ساعة تدريبية (15 جلسة)",
+                objectives: [
+                    "صيانة سوفت وير للكمبيوترات.",
+                    "برمجة الراوترات وحمايتها من الاختراق وأعطالهم الشهيرة."
+                ],
+                prerequisites: "لا يتطلب أي معرفة سابقة.",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم البرمجي",
+                title: "Flutter",
+                price: "550,000 ل.س",
+                hours: "30 ساعة تدريبية (15 جلسة)",
+                objectives: [
+                    "دورة لتعليم أهم أدوات جوجل لتطوير واجهة الموقع والألعاب.",
+                    "مقدمة إلى Flutter وأساسياته.",
+                    "بناء التطبيقات ونشرها."
+                ],
+                prerequisites: "تجربة في البرمجة الكائنية التوجيه (Object Oriented).",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+             {
+                category: "القسم البرمجي",
+                title: "C# ASP.NET",
+                price: "650,000 ل.س",
+                hours: "30 ساعة تدريبية (15 جلسة)",
+                objectives: [
+                    "إنشاء تطبيقات ويندوز باستخدام لغة Visual C#.",
+                    "تطوير واجهات برمجة التطبيقات (API).",
+                    "مقدمة إلى التصميم الموجه بالمجال (DDD)."
+                ],
+                prerequisites: "خبرة في أداء مهام برمجية أساسية.",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم البرمجي",
+                title: "SQL Server",
+                price: "400,000 ل.س",
+                hours: "20 ساعة تدريبية (10 جلسات)",
+                objectives: [
+                    "تحسين مهارات SQL الأساسية.",
+                    "التعامل مع Subqueries و queries المعقدة.",
+                    "تحسين أداء الاستعلامات باستخدام Indexes."
+                ],
+                prerequisites: "معرفة أساسية بـ SQL وفهم قواعد البيانات.",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم البرمجي",
+                title: "Scratch 3",
+                price: "300,000 ل.س",
+                hours: "30 ساعة تدريبية (15 جلسة)",
+                objectives: [
+                    "تعليم الفكر البرمجي للأطفال واليافعين.",
+                    "تصميم وبرمجة الألعاب التي تجذبهم."
+                ],
+                prerequisites: "الأعمار فوق 10 سنوات.",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم البرمجي",
+                title: "تحليل الأنظمة",
+                price: "450,000 ل.س",
+                hours: "20 ساعة تدريبية (10 جلسات)",
+                objectives: [
+                    "التعرف على أنواع أنظمة الحماية الرقمية.",
+                    "إجراء اختبارات الأمان للأنظمة المختلفة عن طريق أداة nmap."
+                ],
+                prerequisites: "معرفة في الحاسوب وتكنولوجيا المعلومات.",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم البرمجي",
+                title: "Laravel",
+                price: "600,000 ل.س",
+                hours: "30 ساعة تدريبية (15 جلسة)",
+                objectives: [
+                    "بناء تطبيقات ويب متطورة باستخدام Laravel.",
+                    "فهم مفهوم MVC والتوجيه والعروض ووحدات التحكم."
+                ],
+                prerequisites: "معرفة مسبقة بـ HTML + CSS، ويستحسن معرفة Bootstrap.",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم البرمجي",
+                title: "Front-end",
+                price: "700,000 ل.س",
+                hours: "30 ساعة تدريبية (15 جلسة)",
+                objectives: [
+                    "تصميم وتنفيذ كافة العناصر المرئية لتطبيقات الويب.",
+                    "تعلم HTML, CSS, Bootstrap, JavaScript, jQuery."
+                ],
+                prerequisites: "لا متطلبات، لكن فهم أساسي لـ HTML و CSS مفيد.",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم البرمجي",
+                title: "Back-end",
+                price: "750,000 ل.س",
+                hours: "30 ساعة تدريبية (15 جلسة)",
+                objectives: [
+                    "تصميم البنية التحتية للموقع والتعامل مع قواعد البيانات.",
+                    "تعلم PHP، OOP، MVC، Laravel."
+                ],
+                prerequisites: "يفضل خلفية عن لغة PHP وإدارة قواعد البيانات SQL.",
+                info: "يحق للمتدرب التقدم على شهادة معتمدة من البورد الألماني أو الحصول على شهادة حضور من المركز."
+            },
+            { 
+                category: "القسم الهندسي",
+                title: "SolidWorks",
+                price: "550,000 ل.س",
+                hours: "24 ساعة تدريبية (12 جلسة)",
+                objectives: ["القدرة على تصميم نماذج ثلاثية الأبعاد دقيقة.", "إتقان أدوات SolidWorks المختلفة للتصميم والتجميع."],
+                prerequisites: "معرفة أساسية بمفاهيم الرسم الهندسي.",
+                info: "يحصل المتدرب على شهادة حضور من المركز وشهادة دولية إن رغب."
+            },
+            { 
+                category: "القسم الهندسي",
+                title: "3D Printer",
+                price: "600,000 ل.س",
+                hours: "24 ساعة تدريبية (12 جلسة)",
+                objectives: ["التعرف على مفهوم وتقنيات الطباعة ثلاثية الأبعاد.", "التدريب على تشغيل الطابعة وضبط الإعدادات."],
+                prerequisites: "معرفة أساسية ببرامج التصميم ثلاثي الأبعاد.",
+                info: "يحصل المتدرب على شهادة حضور من المركز وشهادة دولية إن رغب."
+            },
+             { 
+                category: "القسم الهندسي",
+                title: "أساليب التنفيذ العملية للهياكل",
+                price: "450,000 ل.س",
+                hours: "16 ساعة (12 جلسة)",
+                objectives: ["فهم مكونات الهياكل الإنشائية وأنواعها.", "تعلم تقنيات صب الخرسانة والتحكم في جودتها."],
+                prerequisites: "معرفة أساسية بالهندسة المدنية أو خبرة عملية.",
+                info: "يحصل المتدرب على شهادة حضور من المركز."
+            },
+            { 
+                category: "القسم الهندسي",
+                title: "أساليب التنفيذ العملية للإكساء",
+                price: "480,000 ل.س",
+                hours: "16 ساعة (12 جلسة)",
+                objectives: ["التعرف على أنواع الإكساء (دهان، بلاط، جبس...).", "تعلم خطوات تحضير الأسطح قبل الإكساء."],
+                prerequisites: "معرفة أساسية بالهندسة المدنية أو خبرة عملية.",
+                info: "يحصل المتدرب على شهادة حضور من المركز."
+            },
+            { 
+                category: "القسم الهندسي",
+                title: "Etabs + Safe",
+                price: "700,000 ل.س",
+                hours: "30 ساعة (13 جلسة)",
+                objectives: ["تعلم إنشاء النماذج الإنشائية للمباني في ETABS.", "تصميم قواعد وأساسات المباني باستخدام برنامج SAFE."],
+                prerequisites: "معرفة أساسية بمبادئ الهندسة المدنية والإنشائية.",
+                info: "يحصل المتدرب على شهادة حضور من المركز وشهادة دولية إن رغب."
+            },
+            {
+                category: "القسم المهني",
+                title: "تصميم الأزياء",
+                price: "400,000 ل.س",
+                hours: "24 ساعة (15 جلسة)",
+                objectives: ["رسم المانيكان بالنسب الصحيحة.", "رسم خامات الأقمشة ورسم البورتريه."],
+                prerequisites: "لا متطلبات محددة.",
+                info: "يحصل المتدرب على شهادة حضور من المركز وشهادة دولية إن رغب."
+            },
+            {
+                category: "القسم المهني",
+                title: "الريزين - مستوى 1",
+                price: "350,000 ل.س",
+                hours: "10 ساعات (7 جلسات)",
+                objectives: ["التعرف على المواد والمكونات الأساسية لفن الريزين.", "تنفيذ قطع بسيطة مثل الميداليات وقواعد الأكواب."],
+                prerequisites: "لا يشترط وجود خبرة سابقة.",
+                info: "يحصل المتدرب على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم المهني",
+                title: "الريزين - مستوى 2",
+                price: "450,000 ل.س",
+                hours: "10 ساعات (7 جلسات)",
+                objectives: ["إتقان تقنيات الطبقات والريزين العميق.", "دمج المواد الطبيعية داخل الريزين."],
+                prerequisites: "إنهاء كورس الريزين المستوى الأول أو خبرة مسبقة.",
+                info: "يحصل المتدرب على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم المهني",
+                title: "فن صناعة الشموع",
+                price: "380,000 ل.س",
+                hours: "40 ساعة (20 جلسة)",
+                objectives: ["التعرف على أنواع الشموع والمواد المستخدمة.", "صناعة الشموع والتزيين والتغليف."],
+                prerequisites: "لا يشترط وجود خبرة سابقة.",
+                info: "يحصل المتدرب على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم المهني",
+                title: "صناعة المنظفات",
+                price: "320,000 ل.س",
+                hours: "21 ساعة (14 جلسة)",
+                objectives: ["تعلم تركيبات المنظفات المنزلية والشخصية.", "الخلط الآمن للمواد وحفظ المنتج."],
+                prerequisites: "لا يشترط وجود خبرة سابقة.",
+                info: "يحصل المتدرب على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم المهني",
+                title: "فن المكرمية",
+                price: "300,000 ل.س",
+                hours: "24 ساعة (15 جلسة)",
+                objectives: ["تعلم أساسيات فن المكرمية والكليم.", "تنفيذ الحقائب وقطع فنية أخرى."],
+                prerequisites: "لا يشترط وجود خبرة سابقة.",
+                info: "يحصل المتدرب على شهادة حضور وشهادة دولية إن رغب."
+            },
+            {
+                category: "القسم المهني",
+                title: "سترينغ آرت (String Art)",
+                price: "280,000 ل.س",
+                hours: "9 ساعات (6 جلسات)",
+                objectives: ["تعلم أساسيات فن الـ String Art.", "تقنيات شد الخيط وتنسيق الألوان."],
+                prerequisites: "لا يشترط وجود خبرة سابقة.",
+                info: "يحصل المتدرب على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم المهني",
+                title: "فن السيراميك",
+                price: "420,000 ل.س",
+                hours: "20 ساعة (10 جلسات)",
+                objectives: ["تصنيع عجينة السيراميك.", "تزيين الأكواب وصنع مجسمات صغيرة."],
+                prerequisites: "لا يشترط وجود خبرة سابقة.",
+                info: "يحصل المتدرب على شهادة حضور من المركز."
+            },
+            {
+                category: "القسم المهني",
+                title: "رسم احترافي (رصاص)",
+                price: "350,000 ل.س",
+                hours: "24 ساعة (16 جلسة)",
+                objectives: ["مدخل لرسم البورتريه.", "أساسيات التظليل والإضاءة."],
+                prerequisites: "لا يشترط وجود خبرة سابقة.",
+                info: "يحصل المتدرب على شهادة حضور وشهادة دولية إن رغب."
+            },
+            {
+                category: "القسم المهني",
+                title: "الرسم الاحترافي (فحم)",
+                price: "380,000 ل.س",
+                hours: "24 ساعة (16 جلسة)",
+                objectives: ["التعرف على أدوات الرسم بالفحم.", "تقنيات توزيع الظلال والنور."],
+                prerequisites: "خبرة جيدة بالرسم أو إتمام كورس الرسم بالرصاص.",
+                info: "يحصل المتدرب على شهادة حضور وشهادة دولية إن رغب."
+            },
+            {
+                category: "النادي الصيفي",
+                title: "رسم",
+                price: "200,000 ل.س",
+                hours: "شهرين (3 أيام أسبوعياً)",
+                objectives: ["تعلم أساسيات الرسم.", "رسم الشخصيات والطبيعة الصامتة."],
+                prerequisites: "لا يوجد.",
+                info: "نادي صيفي ممتع للأطفال."
+            },
+            {
+                category: "النادي الصيفي",
+                title: "شطرنج",
+                price: "180,000 ل.س",
+                hours: "شهرين (3 أيام أسبوعياً)",
+                objectives: ["تعريف بأسماء القطع وقوانين الشطرنج.", "أشهر الخطط للهجوم والدفاع."],
+                prerequisites: "لا يوجد.",
+                info: "نادي صيفي لتنمية المهارات الذهنية."
+            },
+            {
+                category: "النادي الصيفي",
+                title: "المخترع الصغير",
+                price: "250,000 ل.س",
+                hours: "شهرين (3 أيام أسبوعياً)",
+                objectives: ["ربط الرغبة بالتعلم بشعور السعادة.", "زيادة القدرة العقلية للطفل من خلال التفكير الإبداعي."],
+                prerequisites: "لا يوجد.",
+                info: "نادي صيفي للابتكار والاكتشاف."
+            },
+            {
+                category: "القسم التقني",
+                title: "التصميم الإعلاني Graphic Design",
+                price: "600,000 ل.س",
+                hours: "30 ساعة (15 جلسة)",
+                objectives: ["استخدام برامج Photoshop / Illustrator / After effects.", "تصميم الشعارات وإعلانات السوشيال ميديا."],
+                prerequisites: "معرفة باستخدام الكمبيوتر.",
+                info: "شهادة معتمدة من البورد الألماني متاحة."
+            },
+            {
+                category: "القسم التقني",
+                title: "المونتاج باستخدام Adobe Premiere Pro",
+                price: "550,000 ل.س",
+                hours: "24 ساعة (12 جلسة)",
+                objectives: ["التحكم الكامل بواجهة برنامج Premiere Pro.", "تحرير وتحسين الصوت باحترافية."],
+                prerequisites: "رغبة في التعلم.",
+                info: "شهادة معتمدة من البورد الألماني متاحة."
+            },
+             {
+                category: "القسم التقني",
+                title: "الرخصة الدولية لقيادة الحاسب ICDL",
+                price: "300,000 ل.س",
+                hours: "24 ساعة (12 جلسة)",
+                objectives: ["استخدام اللابتوب بالطريقة الصحيحة.", "البرامج المكتبية Word - Excel – Power point - access."],
+                prerequisites: "لا يتطلب معرفة سابقة.",
+                info: "شهادة معتمدة من البورد الألماني متاحة."
+            },
+            {
+                category: "القسم التقني",
+                title: "Motion Graphic",
+                price: "650,000 ل.س",
+                hours: "40 ساعة (20 جلسة)",
+                objectives: ["تعلم رسم وتحريك الشخصيات الكرتونية.", "إنشاء إعلانات بطريقة كرتونية باستخدام After Effects."],
+                prerequisites: "معرفة في Photoshop و Illustrator.",
+                info: "شهادة معتمدة من البورد الألماني متاحة."
+            },
+            {
+                category: "قسم التنمية البشرية",
+                title: "إدارة الحالة (GBV – CP – PSS)",
+                price: "500,000 ل.س",
+                hours: "30 ساعة (15 جلسة)",
+                objectives: ["فهم مفاهيم العنف القائم على النوع الاجتماعي.", "تصميم وتنفيذ خطط الحماية والوقاية."],
+                prerequisites: "معرفة مبدئية في مفاهيم التنمية البشرية.",
+                info: "شهادة حضور من المركز وشهادة دولية إن رغب."
+            },
+             {
+                category: "قسم التنمية البشرية",
+                title: "TOT (Training of Trainers)",
+                price: "750,000 ل.س",
+                hours: "50 ساعة (25 جلسة)",
+                objectives: ["فهم أسس وعمليات التدريب وأنماط التعلم.", "تطوير مهارات التخطيط وتصميم البرامج التدريبية."],
+                prerequisites: "لا تتطلب معرفة سابقة.",
+                info: "شهادة حضور من المركز وشهادة دولية إن رغب."
+            },
+            {
+                category: "قسم الإدارة والقيادة",
+                title: "العلاقات العامة",
+                price: "400,000 ل.س",
+                hours: "15 ساعة (10 جلسات)",
+                objectives: ["فهم استراتيجيات بناء السمعة والصورة الإيجابية.", "إدارة الأزمات إعلاميًا وتواصليًا."],
+                prerequisites: "خلفية أساسية في مهارات التواصل.",
+                info: "شهادة حضور من المركز."
+            },
+            {
+                category: "قسم الإدارة والقيادة",
+                title: "Social Media Marketing",
+                price: "500,000 ل.س",
+                hours: "24 ساعة (15 جلسة)",
+                objectives: ["لمحة عن منصات التواصل الاجتماعي وخوارزمياتها.", "إعداد خطة المحتوى والكتابة الإبداعية."],
+                prerequisites: "خلفية بسيطة في استخدام الإنترنت.",
+                info: "شهادة حضور من المركز وشهادة دولية إن رغب."
+            },
+            {
+                category: "قسم اللغات",
+                title: "لغة انكليزية - مستويات",
+                price: "250,000 ل.س / مستوى",
+                hours: "39 ساعة لكل مستوى (26 جلسة)",
+                objectives: ["تعلم اللغة الإنجليزية من المبتدئ إلى المتقدم باستخدام كتاب New English File."],
+                prerequisites: "يعتمد على المستوى (اختبار تحديد مستوى).",
+                info: "شهادة حضور من المركز وشهادة دولية إن رغب."
+            },
+             {
+                category: "قسم اللغات",
+                title: "اللغة التركية - مستويات",
+                price: "280,000 ل.س / مستوى",
+                hours: "40 ساعة لكل مستوى (20 جلسة)",
+                objectives: ["تعلم اللغة التركية من A1 إلى C2 باستخدام كتاب Yeni İstanbul."],
+                prerequisites: "يعتمد على المستوى (اختبار تحديد مستوى).",
+                info: "شهادة حضور من المركز وشهادة دولية إن رغب."
+            },
+             {
+                category: "قسم اللغات",
+                title: "اللغة الفرنسية - مستويات",
+                price: "270,000 ل.س / مستوى",
+                hours: "22 ساعة لكل مستوى (15 جلسة)",
+                objectives: ["تعلم اللغة الفرنسية من A1 إلى B2 باستخدام كتاب Alter Ego."],
+                prerequisites: "يعتمد على المستوى (اختبار تحديد مستوى).",
+                info: "شهادة حضور من المركز وشهادة دولية إن رغب."
+            },
+             {
+                category: "قسم اللغات",
+                title: "اللغة الألمانية - مستويات",
+                price: "290,000 ل.س / مستوى",
+                hours: "26 ساعة لكل مستوى (17 جلسة)",
+                objectives: ["تعلم اللغة الألمانية A1 و A2 باستخدام كتاب Studio d."],
+                prerequisites: "يعتمد على المستوى (اختبار تحديد مستوى).",
+                info: "شهادة حضور من المركز."
+            }
+
+        ];
+        
+        const monthlyCoursesData = {
+            current: [
+                { title: "Front-end", category: "القسم البرمجي", description: "دورة شاملة لتصميم وتنفيذ واجهات الويب المرئية والتفاعلية.", image: "https://placehold.co/600x400/10b981/ffffff?text=Front-end" },
+                { title: "Etabs + Safe", category: "القسم الهندسي", description: "إتقان برامج التحليل والتصميم الإنشائي للمباني والأساسات.", image: "https://placehold.co/600x400/f59e0b/ffffff?text=Etabs+%2B+Safe" },
+                { title: "Social Media Marketing", category: "قسم الإدارة والقيادة", description: "تعلم استراتيجيات التسويق الرقمي وإدارة الحملات الإعلانية.", image: "https://placehold.co/600x400/3b82f6/ffffff?text=Social+Media" },
+            ],
+            next: [
+                { title: "Cyber Security", category: "القسم البرمجي", description: "اكتساب مهارات اختبار الاختراق وحماية الأنظمة والشبكات.", image: "https://placehold.co/600x400/ef4444/ffffff?text=Cyber+Security" },
+                { title: "TOT (Training of Trainers)", category: "قسم التنمية البشرية", description: "تأهيل مدربين محترفين لتصميم وتقديم برامج تدريبية فعالة.", image: "https://placehold.co/600x400/8b5cf6/ffffff?text=TOT" },
+                { title: "Motion Graphic", category: "القسم التقني", description: "تعلم فن تحريك الرسومات لإنشاء فيديوهات إعلانية جذابة.", image: "https://placehold.co/600x400/ec4899/ffffff?text=Motion+Graphic" },
+            ]
+        };
+
+        const categoryIcons = {
+            "القسم البرمجي": "fas fa-code",
+            "القسم الهندسي": "fas fa-cogs",
+            "القسم المهني": "fas fa-paint-brush",
+            "النادي الصيفي": "fas fa-sun",
+            "القسم التقني": "fas fa-desktop",
+            "قسم التنمية البشرية": "fas fa-users",
+            "قسم الإدارة والقيادة": "fas fa-briefcase",
+            "قسم اللغات": "fas fa-language"
+        };
+
+
+        // --- LOGIC ---
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- DOM ELEMENTS ---
+            const tabsContainer = document.getElementById('tabs');
+            const coursesGrid = document.getElementById('courses-grid');
+            const mainViewNav = document.getElementById('main-view-nav');
+            const allCoursesView = document.getElementById('view-all-courses');
+            const monthlyCoursesView = document.getElementById('view-monthly-courses');
+            const currentMonthContainer = document.getElementById('current-month-courses');
+            const nextMonthContainer = document.getElementById('next-month-courses');
+            const courseDetailsModal = document.getElementById('course-details-modal');
+            const courseModalBody = document.getElementById('course-modal-body');
+            const tiktokModal = document.getElementById('tiktok-modal');
+            
+            // --- SLIDER ELEMENTS ---
+            const sliderImages = document.querySelectorAll('.slider-image');
+            const prevSlideBtn = document.getElementById('prev-slide');
+            const nextSlideBtn = document.getElementById('next-slide');
+            const dotsContainer = document.getElementById('slider-dots');
+
+            // --- 'ALL COURSES' VIEW LOGIC ---
+            const categories = [...new Set(allCourses.map(course => course.category))];
+            
+            const renderCourses = (category) => {
+                coursesGrid.innerHTML = '';
+                const filteredCourses = allCourses.filter(course => course.category === category);
+                filteredCourses.forEach((course, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'course-card-small flex flex-col justify-center items-center';
+                    card.dataset.title = course.title;
+                    card.style.animationDelay = `${index * 50}ms`;
+                    const iconClass = categoryIcons[course.category] || 'fas fa-chalkboard-teacher';
+                    card.innerHTML = `
+                        <div class="w-12 h-12 mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                           <i class="${iconClass} text-2xl text-blue-500"></i>
+                        </div>
+                        <h3 class="text-md font-bold text-gray-800 leading-tight">${course.title}</h3>
+                    `;
+                    coursesGrid.appendChild(card);
+                });
+            };
+
+            // --- MODAL LOGIC ---
+            const showCourseDetailsModal = (course) => {
+                if (!course) return;
+                const objectivesList = course.objectives.map(obj => `<li class="flex items-start"><span class="text-blue-500 mt-1 mr-2 ml-2">&#10004;</span><span>${obj}</span></li>`).join('');
+                
+                courseModalBody.innerHTML = `
+                    <h3 class="text-3xl font-extrabold text-gray-900 mb-6 pb-3 border-b-2 border-gray-200">${course.title}</h3>
+                    <div class="space-y-6 text-gray-700">
+                        <div class="border-r-4 border-blue-500 pr-4">
+                           <h4 class="font-bold text-xl text-blue-800 mb-2">أهداف التدريب:</h4>
+                           <ul class="space-y-2 pr-4 list-none">${objectivesList}</ul>
+                        </div>
+                        <div class="border-r-4 border-green-500 pr-4">
+                           <h4 class="font-bold text-xl text-green-800 mb-2">المتطلبات الأساسية:</h4>
+                           <p class="pr-4">${course.prerequisites}</p>
+                        </div>
+                        <div class="border-r-4 border-yellow-500 pr-4">
+                           <h4 class="font-bold text-xl text-yellow-800 mb-2">مدة الدورة:</h4>
+                           <p class="pr-4">${course.hours}</p>
+                        </div>
+                        <div class="border-r-4 border-red-500 pr-4">
+                           <h4 class="font-bold text-xl text-red-800 mb-2">معلومات إضافية:</h4>
+                           <p class="pr-4">${course.info}</p>
+                        </div>
+                        <div class="p-6 mt-6 bg-gray-50 rounded-xl text-center">
+                            <p class="text-lg font-semibold text-gray-700 mb-2">تكلفة الاستثمار في مستقبلك هي:</p>
+                            <p class="text-4xl font-extrabold text-blue-600 mb-5">${course.price}</p>
+                            <p class="font-bold text-xl mb-3">سجل الآن عبر:</p>
+                            <div class="flex justify-center items-center gap-x-6">
+                                <a href="https://www.facebook.com/profile.php?id=61572455555070&sk=photos" target="_blank" class="text-3xl social-icon text-gray-600 hover:text-blue-700"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://www.instagram.com/link.sila?igsh=aW82YmluY2JkYzJq" target="_blank" class="text-3xl social-icon text-gray-600 hover:text-pink-500"><i class="fab fa-instagram"></i></a>
+                                <a href="https://wa.me/+963991015651" target="_blank" class="text-3xl social-icon text-gray-600 hover:text-green-500"><i class="fab fa-whatsapp"></i></a>
+                                <a href="https://t.me/LINKSELA25" target="_blank" class="text-3xl social-icon text-gray-600 hover:text-blue-500"><i class="fab fa-telegram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                courseDetailsModal.style.display = 'flex';
+            };
+
+            coursesGrid.addEventListener('click', (e) => {
+                const card = e.target.closest('.course-card-small');
+                if (card) {
+                    const courseTitle = card.dataset.title;
+                    const course = allCourses.find(c => c.title === courseTitle);
+                    showCourseDetailsModal(course);
+                }
+            });
+            
+            const renderMonthlyCourses = (container, courses) => {
+                container.innerHTML = '';
+                courses.forEach(course => {
+                    const card = document.createElement('div');
+                    card.className = 'monthly-course-card md:flex items-center gap-6 p-4';
+                    card.innerHTML = `
+                        <div class="md:w-1/3 h-48 md:h-full"><img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover rounded-lg"></div>
+                        <div class="md:w-2/3 pt-4 md:pt-0">
+                           <span class="inline-block bg-blue-100 text-blue-800 text-sm font-semibold mb-2 px-3 py-1 rounded-full">${course.category}</span>
+                           <h3 class="text-2xl font-bold text-gray-900 mb-2">${course.title}</h3>
+                           <p class="text-gray-600 mb-4">${course.description}</p>
+                           <button data-title="${course.title}" class="details-button bg-blue-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-700 transition-colors">تفاصيل أكثر</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            };
+            
+            monthlyCoursesView.addEventListener('click', e => {
+                if (e.target.classList.contains('details-button')) {
+                    const courseTitle = e.target.dataset.title;
+                    const course = allCourses.find(c => c.title === courseTitle);
+                    showCourseDetailsModal(course);
+                }
+            });
+            
+            // --- GENERAL INITIALIZATION ---
+            categories.forEach((category, index) => {
+                const button = document.createElement('button');
+                const iconClass = categoryIcons[category] || 'fas fa-star';
+                button.className = 'tab-button py-2 px-4 rounded-full font-semibold flex items-center gap-2';
+                button.innerHTML = `<i class="${iconClass}"></i><span>${category}</span>`;
+                button.dataset.category = category;
+                if (index === 0) button.classList.add('active');
+                tabsContainer.appendChild(button);
+            });
+            
+            tabsContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('.tab-button');
+                if (button) {
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    renderCourses(button.dataset.category);
+                }
+            });
+
+            mainViewNav.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const view = e.target.dataset.view;
+                    document.querySelectorAll('#main-view-nav button').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    allCoursesView.classList.toggle('hidden', view !== 'all-courses');
+                    monthlyCoursesView.classList.toggle('hidden', view !== 'monthly-courses');
+                }
+            });
+
+            document.querySelectorAll('.modal').forEach(modal => {
+                const closeButton = modal.querySelector('.modal-close-button');
+                closeButton.onclick = () => { modal.style.display = "none"; };
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) modal.style.display = "none";
+                });
+            });
+            document.getElementById('tiktok-link').onclick = (e) => { e.preventDefault(); tiktokModal.style.display = 'flex'; };
+
+            renderCourses(categories[0]);
+            renderMonthlyCourses(currentMonthContainer, monthlyCoursesData.current);
+            renderMonthlyCourses(nextMonthContainer, monthlyCoursesData.next);
+            
+            // --- SLIDER LOGIC ---
+            let currentSlide = 0;
+            let slideInterval;
+            const totalSlides = sliderImages.length;
+
+            if (totalSlides > 0) {
+                // Create dots
+                for (let i = 0; i < totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('slider-dot');
+                    dot.dataset.index = i;
+                    dotsContainer.appendChild(dot);
+                }
+                const sliderDots = document.querySelectorAll('.slider-dot');
+
+                const updateSlider = (index) => {
+                    sliderImages.forEach(img => img.classList.remove('active'));
+                    sliderDots.forEach(dot => dot.classList.remove('active'));
+                    
+                    currentSlide = index;
+                    
+                    sliderImages[currentSlide].classList.add('active');
+                    sliderDots[currentSlide].classList.add('active');
+                };
+
+                const nextSlide = () => {
+                    const newIndex = (currentSlide + 1) % totalSlides;
+                    updateSlider(newIndex);
+                };
+                
+                const prevSlide = () => {
+                    const newIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+                    updateSlider(newIndex);
+                };
+
+                const resetInterval = () => {
+                    clearInterval(slideInterval);
+                    slideInterval = setInterval(nextSlide, 3000);
+                };
+
+                nextSlideBtn.addEventListener('click', () => {
+                    prevSlide(); // Flipped for RTL
+                    resetInterval();
+                });
+
+                prevSlideBtn.addEventListener('click', () => {
+                    nextSlide(); // Flipped for RTL
+                    resetInterval();
+                });
+                
+                dotsContainer.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('slider-dot')) {
+                        const index = parseInt(e.target.dataset.index);
+                        updateSlider(index);
+                        resetInterval();
+                    }
+                });
+                
+                // Initial setup
+                updateSlider(0);
+                slideInterval = setInterval(nextSlide, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
