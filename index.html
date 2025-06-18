@@ -157,7 +157,7 @@
         }
         
         .offer-card {
-            background: linear-gradient(135deg, #6d28d9, #d946ef);
+            background: linear-gradient(135deg, #1e40af, #3b82f6); /* CHANGED */
             color: white;
             border-radius: 1rem;
             padding: 2rem;
@@ -169,7 +169,7 @@
         }
         .offer-card:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 25px -5px rgba(109, 40, 217, 0.3), 0 10px 10px -5px rgba(109, 40, 217, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(30, 64, 175, 0.3), 0 10px 10px -5px rgba(30, 64, 175, 0.1); /* CHANGED */
         }
         .offer-card .offer-icon {
             font-size: 3rem;
@@ -243,7 +243,44 @@
             transform: scale(1.05);
             color: #1f2937;
         }
-        
+
+        /* --- Personality Test Modal Styles --- */
+        .pt-fade-in { animation: pt-fadeIn 0.5s ease-in-out; }
+        .pt-fade-out { animation: pt-fadeOut 0.5s ease-in-out forwards; }
+        @keyframes pt-fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pt-fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+        }
+        .pt-answer-btn { 
+            transition: all 0.2s ease-in-out; 
+            border: 2px solid #3b82f6;
+            background-color: #eff6ff;
+            color: #1e3a8a;
+        }
+        .pt-answer-btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            background-color: #3b82f6;
+            color: white;
+        }
+        .pt-progress-bar-inner { 
+            transition: width 0.4s ease-in-out;
+            background-color: #3b82f6;
+        }
+        .pt-result-bar {
+            background-color: #dbeafe; /* blue-100 */
+        }
+        .pt-result-bar-inner {
+            transition: width 0.5s ease-out;
+        }
+        body.dark .pt-result-bar {
+             background-color: #374151; /* gray-700 */
+        }
+
         /* --- Dark Mode Styles --- */
         body.dark {
             background-color: #111827;
@@ -298,8 +335,7 @@
         body.dark .monthly-course-card p {
             color: #9ca3af;
         }
-        body.dark .course-card-small .bg-blue-100, 
-        body.dark .course-card-small .bg-purple-100 {
+        body.dark .course-card-small .bg-blue-100 { /* Simplified from two rules */
             background-color: #374151;
         }
         body.dark .monthly-course-card .details-button {
@@ -329,7 +365,7 @@
         body.dark #course-modal-body .border-r-4 {
             border-color: #4b5563 !important;
         }
-        body.dark #course-modal-body .bg-gray-50, body.dark #offer-modal-body .bg-purple-50 {
+        body.dark #course-modal-body .bg-gray-50, body.dark #offer-modal-body .bg-blue-50 { /* CHANGED */
              background-color: #374151;
         }
         body.dark #tiktok-modal .text-gray-800,
@@ -339,7 +375,9 @@
         body.dark #offers-grid h2,
         body.dark #view-all-courses h2,
         body.dark #course-modal-body .text-gray-900,
-        body.dark #offer-modal-body .text-gray-900 {
+        body.dark #offer-modal-body .text-gray-900,
+        body.dark #personality-test-modal .text-gray-800,
+        body.dark #emotional-health-modal .text-gray-800 { /* ADDED */
             color: #f9fafb;
         }
         
@@ -358,17 +396,60 @@
             color: #9ca3af;
         }
 
-         body.dark footer {
+        body.dark footer {
             background-color: #111827;
             color: #9ca3af;
         }
+        
+        /* --- Dark Mode for Personality Test --- */
+        body.dark #pt-start-screen h1, body.dark #pt-results-screen h1 { color: #5eead4; }
+        body.dark #pt-start-screen p, body.dark #pt-results-screen p, body.dark #pt-question-text { color: #d1d5db; }
+        body.dark #pt-progress-text { color: #5eead4; }
+        body.dark #pt-progress-bar-container { background-color: #4b5563; }
+        body.dark .pt-answer-btn {
+            border-color: #3b82f6;
+            background-color: #374151;
+            color: #d1d5db;
+        }
+        body.dark .pt-answer-btn:hover {
+            background-color: #3b82f6;
+            color: white;
+        }
+        body.dark #pt-results-container h3, body.dark #pt-results-container p { color: #d1d5db; }
+        
+        /* --- NEW: Emotional Health Test Styles --- */
+        .eh-animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        body.dark .eh-radio-label {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: #d1d5db;
+        }
+        body.dark .eh-radio-label:hover {
+            background-color: #4b5563;
+        }
+        body.dark .eh-radio-label.selected {
+             background-color: #3b82f6;
+             border-color: #3b82f6;
+             color: white;
+        }
+         body.dark .eh-results-section {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
+        body.dark .eh-results-section h3 {
+            color: #f9fafb;
+        }
+
+
     </style>
 </head>
 <body class="antialiased">
 
     <header class="main-header text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
-             <a href="#" class="flex items-center gap-3 transition-opacity hover:opacity-80">
+            <a href="#" class="flex items-center gap-3 transition-opacity hover:opacity-80">
                 <img src="https://res.cloudinary.com/dnqhuye5h/image/upload/v1750106940/Asset_3_y6hpka.svg" alt="شعار مركز صلة" class="h-10 sm:h-12">
                 <h1 class="text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide">مركز صلة التدريبي الدولي</h1>
             </a>
@@ -444,7 +525,7 @@
 
             <div id="view-offers" class="hidden">
                 <section class="mb-12">
-                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-purple-500 pb-3 w-fit mx-auto">عروضنا المميزة</h2>
+                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto">عروضنا المميزة</h2>
                     <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         </div>
                 </section>
@@ -452,7 +533,7 @@
 
             <div id="view-entertainment" class="hidden">
                 <section class="mb-12">
-                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-4 text-gray-800 border-b-4 border-purple-500 pb-3 w-fit mx-auto">استراحة قصيرة</h2>
+                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-4 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto">استراحة قصيرة</h2>
                     <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">استرح قليلاً، اختبر نفسك ببعض الاختبارات النفسية المسلية، أو تحدى صديقك في لعبة سريعة!</p>
                     <div id="entertainment-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                         </div>
@@ -489,12 +570,75 @@
         <div class="modal-content">
             <span class="modal-close-button">&times;</span>
             <div class="text-center pt-4">
-                 <i id="entertainment-modal-icon" class="text-5xl sm:text-6xl text-purple-500 mb-4"></i>
+                 <i id="entertainment-modal-icon" class="text-5xl sm:text-6xl text-blue-500 mb-4"></i>
                 <p id="entertainment-modal-title" class="text-xl sm:text-2xl font-bold text-gray-800"></p>
                 <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">هذه الميزة قيد التطوير حالياً، ترقبوها قريباً!</p>
             </div>
         </div>
     </div>
+
+    <!-- Personality Test Modal -->
+    <div id="personality-test-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <div id="pt-app-container" class="w-full mx-auto overflow-hidden">
+                <!-- Start Screen -->
+                <div id="pt-start-screen" class="p-4 md:p-8 text-center pt-fade-in">
+                    <h1 class="text-2xl md:text-3xl font-bold text-blue-600 mb-4">اختبار تحليل الشخصية</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 text-base md:text-lg">اكتشف أبعاد شخصيتك الأساسية. الاختبار سريع ومصمم ليعطيك لمحة عن سماتك الفريدة.</p>
+                    <button id="pt-start-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-10 rounded-full text-lg md:text-xl transition duration-300 shadow-lg">
+                        ابدأ الاختبار
+                    </button>
+                </div>
+
+                <!-- Quiz Screen -->
+                <div id="pt-quiz-screen" class="hidden p-4 md:p-8">
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-semibold text-gray-500">التقدم</span>
+                            <span id="pt-progress-text" class="text-sm font-bold text-blue-600"></span>
+                        </div>
+                        <div id="pt-progress-bar-container" class="w-full bg-gray-200 rounded-full h-4">
+                            <div id="pt-progress-bar" class="pt-progress-bar-inner h-4 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div id="pt-question-container" class="text-center">
+                        <h2 id="pt-question-text" class="text-xl md:text-2xl font-semibold mb-8 min-h-[90px] text-gray-800"></h2>
+                        <div id="pt-answers-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+
+                <!-- Results Screen -->
+                <div id="pt-results-screen" class="hidden p-4 md:p-8">
+                    <h1 class="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">نتائج تحليل شخصيتك</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 text-center text-sm md:text-base">هذه النتائج تمثل لمحة عامة عن ميولك الشخصية. تذكر أن الشخصية الإنسانية معقدة ومتعددة الأوجه.</p>
+                    <div id="pt-results-container" class="space-y-4">
+                        <!-- Results are injected here -->
+                    </div>
+                    <div class="text-center mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+                         <button id="pt-restart-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full text-base transition duration-300 shadow-lg w-full sm:w-auto">
+                            إعادة الاختبار
+                        </button>
+                        <button id="pt-share-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full text-base transition duration-300 shadow-lg w-full sm:w-auto flex items-center justify-center gap-2">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>مشاركة عبر واتساب</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Emotional Health Test Modal -->
+    <div id="emotional-health-modal" class="modal">
+        <div class="modal-content">
+             <span class="modal-close-button">&times;</span>
+             <div id="eh-app-container" class="w-full mx-auto overflow-hidden">
+                <!-- Content will be injected here by JavaScript -->
+             </div>
+        </div>
+    </div>
+
 
     <footer class="bg-gray-800 text-white mt-12 p-6 text-center">
         <p>&copy; 2024 مركز صلة التدريبي الدولي. جميع الحقوق محفوظة.</p>
@@ -591,12 +735,12 @@
             }
         ];
 
-        // NEW: Data for Entertainment Section
+        // Data for Entertainment Section
         const entertainmentData = [
-             { type: 'quiz', title: "اختبار تحليل الشخصية", icon: "fas fa-brain", description: "اكتشف جوانب شخصيتك الخفية ونقاط قوتك.", action: "soon" },
-             { type: 'quiz', title: "ما هو أسلوب تعلمك؟", icon: "fas fa-lightbulb", description: "اعرف الطريقة المثلى التي تتعلم بها.", action: "soon" },
-             { type: "quiz", title: "اختبار الذكاء العاطفي", icon: "fas fa-heart-pulse", description: "قيّم قدرتك على فهم وإدارة مشاعرك.", action: "soon" },
-             { type: "game", title: "لعبة الذاكرة", icon: "fas fa-gamepad", description: "تحدى ذاكرتك وطابق البطاقات المتشابهة.", action: "soon" },
+             { type: 'quiz', title: "اختبار تحليل الشخصية", icon: "fas fa-brain", description: "اكتشف جوانب شخصيتك الخفية.", action: "personality-test" },
+             { type: 'quiz', title: "مقياس الصحة العاطفية", icon: "fas fa-heart-pulse", description: "قيّم مستوى صحتك العاطفية.", action: "emotional-health-test" },
+             { type: "quiz", title: "ما هو أسلوب تعلمك؟", icon: "fas fa-lightbulb", description: "اعرف الطريقة المثلى التي تتعلم بها.", action: "soon" },
+             { type: "game", title: "لعبة الذاكرة", icon: "fas fa-gamepad", description: "تحدى ذاكرتك وطابق البطاقات.", action: "soon" },
         ];
 
 
@@ -617,6 +761,8 @@
             const courseDetailsModal = document.getElementById('course-details-modal');
             const offerDetailsModal = document.getElementById('offer-details-modal'); 
             const entertainmentModal = document.getElementById('entertainment-modal');
+            const personalityTestModal = document.getElementById('personality-test-modal');
+            const emotionalHealthModal = document.getElementById('emotional-health-modal');
             const courseModalBody = document.getElementById('course-modal-body');
             const offerModalBody = document.getElementById('offer-modal-body'); 
             const entertainmentModalIcon = document.getElementById('entertainment-modal-icon');
@@ -625,7 +771,7 @@
             const themeToggle = document.getElementById('theme-toggle');
             const themeIcon = document.getElementById('theme-icon');
             
-            // --- NEW SEARCH ELEMENTS ---
+            // --- SEARCH ELEMENTS ---
             const searchInput = document.getElementById('search-input');
             const searchNoResults = document.getElementById('search-no-results');
 
@@ -638,13 +784,12 @@
 
             const categories = [...new Set(allCourses.map(course => course.category))];
             
-            // MODIFIED: This function now takes an array of courses to render
             const renderCourses = (coursesToShow) => {
                 coursesGrid.innerHTML = '';
-                searchNoResults.classList.add('hidden'); // Hide no-results message by default
+                searchNoResults.classList.add('hidden'); 
 
                 if (coursesToShow.length === 0) {
-                    searchNoResults.classList.remove('hidden'); // Show message if no courses
+                    searchNoResults.classList.remove('hidden'); 
                     return;
                 }
                 
@@ -653,7 +798,7 @@
                     card.className = 'course-card-small flex flex-col justify-center items-center';
                     card.dataset.title = course.title;
                     card.style.animationDelay = `${index * 50}ms`;
-                    const iconClass = course.icon || 'fas fa-chalkboard-teacher'; // Fallback icon
+                    const iconClass = course.icon || 'fas fa-chalkboard-teacher';
                     card.innerHTML = `
                         <div class="w-12 h-12 mb-4 bg-blue-100 rounded-full flex items-center justify-center">
                             <i class="${iconClass} text-2xl text-blue-500"></i>
@@ -726,14 +871,15 @@
                 entertainmentGrid.innerHTML = '';
                 entertainmentData.forEach((item, index) => {
                     const card = document.createElement('div');
-                    card.className = 'course-card-small flex flex-col justify-between items-center h-full'; // Use h-full for consistent height
+                    card.className = 'course-card-small flex flex-col justify-between items-center h-full'; 
                     card.style.animationDelay = `${index * 50}ms`;
                     card.dataset.title = item.title;
                     card.dataset.icon = item.icon;
+                    card.dataset.action = item.action;
                     card.innerHTML = `
                         <div>
-                           <div class="w-12 h-12 mb-4 bg-purple-100 rounded-full flex items-center justify-center">
-                               <i class="${item.icon} text-2xl text-purple-500"></i>
+                           <div class="w-12 h-12 mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="${item.icon} text-2xl text-blue-500"></i>
                            </div>
                            <h3 class="text-md font-bold text-gray-800 leading-tight">${item.title}</h3>
                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">${item.description}</p>
@@ -750,12 +896,12 @@
                 
                 offerModalBody.innerHTML = `
                     <div class="text-center">
-                        <i class="${offer.icon} text-5xl sm:text-6xl text-purple-500 mb-4"></i>
+                        <i class="${offer.icon} text-5xl sm:text-6xl text-blue-500 mb-4"></i>
                         <h3 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-4">${offer.title}</h3>
                         <p class="text-lg sm:text-xl text-gray-700 mb-6">${offer.description}</p>
                     </div>
-                    <div class="p-4 sm:p-6 bg-purple-50 rounded-lg border-r-4 border-purple-500">
-                        <h4 class="font-bold text-lg sm:text-xl text-purple-800 mb-2">شروط وأحكام العرض:</h4>
+                    <div class="p-4 sm:p-6 bg-blue-50 rounded-lg border-r-4 border-blue-500">
+                        <h4 class="font-bold text-lg sm:text-xl text-blue-800 mb-2">شروط وأحكام العرض:</h4>
                         <p class="text-gray-700 pr-2">${offer.details}</p>
                     </div>
                     <div class="mt-8 flex justify-center">
@@ -768,7 +914,7 @@
             };
             
             const showEntertainmentModal = (title, icon) => {
-                entertainmentModalIcon.className = `${icon} text-5xl sm:text-6xl text-purple-500 mb-4`;
+                entertainmentModalIcon.className = `${icon} text-5xl sm:text-6xl text-blue-500 mb-4`;
                 entertainmentModalTitle.textContent = title;
                 entertainmentModal.style.display = 'flex';
             };
@@ -821,12 +967,22 @@
                 }
             });
             
+            // MODIFIED: Entertainment Grid Click Listener
             entertainmentGrid.addEventListener('click', (e) => {
                 const card = e.target.closest('.course-card-small');
                  if (card) {
-                    const title = card.dataset.title;
-                    const icon = card.dataset.icon;
-                    showEntertainmentModal(title, icon);
+                    const action = card.dataset.action;
+                    if (action === 'personality-test') {
+                        pt_restartQuiz(true); // Restart the quiz silently
+                        personalityTestModal.style.display = 'flex';
+                    } else if (action === 'emotional-health-test') {
+                        eh_handleReset(); // Reset and show the welcome screen for EH test
+                        emotionalHealthModal.style.display = 'flex';
+                    } else { // Fallback for "soon"
+                        const title = card.dataset.title;
+                        const icon = card.dataset.icon;
+                        showEntertainmentModal(title, icon);
+                    }
                 }
             });
 
@@ -924,6 +1080,8 @@
                 renderMonthlyCourses(nextMonthContainer, monthlyCoursesData.next);
                 renderOffers();
                 renderEntertainment();
+                setupPersonalityTest(); // Initialize the personality test logic
+                setupEmotionalHealthTest(); // Initialize the new emotional health test
             }
             
             initializePage();
@@ -980,6 +1138,506 @@
                 
                 updateSlider(0); // Set initial position
                 resetInterval();
+            }
+
+            // --- PERSONALITY TEST LOGIC ---
+            function setupPersonalityTest() {
+                // --- UI Elements ---
+                const pt_startScreen = document.getElementById('pt-start-screen');
+                const pt_quizScreen = document.getElementById('pt-quiz-screen');
+                const pt_resultsScreen = document.getElementById('pt-results-screen');
+                const pt_startBtn = document.getElementById('pt-start-btn');
+                const pt_restartBtn = document.getElementById('pt-restart-btn');
+                const pt_shareBtn = document.getElementById('pt-share-btn');
+                const pt_questionText = document.getElementById('pt-question-text');
+                const pt_answersContainer = document.getElementById('pt-answers-container');
+                const pt_progressBar = document.getElementById('pt-progress-bar');
+                const pt_progressText = document.getElementById('pt-progress-text');
+                const pt_resultsContainer = document.getElementById('pt-results-container');
+                
+                // --- Test Data ---
+                const pt_questions = [
+                    { text: "أستمتع بالحديث مع الغرباء في المناسبات الاجتماعية.", factor: 'A', reverse: false },
+                    { text: "أفضل العمل على مشروع بمفردي بدلاً من العمل في فريق.", factor: 'A', reverse: true },
+                    { text: "أجد متعة في حل الألغاز المنطقية والمعقدة.", factor: 'B', reverse: false },
+                    { text: "عادةً ما أتخذ قراراتي بناءً على مشاعري أكثر من المنطق.", factor: 'B', reverse: true },
+                    { text: "أحافظ على هدوئي في المواقف الضاغطة.", factor: 'C', reverse: false },
+                    { text: "أشعر بتقلبات مزاجية متكررة خلال اليوم.", factor: 'C', reverse: true },
+                    { text: "أحب أن أكون مسؤولاً وأقود الآخرين.", factor: 'E', reverse: false },
+                    { text: "أجد صعوبة في فرض رأيي على الآخرين.", factor: 'E', reverse: true },
+                    { text: "غالباً ما أكون محور المرح في التجمعات.", factor: 'F', reverse: false },
+                    { text: "أنا شخص جاد ومتحفظ بطبيعتي.", factor: 'F', reverse: true },
+                    { text: "أؤمن بأهمية اتباع القواعد والإجراءات بدقة.", factor: 'G', reverse: false },
+                    { text: "أميل إلى تجاهل القوانين إذا شعرت أنها غير منطقية.", factor: 'G', reverse: true },
+                    { text: "أشعر بالثقة عند التحدث أمام جمهور كبير.", factor: 'H', reverse: false },
+                    { text: "أشعر بالخجل عندما أكون مركز الاهتمام.", factor: 'H', reverse: true },
+                    { text: "أتأثر بسهولة بالمشاهد الفنية أو الموسيقى العاطفية.", factor: 'I', reverse: false },
+                    { text: "أعتبر نفسي شخصاً عملياً وغير عاطفي.", factor: 'I', reverse: true },
+                    { text: "أكون حذراً في التعامل مع الناس حتى أثق بهم تماماً.", factor: 'L', reverse: false },
+                    { text: "أميل إلى الثقة بالآخرين بسهولة.", factor: 'L', reverse: true },
+                    { text: "غالباً ما أكون شارد الذهن وأفكر في أمور خيالية.", factor: 'M', reverse: false },
+                    { text: "أركز على الواقع الملموس والتفاصيل العملية.", factor: 'M', reverse: true },
+                    { text: "أحتفظ بأفكاري ومشاعري لنفسي.", factor: 'N', reverse: false },
+                    { text: "أنا كتاب مفتوح، وأشارك كل شيء مع أصدقائي.", factor: 'N', reverse: true },
+                    { text: "أقلق كثيراً بشأن الأخطاء التي قد أرتكبها.", factor: 'O', reverse: false },
+                    { text: "نادراً ما أشعر بالقلق أو التوتر.", factor: 'O', reverse: true },
+                    { text: "أستمتع بتجربة أشياء جديدة وتغيير الروتين.", factor: 'Q1', reverse: false },
+                    { text: "أفضل الالتزام بالتقاليد والطرق المألوفة.", factor: 'Q1', reverse: true },
+                    { text: "أفضل اتخاذ قراراتي المهمة بنفسي دون استشارة الآخرين.", factor: 'Q2', reverse: false },
+                    { text: "أحب أن أستشير أصدقائي قبل اتخاذ أي قرار.", factor: 'Q2', reverse: true },
+                    { text: "أحرص على أن يكون كل شيء في حياتي منظماً ومثالياً.", factor: 'Q3', reverse: false },
+                    { text: "أنا شخص مرن ولا أهتم كثيراً بالتفاصيل الدقيقة.", factor: 'Q3', reverse: true },
+                    { text: "أشعر بالملل وعدم الصبر بسهولة.", factor: 'Q4', reverse: false },
+                    { text: "أنا شخص صبور وهادئ جداً.", factor: 'Q4', reverse: true },
+                ];
+                
+                const pt_personalityFactors = {
+                    'A': { name: 'الدفء الاجتماعي', low: 'متحفظ ومنعزل', high: 'اجتماعي وودود' },
+                    'B': { name: 'القدرة على التحليل', low: 'يفكر بشكل ملموس', high: 'يفكر بشكل مجرد' },
+                    'C': { name: 'الاستقرار العاطفي', low: 'يتأثر بالمشاعر', high: 'ناضج وهادئ' },
+                    'E': { name: 'السيطرة', low: 'خاضع ومتواضع', high: 'مسيطر وحازم' },
+                    'F': { name: 'الحيوية', low: 'جدي ورصين', high: 'مرح وحيوي' },
+                    'G': { name: 'الالتزام بالقواعد', low: 'يتجاهل القواعد', high: 'ملتزم وواعٍ' },
+                    'H': { name: 'الجرأة الاجتماعية', low: 'خجول ومتردد', high: 'جريء ومغامر' },
+                    'I': { name: 'الحساسية', low: 'واقعي وعملي', high: 'حساس ورقيق' },
+                    'L': { name: 'اليقظة', low: 'واثق ومتقبل', high: 'حذر ومشكك' },
+                    'M': { name: 'سعة الخيال', low: 'عملي وواقعي', high: 'خيالي وغير عملي' },
+                    'N': { name: 'الخصوصية', low: 'صريح ومباشر', high: 'متحفظ ودبلوماسي' },
+                    'O': { name: 'القلق', low: 'واثق من نفسه', high: 'قلق ومتوجس' },
+                    'Q1': { name: 'الانفتاح على التغيير', low: 'تقليدي ومحافظ', high: 'منفتح ومحب للتجربة' },
+                    'Q2': { name: 'الاعتماد على الذات', low: 'يعتمد على المجموعة', high: 'يعتمد على نفسه' },
+                    'Q3': { name: 'السعي للكمال', low: 'غير دقيق ومرن', high: 'منضبط ومثالي' },
+                    'Q4': { name: 'التوتر', low: 'مسترخٍ وصبور', high: 'متوتر ونفاد الصبر' },
+                };
+
+                // --- App State ---
+                let pt_currentQuestionIndex = 0;
+                let pt_scores = {};
+
+                // Make pt_restartQuiz globally accessible within the script
+                window.pt_restartQuiz = function(isSilent = false) {
+                     pt_resultsScreen.classList.add('hidden');
+                     pt_resultsScreen.classList.remove('pt-fade-in');
+                     pt_quizScreen.classList.add('hidden');
+                     pt_quizScreen.classList.remove('pt-fade-in');
+                     pt_startScreen.classList.remove('hidden');
+                     if (!isSilent) {
+                        pt_startScreen.classList.add('pt-fade-in');
+                     } else {
+                        pt_startScreen.classList.remove('pt-fade-in');
+                     }
+                }
+
+                // --- Functions ---
+                function pt_startQuiz() {
+                    pt_currentQuestionIndex = 0;
+                    pt_scores = {};
+                    Object.keys(pt_personalityFactors).forEach(key => pt_scores[key] = 0);
+                    pt_questions.sort(() => Math.random() - 0.5);
+
+                    pt_startScreen.classList.add('pt-fade-out');
+                    setTimeout(() => {
+                        pt_startScreen.classList.add('hidden');
+                        pt_startScreen.classList.remove('pt-fade-out');
+                        pt_quizScreen.classList.remove('hidden');
+                        pt_quizScreen.classList.add('pt-fade-in');
+                        pt_displayQuestion();
+                    }, 500);
+                }
+                
+                function pt_displayQuestion() {
+                    if (pt_currentQuestionIndex < pt_questions.length) {
+                        const question = pt_questions[pt_currentQuestionIndex];
+                        pt_questionText.textContent = question.text;
+                        pt_questionText.parentElement.classList.remove('pt-fade-in');
+                        void pt_questionText.offsetWidth; 
+                        pt_questionText.parentElement.classList.add('pt-fade-in');
+
+                        pt_answersContainer.innerHTML = '';
+                        const answers = [ { text: 'نعم', value: 2 }, { text: 'غير متأكد', value: 1 }, { text: 'لا', value: 0 } ];
+                        answers.forEach(answer => {
+                            const button = document.createElement('button');
+                            button.textContent = answer.text;
+                            button.className = 'pt-answer-btn w-full font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400';
+                            button.onclick = () => pt_selectAnswer(answer.value);
+                            pt_answersContainer.appendChild(button);
+                        });
+                        pt_updateProgress();
+                    } else {
+                        pt_showResults();
+                    }
+                }
+
+                function pt_updateProgress() {
+                    const progressPercentage = (pt_currentQuestionIndex / pt_questions.length) * 100;
+                    pt_progressBar.style.width = `${progressPercentage}%`;
+                    pt_progressText.textContent = `السؤال ${pt_currentQuestionIndex + 1} من ${pt_questions.length}`;
+                }
+                
+                function pt_selectAnswer(value) {
+                    const question = pt_questions[pt_currentQuestionIndex];
+                    const score = question.reverse ? 2 - value : value;
+                    pt_scores[question.factor] += score;
+                    pt_currentQuestionIndex++;
+                    pt_displayQuestion();
+                }
+
+                function pt_showResults() {
+                     pt_quizScreen.classList.add('pt-fade-out');
+                    setTimeout(() => {
+                        pt_quizScreen.classList.add('hidden');
+                        pt_quizScreen.classList.remove('pt-fade-out');
+                        pt_resultsScreen.classList.remove('hidden');
+                        pt_resultsScreen.classList.add('pt-fade-in');
+                        pt_displayResults();
+                    }, 500);
+                }
+
+                function pt_displayResults() {
+                    pt_resultsContainer.innerHTML = '';
+                    for (const factor in pt_personalityFactors) {
+                        const score = pt_scores[factor];
+                        let level, description, colorClass;
+                        if (score <= 1) { level = "منخفض"; description = pt_personalityFactors[factor].low; colorClass = 'bg-amber-500'; } 
+                        else if (score === 2) { level = "متوسط"; description = "متوازن بين القطبين"; colorClass = 'bg-sky-500'; } 
+                        else { level = "مرتفع"; description = pt_personalityFactors[factor].high; colorClass = 'bg-emerald-500'; }
+                        
+                        const percentage = Math.round((score / 4) * 100);
+
+                        const resultElement = document.createElement('div');
+                        resultElement.innerHTML = `
+                            <div class="mb-1 flex justify-between items-end flex-wrap gap-x-2">
+                                <h3 class="text-base font-bold text-gray-800">${pt_personalityFactors[factor].name} <span class="text-sm font-normal text-gray-500">(${level})</span></h3>
+                                <p class="font-semibold text-gray-600 dark:text-gray-400 text-sm">${description}</p>
+                            </div>
+                            <div class="w-full pt-result-bar rounded-full h-5">
+                                <div class="pt-result-bar-inner ${colorClass} h-5 rounded-full flex items-center justify-center text-white text-xs font-bold" style="width: ${percentage}%">${percentage > 10 ? percentage + '%' : ''}</div>
+                            </div>
+                        `;
+                        pt_resultsContainer.appendChild(resultElement);
+                    }
+                }
+                
+                function pt_shareResultsAsText() {
+                    let message = "*نتائج تحليل الشخصية*\n";
+                    message += "_مقدمة من مركز صلة التدريبي الدولي_\n\n";
+
+                    for (const factor in pt_personalityFactors) {
+                        const score = pt_scores[factor];
+                        let description;
+                        if (score <= 1) { description = pt_personalityFactors[factor].low; } 
+                        else if (score === 2) { description = "متوازن"; } 
+                        else { description = pt_personalityFactors[factor].high; }
+                        
+                        message += `*${pt_personalityFactors[factor].name}*: ${description}\n`;
+                    }
+                    
+                    message += "\n_هذا التحليل هو لمحة أولية ولا يغني عن الاستشارة المتخصصة. لمعرفة المزيد تواصل معنا._";
+                    
+                    const encodedMessage = encodeURIComponent(message);
+                    window.open(`https://wa.me/+963991015651?text=${encodedMessage}`, '_blank');
+                }
+
+                // --- Event Listeners ---
+                pt_startBtn.addEventListener('click', pt_startQuiz);
+                pt_restartBtn.addEventListener('click', () => pt_restartQuiz(false));
+                pt_shareBtn.addEventListener('click', pt_shareResultsAsText);
+            }
+            
+            // --- EMOTIONAL HEALTH TEST LOGIC ---
+            function setupEmotionalHealthTest() {
+                // --- UI Elements ---
+                const eh_appContainer = document.getElementById('eh-app-container');
+
+                // --- Test Data ---
+                const eh_questions = [
+                    { id: 'intrapersonal1', text: 'أفهم مشاعري وأسبابها جيدًا.', category: 'الوعي بالذات' },
+                    { id: 'intrapersonal2', text: 'أستطيع التعبير عن آرائي ومعتقداتي بثقة.', category: 'الوعي بالذات' },
+                    { id: 'intrapersonal3', text: 'أشعر بالرضا عن نفسي كشخص.', category: 'الوعي بالذات' },
+                    { id: 'intrapersonal4', text: 'أسعى دائمًا لتطوير نفسي وتحقيق أهدافي.', category: 'الوعي بالذات' },
+                    { id: 'interpersonal1', text: 'أستطيع أن أضع نفسي مكان الآخرين لأفهم مشاعرهم.', category: 'العلاقات الاجتماعية' },
+                    { id: 'interpersonal2', text: 'أهتم بمساعدة من حولي وأشعر بمسؤولية تجاه المجتمع.', category: 'العلاقات الاجتماعية' },
+                    { id: 'interpersonal3', text: 'أجد سهولة في تكوين صداقات جديدة والحفاظ عليها.', category: 'العلاقات الاجتماعية' },
+                    { id: 'interpersonal4', text: 'أستمع جيدًا للآخرين قبل أن أعطي رأيي.', category: 'العلاقات الاجتماعية' },
+                    { id: 'adaptability1', text: 'أستطيع إيجاد حلول فعالة للمشاكل المعقدة.', category: 'القدرة على التكيف' },
+                    { id: 'adaptability2', text: 'أتقبل التغييرات في حياتي بسهولة وأتكيف معها.', category: 'القدرة على التكيف' },
+                    { id: 'adaptability3', text: 'أرى الأشياء بموضوعية وأتعامل مع الواقع.', category: 'القدرة على التكيف' },
+                    { id: 'adaptability4', text: 'أستطيع تعديل خططي وسلوكي عندما تتغير الظروف.', category: 'القدرة على التكيف' },
+                    { id: 'stressmanagement1', text: 'أظل هادئًا ومركزًا حتى تحت الضغط الشديد.', category: 'إدارة الضغوط' },
+                    { id: 'stressmanagement2', text: 'أجد طرقًا صحية للتخلص من التوتر والقلق.', category: 'إدارة الضغوط' },
+                    { id: 'stressmanagement3', text: 'أفكر جيدًا قبل أن أتخذ قرارات تحت تأثير عاطفي.', category: 'إدارة الضغوط' },
+                    { id: 'stressmanagement4', text: 'أنا قادر على إدارة اندفاعاتي العاطفية.', category: 'إدارة الضغوط' },
+                    { id: 'generalmood1', text: 'أشعر بالسعادة والبهجة في معظم الأوقات.', category: 'المزاج العام' },
+                    { id: 'generalmood2', text: 'أرى الجانب الإيجابي في معظم المواقف، حتى الصعبة منها.', category: 'المزاج العام' },
+                    { id: 'generalmood3', text: 'أمتلك طاقة كافية للتعامل مع مسؤولياتي اليومية.', category: 'المزاج العام' },
+                    { id: 'generalmood4', text: 'أنا شخص متفائل بشأن المستقبل.', category: 'المزاج العام' },
+                ];
+                
+                const eh_likertOptions = [
+                    { value: 1, label: 'لا تنطبق علي إطلاقاً' },
+                    { value: 2, label: 'لا تنطبق علي إلى حد ما' },
+                    { value: 3, label: 'أحياناً تنطبق علي' },
+                    { value: 4, label: 'تنطبق علي إلى حد كبير' },
+                    { value: 5, label: 'تنطبق علي تماماً' },
+                ];
+
+                let eh_currentQuestionIndex = 0;
+                let eh_answers = {};
+
+                function eh_generateLocalAnalysisAndAdvice(categoryScores, overallScore) {
+                    let analysis = "";
+                    let detailedAnalysis = {};
+                    let advice = [];
+
+                    const maxCategoryScore = 20; // 4 questions * 5 points
+                    const maxOverallScore = eh_questions.length * 5; // 20 questions * 5 points = 100
+
+                    const overallPercentage = (overallScore / maxOverallScore) * 100;
+                    if (overallPercentage >= 80) {
+                        analysis += `<p><strong>درجتك الإجمالية: ${overallScore}/${maxOverallScore} (${overallPercentage.toFixed(1)}%) - ممتاز!</strong></p>`;
+                        analysis += "<p>تهانينا! تُظهر نتائجك امتلاكك لمستوى عالٍ من الذكاء العاطفي. يبدو أنك تتمتع بوعي ذاتي قوي، ومهارات اجتماعية ممتازة، وقدرة فعالة على إدارة الضغوط والتكيف مع التحديات. هذا يعكس توازنًا عاطفيًا إيجابيًا وقدرة على الازدهار في مختلف جوانب حياتك.</p>";
+                    } else if (overallPercentage >= 60) {
+                        analysis += `<p><strong>درجتك الإجمالية: ${overallScore}/${maxOverallScore} (${overallPercentage.toFixed(1)}%) - جيد جداً!</strong></p>`;
+                        analysis += "<p>نتائجك تشير إلى أنك تمتلك أساسًا جيدًا في الذكاء العاطفي، مع وجود نقاط قوة واضحة في عدة مجالات. قد يكون هناك بعض الجوانب التي يمكنك تطويرها لتعزيز صحتك العاطفية بشكل أكبر وتحقيق إمكاناتك الكاملة.</p>";
+                    } else if (overallPercentage >= 40) {
+                        analysis += `<p><strong>درجتك الإجمالية: ${overallScore}/${maxOverallScore} (${overallPercentage.toFixed(1)}%) - متوسط.</strong></p>`;
+                        analysis += "<p>يبدو أنك في مرحلة استكشاف لذكائك العاطفي. نتائجك تشير إلى أن هناك فرصًا كبيرة للنمو والتطوير في فهم وإدارة عواطفك وعلاقاتك. لا تقلق، فهذه نقطة بداية رائعة للتحسين.</p>";
+                    } else {
+                        analysis += `<p><strong>درجتك الإجمالية: ${overallScore}/${maxOverallScore} (${overallPercentage.toFixed(1)}%) - تحتاج إلى تطوير.</strong></p>`;
+                        analysis += "<p>نتائجك تدل على أن هناك تحديات قد تواجهك في جوانب من صحتك العاطفية. قد يكون من المفيد التركيز على فهم مشاعرك والتعبير عنها بشكل بناء، وبناء آليات صحية للتعامل مع التوتر. تذكر أن طلب المساعدة من أخصائي هو خطوة قوية نحو التحسن.</p>";
+                    }
+
+                    analysis += `<h3 class="text-xl font-bold text-blue-600 mt-6 mb-3">تحليل مفصل حسب الفئة:</h3>`;
+
+                    const categoriesInfo = {
+                        'الوعي بالذات': { low: 'قد تجد صعوبة في التعرف على مشاعرك الحقيقية أو أسبابها. العمل على هذا الجانب سيساعدك على فهم دوافعك بشكل أعمق.', medium: 'لديك مستوى جيد من الوعي بمشاعرك، ولكن قد تستفيد من التعمق أكثر في فهم دوافعك وكيفية تأثيرها على سلوكياتك.', high: 'تتمتع بفهم عميق لمشاعرك وقيمك الشخصية. هذه نقطة قوة تساعدك على اتخاذ قرارات متوافقة مع ذاتك.' },
+                        'العلاقات الاجتماعية': { low: 'قد تواجه تحديات في التواصل مع الآخرين أو فهم وجهات نظرهم، مما قد يؤثر على جودة علاقاتك. التركيز على مهارات الاستماع والتعاطف يمكن أن يحدث فرقاً كبيراً.', medium: 'لديك مهارات اجتماعية مقبولة، ويمكنك تحسين قدرتك على التعاطف أو التواصل الفعال لبناء روابط أقوى وأكثر معنى.', high: 'ممتاز في بناء الروابط والتواصل مع الآخرين والتعاطف معهم. أنت شخص مؤثر ولديك قدرة على فهم احتياجات من حولك.' },
+                        'القدرة على التكيف': { low: 'قد تجد صعوبة في التعامل مع المواقف الجديدة أو التغييرات غير المتوقعة. تطوير المرونة الذهنية ومهارات حل المشكلات سيساعدك على تجاوز التحديات بسهولة أكبر.', medium: 'تتكيف جيدًا مع التغييرات، ولكن قد تحتاج إلى تعزيز مرونتك في بعض المواقف الصعبة أو غير المألوفة، مما يقلل من شعورك بالتوتر.', high: 'مرن للغاية وقادر على التكيف مع الظروف المتغيرة وحل المشكلات بفعالية. أنت ترى التحديات كفرص للنمو.' },
+                        'إدارة الضغوط': { low: 'قد تشعر بالإرهاق بسهولة تحت الضغط وتجد صعوبة في إدارة ردود أفعالك العاطفية. تعلم تقنيات الاسترخاء ووضع الحدود سيساعدك على التعامل مع التوتر بشكل أفضل.', medium: 'تدير الضغوط بشكل معقول، لكن قد تستفيد من تعلم المزيد من التقنيات لتقليل التوتر أو التحكم في الاندفاعات العاطفية لتعيش حياة أكثر هدوءاً.', high: 'تتمتع بقدرة عالية على البقاء هادئًا ومركزًا تحت الضغط وتستخدم استراتيجيات صحية للتعامل مع التوتر. أنت مصدر استقرار لنفسك ولمن حولك.' },
+                        'المزاج العام': { low: 'قد تميل إلى السلبية أو التشاؤم في بعض الأحيان، مما يؤثر على مستوى سعادتك وطاقتك. التركيز على الإيجابيات وممارسة الامتنان يمكن أن يغير نظرتك.', medium: 'متفائل بشكل عام، ولكن قد تمر بتقلبات مزاجية تؤثر على نظرتك للحياة أحيانًا. العمل على الحفاظ على مزاج مستقر يمكن أن يعزز رفاهيتك.', high: 'تتسم بالتفاؤل والإيجابية ولديك نظرة مشرقة للحياة. هذه السمة تساعدك على تجاوز الصعوبات والتركيز على النمو.' }
+                    };
+                    
+                    for (const category in categoryScores) {
+                        const score = categoryScores[category];
+                        const percentage = (score / maxCategoryScore) * 100;
+                        let description = "";
+                        let status = "";
+
+                        if (percentage >= 80) {
+                            description = categoriesInfo[category].high;
+                            status = "ممتاز";
+                        } else if (percentage >= 60) {
+                            description = categoriesInfo[category].medium;
+                            status = "جيد جداً";
+                        } else if (percentage >= 40) {
+                            description = categoriesInfo[category].medium;
+                            status = "متوسط";
+                        } else {
+                            description = categoriesInfo[category].low;
+                            status = "يحتاج إلى تطوير";
+                        }
+                        detailedAnalysis[category] = { score, percentage, status, description };
+
+                        analysis += `<div class="text-gray-800 dark:text-gray-200"><p><strong>${category}: ${score}/${maxCategoryScore} (${percentage.toFixed(1)}%) - ${status}</strong></p>`;
+                        analysis += `<p class="text-sm text-gray-600 dark:text-gray-400">${description}</p></div>`;
+                    }
+                    
+                    const advicePool = {
+                        'الوعي بالذات': ["خصص 10 دقائق يوميًا لكتابة يومياتك، مع التركيز على المشاعر التي مررت بها.", "مارس التأمل الواعي (Mindfulness) لبضع دقائق يوميًا.", "اطلب تغذية راجعة (Feedback) من الأصدقاء الموثوق بهم حول ردود أفعالك العاطفية."],
+                        'العلاقات الاجتماعية': ["تدرب على الاستماع النشط: ركز على فهم ما يقوله الآخرون وليس على إعداد ردك.", "تطوع في عمل مجتمعي أو انضم إلى نادٍ لتقابل أشخاصًا جددًا.", "مارس التعاطف بوعي: حاول أن تضع نفسك مكان الآخرين في المواقف المختلفة."],
+                        'القدرة على التكيف': ["عند مواجهة مشكلة، حاول عصف ذهني لعدة حلول ممكنة.", "ضع خطة بديلة (Plan B) لأي مشروع أو هدف مهم.", "مارس تحدي روتينك اليومي بتجربة أشياء جديدة."],
+                        'إدارة الضغوط': ["جرب تقنيات التنفس العميق عند الشعور بالتوتر.", "مارس نشاطًا بدنيًا منتظمًا، حتى المشي لمدة 30 دقيقة يوميًا.", "تعلم أن تقول 'لا' بلطف للمهام أو الالتزامات الإضافية."],
+                        'المزاج العام': ["احتفظ بمفكرة امتنان: اكتب 3-5 أشياء تشعر بالامتنان تجاهها كل يوم.", "احصل على قسط كافٍ من النوم الجيد (7-9 ساعات للبالغين).", "تواصل مع الطبيعة؛ اقضِ وقتًا في الهواء الطلق."]
+                    };
+                    
+                    let sortedCategories = Object.keys(categoryScores).sort((a, b) => categoryScores[a] - categoryScores[b]);
+                    
+                    while (advice.length < 3) {
+                       for(const category of sortedCategories) {
+                           if(advice.length >= 3) break;
+                           const availableAdvice = advicePool[category].filter(a => !advice.includes(a));
+                           if(availableAdvice.length > 0) {
+                               advice.push(availableAdvice[Math.floor(Math.random() * availableAdvice.length)]);
+                           }
+                       }
+                    }
+
+                    return { analysis, advice };
+                }
+                
+                // Make eh_handleReset globally accessible
+                window.eh_handleReset = function() {
+                    eh_currentQuestionIndex = 0;
+                    eh_answers = {};
+                    eh_renderWelcomeScreen();
+                }
+                
+                function eh_renderWelcomeScreen() {
+                    eh_appContainer.innerHTML = `
+                        <div class="flex flex-col items-center justify-center p-4 md:p-8 eh-animate-fade-in">
+                            <h2 class="text-2xl md:text-3xl font-extrabold text-blue-700 mb-4 leading-tight">مقياس الصحة العاطفية</h2>
+                            <p class="text-gray-700 dark:text-gray-300 text-base md:text-lg mb-6">
+                                مرحبًا بك في هذا الاختبار المبسط لتقييم الصحة العاطفية.
+                                أجب بصدق على الأسئلة التالية لتكتشف جوانب مختلفة من صحتك العاطفية.
+                            </p>
+                            <button id="eh-startButton" class="px-8 py-3 bg-blue-500 text-white font-semibold rounded-full shadow-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                ابدأ الاختبار
+                            </button>
+                        </div>
+                    `;
+                    document.getElementById('eh-startButton').addEventListener('click', () => {
+                        eh_currentQuestionIndex = 0;
+                        eh_renderQuestion();
+                    });
+                }
+
+                function eh_renderQuestion() {
+                    const currentQuestion = eh_questions[eh_currentQuestionIndex];
+                    if (!currentQuestion) {
+                        eh_handleSubmit();
+                        return;
+                    }
+
+                    const progressPercentage = ((eh_currentQuestionIndex + 1) / eh_questions.length) * 100;
+                    const isLastQuestion = eh_currentQuestionIndex === eh_questions.length - 1;
+                    const answeredValue = eh_answers[currentQuestion.id] || 0;
+
+                    eh_appContainer.innerHTML = `
+                        <div class="space-y-6 eh-animate-fade-in" data-question-index="${eh_currentQuestionIndex}">
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-4 overflow-hidden">
+                                <div class="bg-blue-500 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: ${progressPercentage}%;"></div>
+                            </div>
+                            <h2 class="text-xl md:text-2xl font-extrabold text-blue-700 dark:text-blue-400 mb-4 leading-tight">
+                                السؤال ${eh_currentQuestionIndex + 1} من ${eh_questions.length}
+                            </h2>
+                            <p class="text-gray-800 dark:text-gray-200 text-lg md:text-xl font-medium mb-6 min-h-[60px]">
+                                ${currentQuestion.text}
+                            </p>
+                            <div id="eh-optionsContainer" class="flex flex-col space-y-3 items-start text-right">
+                                ${eh_likertOptions.map(option => `
+                                    <label data-value="${option.value}" class="eh-radio-label flex items-center p-3 rounded-lg cursor-pointer transition-all duration-200 ease-in-out transform hover:scale-105 w-full ${answeredValue === option.value ? 'selected bg-blue-500 text-white shadow-md border-transparent ring-2 ring-blue-300' : 'bg-gray-100 text-gray-800 hover:bg-blue-100 hover:text-blue-700 border border-gray-200'}">
+                                        <input type="radio" name="${currentQuestion.id}" value="${option.value}" ${answeredValue === option.value ? 'checked' : ''} class="hidden">
+                                        <span>${option.label}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                            <div class="flex justify-between mt-8">
+                                <button id="eh-previousButton" class="px-6 py-2 rounded-full font-semibold transition duration-300 transform hover:scale-105 ${eh_currentQuestionIndex === 0 ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}" ${eh_currentQuestionIndex === 0 ? 'disabled' : ''}>
+                                    السابق
+                                </button>
+                                <button id="eh-nextButton" class="px-6 py-2 rounded-full font-semibold transition duration-300 transform hover:scale-105 ${answeredValue === 0 ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600 shadow-md'}" ${answeredValue === 0 ? 'disabled' : ''}>
+                                    ${isLastQuestion ? 'إنهاء الاختبار' : 'التالي'}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    document.querySelectorAll(`#eh-optionsContainer label`).forEach(label => {
+                        label.addEventListener('click', (event) => {
+                            const value = event.currentTarget.dataset.value;
+                            eh_answers[currentQuestion.id] = parseInt(value);
+                            eh_updateRadioStyles(currentQuestion.id, value);
+                            eh_updateNextButtonState();
+                        });
+                    });
+
+                    document.getElementById('eh-previousButton').addEventListener('click', eh_handlePrevious);
+                    document.getElementById('eh-nextButton').addEventListener('click', eh_handleNext);
+                }
+                
+                function eh_updateRadioStyles(questionId, selectedValue) {
+                    const labels = document.querySelectorAll(`#eh-optionsContainer label`);
+                    labels.forEach(label => {
+                        label.classList.remove('selected', 'bg-blue-500', 'text-white', 'shadow-md', 'border-transparent', 'ring-2', 'ring-blue-300');
+                        label.classList.add('bg-gray-100', 'text-gray-800', 'hover:bg-blue-100', 'hover:text-blue-700', 'border', 'border-gray-200');
+                        if (label.dataset.value === selectedValue) {
+                           label.classList.add('selected', 'bg-blue-500', 'text-white', 'shadow-md', 'border-transparent', 'ring-2', 'ring-blue-300');
+                        }
+                    });
+                }
+
+                function eh_updateNextButtonState() {
+                    const nextButton = document.getElementById('eh-nextButton');
+                    const currentQuestion = eh_questions[eh_currentQuestionIndex];
+                    const isAnswered = eh_answers[currentQuestion.id] !== undefined;
+                    if (nextButton) {
+                        if (isAnswered) {
+                            nextButton.disabled = false;
+                            nextButton.classList.remove('bg-gray-300', 'text-gray-600', 'cursor-not-allowed');
+                            nextButton.classList.add('bg-blue-500', 'text-white', 'hover:bg-blue-600', 'shadow-md');
+                        } else {
+                            nextButton.disabled = true;
+                            nextButton.classList.remove('bg-blue-500', 'text-white', 'hover:bg-blue-600', 'shadow-md');
+                            nextButton.classList.add('bg-gray-300', 'text-gray-600', 'cursor-not-allowed');
+                        }
+                    }
+                }
+                
+                function eh_handleNext() {
+                    if (eh_currentQuestionIndex < eh_questions.length - 1) {
+                        eh_currentQuestionIndex++;
+                        eh_renderQuestion();
+                    } else {
+                        eh_handleSubmit();
+                    }
+                }
+
+                function eh_handlePrevious() {
+                    if (eh_currentQuestionIndex > 0) {
+                        eh_currentQuestionIndex--;
+                        eh_renderQuestion();
+                    }
+                }
+
+                async function eh_handleSubmit() {
+                    eh_appContainer.innerHTML = `
+                        <div class="flex flex-col items-center justify-center p-8">
+                            <div class="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-4"></div>
+                            <p class="text-gray-600 dark:text-gray-300 text-lg">جارٍ تحليل نتائجك...</p>
+                        </div>
+                    `;
+                    const categoryScores = {};
+                    eh_questions.forEach(q => {
+                        if (!categoryScores[q.category]) {
+                            categoryScores[q.category] = 0;
+                        }
+                        categoryScores[q.category] += eh_answers[q.id] || 0;
+                    });
+                    const overallScore = Object.values(categoryScores).reduce((sum, score) => sum + score, 0);
+                    const analysisData = eh_generateLocalAnalysisAndAdvice(categoryScores, overallScore);
+                    eh_renderResults(analysisData);
+                }
+
+                function eh_renderResults(analysisData) {
+                    eh_appContainer.innerHTML = `
+                        <div class="p-4 md:p-8 eh-animate-fade-in">
+                            <h2 class="text-2xl md:text-3xl font-extrabold text-blue-700 dark:text-blue-400 mb-6 leading-tight text-center">نتائجك وتحليلك</h2>
+                            <div class="space-y-6 text-right">
+                                <div class="eh-results-section bg-blue-50 p-6 rounded-lg border border-blue-200">
+                                    <h3 class="text-xl font-bold text-blue-600 mb-3">التحليل:</h3>
+                                    ${analysisData.analysis}
+                                </div>
+                                <div class="eh-results-section bg-green-50 p-6 rounded-lg border border-green-200">
+                                    <h3 class="text-xl font-bold text-green-600 mb-3">نصائح مخصصة لك:</h3>
+                                    <ul class="list-none text-gray-800 dark:text-gray-200 text-base space-y-2">
+                                        ${analysisData.advice.map(item => `
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2 flex-shrink-0"></i>
+                                                <span>${item}</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button id="eh-resetButton" class="mt-8 px-8 py-3 bg-blue-500 text-white font-semibold rounded-full shadow-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                    إعادة الاختبار
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('eh-resetButton').addEventListener('click', eh_handleReset);
+                }
             }
         });
     </script>
