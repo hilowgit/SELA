@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مركز صلة التدريبي الدولي</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    <!-- Google Fonts (Tajawal for Arabic) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -55,6 +52,7 @@
         /* Tab styling */
         .tabs-section {
             background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+            transition: opacity 0.3s ease;
         }
         .tab-button {
             background-color: #ffffff;
@@ -352,15 +350,12 @@
 </head>
 <body class="antialiased">
 
-    <!-- Header Section -->
     <header class="main-header text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
-             <!-- Logo and Title -->
-            <a href="#" class="flex items-center gap-3 transition-opacity hover:opacity-80">
+             <a href="#" class="flex items-center gap-3 transition-opacity hover:opacity-80">
                 <img src="https://res.cloudinary.com/dnqhuye5h/image/upload/v1750106940/Asset_3_y6hpka.svg" alt="شعار مركز صلة" class="h-10 sm:h-12">
                 <h1 class="text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide">مركز صلة التدريبي الدولي</h1>
             </a>
-            <!-- Grouped Icons -->
             <div class="flex items-center gap-3 sm:gap-5">
                 <a href="https://www.facebook.com/profile.php?id=61572455555070&sk=photos" target="_blank" class="text-lg sm:text-xl social-icon hover:text-blue-300"><i class="fab fa-facebook-f"></i></a>
                 <a href="https://www.instagram.com/link.sila?igsh=aW82YmluY2JkYzJq" target="_blank" class="text-lg sm:text-xl social-icon hover:text-pink-400"><i class="fab fa-instagram"></i></a>
@@ -374,9 +369,7 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container mx-auto p-4 md:p-8">
-        <!-- Image Slider -->
         <section class="mb-12 shadow-2xl rounded-2xl">
             <div class="slider-container">
                 <img src="https://res.cloudinary.com/dnqhuye5h/image/upload/v1750088466/Code-img_crurh7.png" class="slider-image" alt="دورات برمجية متقدمة">
@@ -389,7 +382,6 @@
             </div>
         </section>
 
-        <!-- Main View Navigation -->
         <section class="mb-10">
             <div id="main-view-nav" class="flex flex-col sm:flex-row justify-center bg-white p-2 rounded-xl shadow-md gap-2">
                 <button data-view="all-courses" class="main-view-button w-full sm:w-1/4 text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent active">أقسام الدورات</button>
@@ -399,17 +391,30 @@
             </div>
         </section>
 
-        <!-- Main Views Container -->
         <div id="views-container">
-            <!-- View 1: All Courses -->
             <div id="view-all-courses">
+                
+                <section class="mb-8 px-4 sm:px-6">
+                    <div class="relative">
+                        <input type="text" id="search-input" placeholder="ابحث عن دورة بالاسم أو القسم..." class="w-full py-3 pr-12 pl-4 text-base sm:text-lg border-2 border-gray-300 dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm dark:bg-gray-700 dark:text-white dark:placeholder-gray-400">
+                        <div class="absolute top-1/2 -translate-y-1/2 right-4">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                </section>
+                
                 <section class="tabs-section mb-8 p-4 sm:p-6 rounded-2xl shadow-lg">
                     <div id="tabs" class="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4"></div>
                 </section>
+
+                <div id="search-no-results" class="text-center py-8 text-gray-500 dark:text-gray-400 text-lg hidden">
+                    <i class="fas fa-search-minus text-4xl mb-4"></i>
+                    <p class="font-bold">لا توجد نتائج مطابقة لبحثك.</p>
+                    <p class="text-sm">حاول استخدام كلمات بحث أخرى.</p>
+                </div>
                 <section id="courses-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"></section>
             </div>
 
-            <!-- View 2: Monthly Courses -->
             <div id="view-monthly-courses" class="hidden">
                  <section class="mb-12">
                     <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto">دورات الشهر الحالي</h2>
@@ -421,31 +426,26 @@
                 </section>
             </div>
 
-            <!-- View 3: Offers -->
             <div id="view-offers" class="hidden">
                 <section class="mb-12">
                     <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-purple-500 pb-3 w-fit mx-auto">عروضنا المميزة</h2>
                     <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Offer cards will be inserted here by JavaScript -->
-                    </div>
+                        </div>
                 </section>
             </div>
 
-            <!-- View 4: Entertainment & Quizzes (NEW) -->
             <div id="view-entertainment" class="hidden">
                 <section class="mb-12">
                     <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-4 text-gray-800 border-b-4 border-purple-500 pb-3 w-fit mx-auto">استراحة قصيرة</h2>
                     <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">استرح قليلاً، اختبر نفسك ببعض الاختبارات النفسية المسلية، أو تحدى صديقك في لعبة سريعة!</p>
                     <div id="entertainment-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                        <!-- Entertainment cards will be inserted here by JavaScript -->
-                    </div>
+                        </div>
                 </section>
             </div>
 
         </div>
     </main>
     
-    <!-- Modals Container -->
     <div id="tiktok-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close-button">&times;</span>
@@ -469,7 +469,6 @@
         </div>
     </div>
     
-    <!-- A generic modal for entertainment items -->
     <div id="entertainment-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close-button">&times;</span>
@@ -481,7 +480,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="bg-gray-800 text-white mt-12 p-6 text-center">
         <p>&copy; 2024 مركز صلة التدريبي الدولي. جميع الحقوق محفوظة.</p>
     </footer>
@@ -595,21 +593,25 @@
             const allCoursesView = document.getElementById('view-all-courses');
             const monthlyCoursesView = document.getElementById('view-monthly-courses');
             const offersView = document.getElementById('view-offers'); 
-            const entertainmentView = document.getElementById('view-entertainment'); // NEW
+            const entertainmentView = document.getElementById('view-entertainment');
             const offersGrid = document.getElementById('offers-grid'); 
-            const entertainmentGrid = document.getElementById('entertainment-grid'); // NEW
+            const entertainmentGrid = document.getElementById('entertainment-grid');
             const currentMonthContainer = document.getElementById('current-month-courses');
             const nextMonthContainer = document.getElementById('next-month-courses');
             const courseDetailsModal = document.getElementById('course-details-modal');
             const offerDetailsModal = document.getElementById('offer-details-modal'); 
-            const entertainmentModal = document.getElementById('entertainment-modal'); // NEW
+            const entertainmentModal = document.getElementById('entertainment-modal');
             const courseModalBody = document.getElementById('course-modal-body');
             const offerModalBody = document.getElementById('offer-modal-body'); 
-            const entertainmentModalIcon = document.getElementById('entertainment-modal-icon'); // NEW
-            const entertainmentModalTitle = document.getElementById('entertainment-modal-title'); // NEW
+            const entertainmentModalIcon = document.getElementById('entertainment-modal-icon');
+            const entertainmentModalTitle = document.getElementById('entertainment-modal-title');
             const tiktokModal = document.getElementById('tiktok-modal');
             const themeToggle = document.getElementById('theme-toggle');
             const themeIcon = document.getElementById('theme-icon');
+            
+            // --- NEW SEARCH ELEMENTS ---
+            const searchInput = document.getElementById('search-input');
+            const searchNoResults = document.getElementById('search-no-results');
 
             // --- SLIDER ELEMENTS ---
             const sliderImages = document.querySelectorAll('.slider-image');
@@ -620,10 +622,17 @@
 
             const categories = [...new Set(allCourses.map(course => course.category))];
             
-            const renderCourses = (category) => {
+            // MODIFIED: This function now takes an array of courses to render
+            const renderCourses = (coursesToShow) => {
                 coursesGrid.innerHTML = '';
-                const filteredCourses = allCourses.filter(course => course.category === category);
-                filteredCourses.forEach((course, index) => {
+                searchNoResults.classList.add('hidden'); // Hide no-results message by default
+
+                if (coursesToShow.length === 0) {
+                    searchNoResults.classList.remove('hidden'); // Show message if no courses
+                    return;
+                }
+                
+                coursesToShow.forEach((course, index) => {
                     const card = document.createElement('div');
                     card.className = 'course-card-small flex flex-col justify-center items-center';
                     card.dataset.title = course.title;
@@ -697,7 +706,6 @@
                 });
             };
 
-            // NEW: Function to render entertainment items
             const renderEntertainment = () => {
                 entertainmentGrid.innerHTML = '';
                 entertainmentData.forEach((item, index) => {
@@ -743,7 +751,6 @@
                 offerDetailsModal.style.display = 'flex';
             };
             
-            // NEW: Function to show entertainment modal
             const showEntertainmentModal = (title, icon) => {
                 entertainmentModalIcon.className = `${icon} text-5xl sm:text-6xl text-purple-500 mb-4`;
                 entertainmentModalTitle.textContent = title;
@@ -798,7 +805,6 @@
                 }
             });
             
-            // NEW: Listener for entertainment grid
             entertainmentGrid.addEventListener('click', (e) => {
                 const card = e.target.closest('.course-card-small');
                  if (card) {
@@ -811,10 +817,44 @@
             tabsContainer.addEventListener('click', (e) => {
                 const button = e.target.closest('.tab-button');
                 if (button) {
+                    // When a tab is clicked, clear the search input
+                    searchInput.value = '';
+                    document.querySelector('.tabs-section').style.opacity = '1';
+                    
                     document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
-                    renderCourses(button.dataset.category);
+                    const category = button.dataset.category;
+                    const filteredCourses = allCourses.filter(course => course.category === category);
+                    renderCourses(filteredCourses);
                 }
+            });
+            
+            // --- NEW: Search input event listener ---
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                const tabsSection = document.querySelector('.tabs-section');
+
+                if (searchTerm === '') {
+                    // If search is empty, restore tabs and show courses for active tab
+                    tabsSection.style.opacity = '1';
+                    tabsSection.style.pointerEvents = 'auto';
+                    const activeTab = tabsContainer.querySelector('.tab-button.active');
+                    const category = activeTab ? activeTab.dataset.category : categories[0];
+                    const filteredCourses = allCourses.filter(course => course.category === category);
+                    renderCourses(filteredCourses);
+                    return;
+                }
+
+                // When searching, deactivate tabs
+                tabsSection.style.opacity = '0.5';
+                tabsSection.style.pointerEvents = 'none';
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+                const matchedCourses = allCourses.filter(course => 
+                    course.title.toLowerCase().includes(searchTerm) || 
+                    course.category.toLowerCase().includes(searchTerm)
+                );
+                renderCourses(matchedCourses);
             });
 
             mainViewNav.addEventListener('click', (e) => {
@@ -827,7 +867,7 @@
                     allCoursesView.classList.toggle('hidden', view !== 'all-courses');
                     monthlyCoursesView.classList.toggle('hidden', view !== 'monthly-courses');
                     offersView.classList.toggle('hidden', view !== 'offers');
-                    entertainmentView.classList.toggle('hidden', view !== 'entertainment'); // NEW
+                    entertainmentView.classList.toggle('hidden', view !== 'entertainment');
                 }
             });
 
@@ -860,11 +900,14 @@
                     tabsContainer.appendChild(button);
                 });
 
-                renderCourses(categories[0]);
+                // Initial render
+                const initialCourses = allCourses.filter(course => course.category === categories[0]);
+                renderCourses(initialCourses);
+                
                 renderMonthlyCourses(currentMonthContainer, monthlyCoursesData.current);
                 renderMonthlyCourses(nextMonthContainer, monthlyCoursesData.next);
                 renderOffers();
-                renderEntertainment(); // NEW
+                renderEntertainment();
             }
             
             initializePage();
