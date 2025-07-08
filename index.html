@@ -248,8 +248,8 @@
         .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
         .animate-fade-out { animation: fadeOut 0.5s ease-in-out forwards; }
          @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+             from { opacity: 1; transform: translateY(0); }
+             to { opacity: 0; transform: translateY(-20px); visibility: hidden; }
         }
 
         /* --- Personality Test Modal Styles --- */
@@ -293,6 +293,24 @@
             stroke-linecap: round;
             transform: rotate(-90deg 50 50);
             transition: stroke-dashoffset 1s ease-out;
+        }
+
+        /* --- Learning Style Test Styles --- */
+        .ls-answer-btn {
+            transition: all 0.2s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .ls-answer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .ls-progress-bar-inner {
+            transition: width 0.4s ease-in-out;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+        .ls-result-bar-inner {
+            transition: width 1s ease-out;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
         /* --- Dark Mode Styles --- */
@@ -392,6 +410,7 @@
         body.dark #offer-modal-body .text-gray-900,
         body.dark #personality-test-modal .text-gray-800,
         body.dark #emotional-health-modal .text-gray-800,
+        body.dark #learning-style-modal .text-gray-800,
         body.dark .text-gray-800 {
             color: #f9fafb;
         }
@@ -462,6 +481,23 @@
          body.dark .eh-result-gauge-fg {
             stroke: #60a5fa; /* blue-400 */
         }
+        
+        /* Dark Mode for Learning Style Test */
+        body.dark #ls-start-screen h1, body.dark #ls-results-screen h1 { color: #67e8f9; }
+        body.dark #ls-start-screen p, body.dark #ls-results-screen p, body.dark #ls-question-text { color: #d1d5db; }
+        body.dark #ls-progress-text { color: #67e8f9; }
+        body.dark #ls-progress-bar-container { background-color: #4b5563; }
+        body.dark .ls-answer-btn {
+            background-color: #374151;
+            color: #d1d5db;
+        }
+        body.dark .ls-answer-btn:hover {
+            border-color: #60a5fa;
+        }
+        body.dark #ls-results-container h3, body.dark #ls-results-container p { color: #d1d5db; }
+        body.dark .ls-result-bar { background-color: #374151; }
+        body.dark #ls-dominant-style-card { background-color: #262f40; border-color: #374151; }
+        body.dark #ls-dominant-style-card h3 { color: #93c5fd; }
     </style>
 </head>
 <body class="antialiased">
@@ -658,6 +694,57 @@
         </div>
     </div>
 
+    <!-- Learning Style Test Modal -->
+    <div id="learning-style-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <div id="ls-app-container" class="w-full mx-auto overflow-hidden">
+                <!-- Start Screen -->
+                <div id="ls-start-screen" class="p-4 md:p-8 text-center animate-fade-in">
+                    <i class="fas fa-lightbulb text-5xl text-cyan-500 mb-4"></i>
+                    <h1 class="text-2xl md:text-3xl font-bold text-cyan-600 mb-4">ما هو أسلوب تعلمك؟ (VARK)</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 text-base md:text-lg">اكتشف الطريقة التي تفضلها لاستقبال ومعالجة المعلومات. سيساعدك هذا الاختبار على فهم نقاط قوتك في التعلم.</p>
+                    <button id="ls-start-btn" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-10 rounded-full text-lg md:text-xl transition duration-300 shadow-lg">
+                        ابدأ الاختبار
+                    </button>
+                </div>
+
+                <!-- Quiz Screen -->
+                <div id="ls-quiz-screen" class="hidden p-4 md:p-8">
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-semibold text-gray-500">التقدم</span>
+                            <span id="ls-progress-text" class="text-sm font-bold text-cyan-600"></span>
+                        </div>
+                        <div id="ls-progress-bar-container" class="w-full bg-gray-200 rounded-full h-3">
+                            <div id="ls-progress-bar" class="ls-progress-bar-inner h-3 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div id="ls-question-container" class="text-center">
+                        <h2 id="ls-question-text" class="text-xl md:text-2xl font-semibold mb-8 min-h-[60px] text-gray-800"></h2>
+                        <div id="ls-answers-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                    </div>
+                </div>
+
+                <!-- Results Screen -->
+                <div id="ls-results-screen" class="hidden p-4 md:p-8">
+                    <h1 class="text-2xl md:text-3xl font-bold text-cyan-600 mb-4 text-center">أسلوب تعلمك هو...</h1>
+                    <div id="ls-results-container" class="space-y-4 mb-8">
+                        <!-- Results bars are injected here -->
+                    </div>
+                    <div id="ls-dominant-style-card" class="bg-gray-50 p-6 rounded-lg border-l-4">
+                        <!-- Dominant style description is injected here -->
+                    </div>
+                    <div class="text-center mt-10">
+                        <button id="ls-restart-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-8 rounded-full text-base transition duration-300 shadow-lg">
+                            إعادة الاختبار
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <footer class="bg-gray-800 text-white mt-12 p-6 text-center">
         <p>&copy; 2024 مركز صلة التدريبي الدولي. جميع الحقوق محفوظة.</p>
@@ -758,7 +845,7 @@
         const entertainmentData = [
              { type: 'quiz', title: "اختبار تحليل الشخصية", icon: "fas fa-brain", description: "اكتشف جوانب شخصيتك الخفية.", action: "personality-test" },
              { type: 'quiz', title: "مقياس الصحة العاطفية", icon: "fas fa-heart-pulse", description: "قيّم مستوى صحتك العاطفية.", action: "emotional-health-test" },
-             { type: "quiz", title: "ما هو أسلوب تعلمك؟", icon: "fas fa-lightbulb", description: "اعرف الطريقة المثلى التي تتعلم بها.", action: "soon" },
+             { type: "quiz", title: "ما هو أسلوب تعلمك؟", icon: "fas fa-lightbulb", description: "اعرف الطريقة المثلى التي تتعلم بها.", action: "learning-style-test" },
              { type: "game", title: "لعبة الذاكرة", icon: "fas fa-gamepad", description: "تحدى ذاكرتك وطابق البطاقات.", action: "soon" },
         ];
 
@@ -782,6 +869,7 @@
             const entertainmentModal = document.getElementById('entertainment-modal');
             const personalityTestModal = document.getElementById('personality-test-modal');
             const emotionalHealthModal = document.getElementById('emotional-health-modal');
+            const learningStyleModal = document.getElementById('learning-style-modal');
             const courseModalBody = document.getElementById('course-modal-body');
             const offerModalBody = document.getElementById('offer-modal-body'); 
             const entertainmentModalIcon = document.getElementById('entertainment-modal-icon');
@@ -996,6 +1084,9 @@
                     } else if (action === 'emotional-health-test') {
                         eh_handleReset(); 
                         emotionalHealthModal.style.display = 'flex';
+                    } else if (action === 'learning-style-test') {
+                        ls_handleReset();
+                        learningStyleModal.style.display = 'flex';
                     } else { 
                         const title = card.dataset.title;
                         const icon = card.dataset.icon;
@@ -1094,6 +1185,7 @@
                 renderEntertainment();
                 setupPersonalityTest();
                 setupEmotionalHealthTest();
+                setupLearningStyleTest();
             }
             
             initializePage();
@@ -1394,8 +1486,8 @@
                            </div>
                             <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-2">مقياس الصحة العاطفية</h2>
                              <p class="text-gray-600 mb-6 max-w-lg">
-                                أجب بصدق على الأسئلة التالية لاكتشاف جوانب صحتك العاطفية والحصول على تحليل شخصي ونصائح قيمة.
-                            </p>
+                                 أجب بصدق على الأسئلة التالية لاكتشاف جوانب صحتك العاطفية والحصول على تحليل شخصي ونصائح قيمة.
+                             </p>
                             <button id="eh-startButton" class="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white font-bold rounded-full shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300">
                                 ابدأ الاختبار
                             </button>
@@ -1598,10 +1690,10 @@
                      const maxOverallScore = eh_questions.length * 5;
                      const overallPercentage = (overallScore / maxOverallScore) * 100;
                      let overallStatus = "";
-                        if (overallPercentage >= 80) { overallStatus = "ممتاز"; }
-                        else if (overallPercentage >= 60) { overallStatus = "جيد جداً"; }
-                        else if (overallPercentage >= 40) { overallStatus = "متوسط"; }
-                        else { overallStatus = "بحاجة للتطوير"; }
+                         if (overallPercentage >= 80) { overallStatus = "ممتاز"; }
+                         else if (overallPercentage >= 60) { overallStatus = "جيد جداً"; }
+                         else if (overallPercentage >= 40) { overallStatus = "متوسط"; }
+                         else { overallStatus = "بحاجة للتطوير"; }
                 
                     eh_appContainer.innerHTML = `
                         <div class="p-4 md:p-6 text-center animate-fade-in">
@@ -1610,15 +1702,15 @@
                             
                             <div class="mb-8 flex flex-col items-center">
                                  <div class="relative eh-result-gauge">
-                                    <svg class="w-full h-full" viewBox="0 0 100 100">
-                                        <circle class="eh-result-gauge-bg" cx="50" cy="50" r="45"></circle>
-                                        <circle id="eh-gauge-fg" class="eh-result-gauge-fg" cx="50" cy="50" r="45" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>
-                                    </svg>
-                                    <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                       <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">${Math.round(overallPercentage)}%</span>
-                                       <span class="text-xs font-bold text-gray-500">${overallStatus}</span>
-                                    </div>
-                                </div>
+                                     <svg class="w-full h-full" viewBox="0 0 100 100">
+                                         <circle class="eh-result-gauge-bg" cx="50" cy="50" r="45"></circle>
+                                         <circle id="eh-gauge-fg" class="eh-result-gauge-fg" cx="50" cy="50" r="45" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>
+                                     </svg>
+                                     <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                        <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">${Math.round(overallPercentage)}%</span>
+                                        <span class="text-xs font-bold text-gray-500">${overallStatus}</span>
+                                     </div>
+                                 </div>
                             </div>
 
                             <div class="space-y-6 text-right">
@@ -1662,6 +1754,230 @@
                     document.getElementById('eh-resetButton').addEventListener('click', eh_handleReset);
                 }
             }
+
+            // --- LEARNING STYLE TEST (VARK) LOGIC ---
+            function setupLearningStyleTest() {
+                const ls_app = document.getElementById('ls-app-container');
+                const ls_startScreen = ls_app.querySelector('#ls-start-screen');
+                const ls_quizScreen = ls_app.querySelector('#ls-quiz-screen');
+                const ls_resultsScreen = ls_app.querySelector('#ls-results-screen');
+                const ls_startBtn = ls_app.querySelector('#ls-start-btn');
+                const ls_restartBtn = ls_app.querySelector('#ls-restart-btn');
+                const ls_questionText = ls_app.querySelector('#ls-question-text');
+                const ls_answersContainer = ls_app.querySelector('#ls-answers-container');
+                const ls_progressBar = ls_app.querySelector('#ls-progress-bar');
+                const ls_progressText = ls_app.querySelector('#ls-progress-text');
+                const ls_resultsContainer = ls_app.querySelector('#ls-results-container');
+                const ls_dominantStyleCard = ls_app.querySelector('#ls-dominant-style-card');
+
+                const ls_questions = [
+                    {
+                        question: "عندما أتعلم شيئًا جديدًا، أفضل...",
+                        answers: [
+                            { text: "مشاهدة الرسومات البيانية والمخططات.", style: 'v' },
+                            { text: "الاستماع إلى شرح أو نقاش.", style: 'a' },
+                            { text: "قراءة الكتب والملاحظات المكتوبة.", style: 'r' },
+                            { text: "التجربة العملية والقيام بالشيء بنفسي.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "عند تجميع أثاث جديد، ماذا تفعل أولاً؟",
+                        answers: [
+                            { text: "أنظر إلى الصور والرسوم في دليل التعليمات.", style: 'v' },
+                            { text: "أطلب من شخص أن يقرأ لي التعليمات بصوت عالٍ.", style: 'a' },
+                            { text: "أقرأ التعليمات المكتوبة خطوة بخطوة.", style: 'r' },
+                            { text: "أبدأ مباشرة في محاولة تجميع القطع معًا.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "ما هي الطريقة الأفضل لك لتذكر رقم هاتف؟",
+                        answers: [
+                            { text: "أتخيل شكل الأرقام في ذهني.", style: 'v' },
+                            { text: "أكرره بصوت عالٍ عدة مرات.", style: 'a' },
+                            { text: "أكتبه على ورقة.", style: 'r' },
+                            { text: "أضغط على الأرقام على لوحة مفاتيح وهمية.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "عندما تكون في مدينة جديدة وتريد الوصول إلى مكان ما، تفضل...",
+                        answers: [
+                            { text: "استخدام خريطة ورقية أو تطبيق خرائط.", style: 'v' },
+                            { text: "سؤال المارة عن الاتجاهات.", style: 'a' },
+                            { text: "قراءة قائمة بالاتجاهات المكتوبة.", style: 'r' },
+                            { text: "البدء في المشي واستكشاف الطريق بنفسي.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "ما نوع المحتوى الذي يجذبك أكثر على الإنترنت؟",
+                        answers: [
+                            { text: "الصور والرسوم البيانية (Infographics).", style: 'v' },
+                            { text: "البودكاست والمقابلات الصوتية.", style: 'a' },
+                            { text: "المقالات والمدونات الإخبارية.", style: 'r' },
+                            { text: "الفيديوهات التعليمية التي تظهر كيفية عمل الأشياء.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "في دورة تدريبية، ما هو الجزء الذي تستمتع به أكثر؟",
+                        answers: [
+                            { text: "العروض التقديمية المليئة بالصور والرسوم.", style: 'v' },
+                            { text: "المناقشات الجماعية والأسئلة والأجوبة.", style: 'a' },
+                            { text: "الحصول على مواد مطبوعة للمراجعة لاحقًا.", style: 'r' },
+                            { text: "الأنشطة العملية وتمثيل الأدوار.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "عندما تشرح فكرة لشخص ما، فإنك تميل إلى...",
+                        answers: [
+                            { text: "رسم مخطط أو خربشة على ورقة.", style: 'v' },
+                            { text: "شرحها شفهيًا بالتفصيل.", style: 'a' },
+                            { text: "كتابة النقاط الرئيسية في رسالة أو بريد إلكتروني.", style: 'r' },
+                            { text: "استخدام يديك وحركات جسدك للتوضيح.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "ماذا تفضل أن تتلقى كهدية؟",
+                        answers: [
+                            { text: "كتاب فني أو ألبوم صور.", style: 'v' },
+                            { text: "كتاب صوتي أو اشتراك في بودكاست.", style: 'a' },
+                            { text: "رواية أو كتاب غير خيالي.", style: 'r' },
+                            { text: "مجموعة أدوات لهواية عملية أو معدات رياضية.", style: 'k' }
+                        ]
+                    }
+                ];
+
+                const ls_styleInfo = {
+                    v: { name: 'بصري (Visual)', color: 'bg-blue-500', borderColor: 'border-blue-500', description: 'أنت تتعلم بشكل أفضل عندما ترى المعلومات. الرسوم البيانية، المخططات، الصور، والفيديوهات تساعدك على الفهم. حاول استخدام الألوان والخرائط الذهنية في دراستك.' },
+                    a: { name: 'سمعي (Aural)', color: 'bg-green-500', borderColor: 'border-green-500', description: 'أنت تتعلم بشكل أفضل من خلال الاستماع. المناقشات، الشرح الشفهي، والبودكاست هي أدواتك المفضلة. حاول تسجيل المحاضرات أو شرح المفاهيم بصوت عالٍ لنفسك.' },
+                    r: { name: 'قرائي/كتابي (Read/Write)', color: 'bg-amber-500', borderColor: 'border-amber-500', description: 'أنت تفضل التعامل مع الكلمات المكتوبة. قراءة الكتب، كتابة الملاحظات، وإنشاء القوائم هي طرق فعالة لك. إعادة صياغة المعلومات بكلماتك الخاصة ترسخها في ذهنك.' },
+                    k: { name: 'حركي (Kinesthetic)', color: 'bg-red-500', borderColor: 'border-red-500', description: 'أنت تتعلم من خلال العمل والتجربة. التطبيق العملي، التجارب، ولمس الأشياء يساعدك على الاستيعاب. ابحث عن طرق لتحويل التعلم إلى نشاط بدني.' }
+                };
+
+                let ls_currentQuestionIndex = 0;
+                let ls_scores = { v: 0, a: 0, r: 0, k: 0 };
+
+                window.ls_handleReset = function() {
+                    ls_currentQuestionIndex = 0;
+                    ls_scores = { v: 0, a: 0, r: 0, k: 0 };
+                    ls_resultsScreen.classList.add('hidden');
+                    ls_quizScreen.classList.add('hidden');
+                    ls_startScreen.classList.remove('hidden', 'animate-fade-out');
+                    ls_startScreen.classList.add('animate-fade-in');
+                };
+
+                function ls_startQuiz() {
+                    ls_startScreen.classList.add('animate-fade-out');
+                    setTimeout(() => {
+                        ls_startScreen.classList.add('hidden');
+                        ls_startScreen.classList.remove('animate-fade-out');
+                        ls_quizScreen.classList.remove('hidden');
+                        ls_quizScreen.classList.add('animate-fade-in');
+                        ls_displayQuestion();
+                    }, 500);
+                }
+
+                function ls_displayQuestion() {
+                    if (ls_currentQuestionIndex < ls_questions.length) {
+                        const q = ls_questions[ls_currentQuestionIndex];
+                        ls_questionText.textContent = q.question;
+                        ls_answersContainer.innerHTML = '';
+                        q.answers.forEach(answer => {
+                            const button = document.createElement('button');
+                            button.innerHTML = `<span>${answer.text}</span>`;
+                            button.className = 'ls-answer-btn w-full font-semibold py-4 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-gray-100 text-gray-800';
+                            button.onclick = () => ls_selectAnswer(answer.style);
+                            ls_answersContainer.appendChild(button);
+                        });
+                        ls_updateProgress();
+                    } else {
+                        ls_showResults();
+                    }
+                }
+
+                function ls_updateProgress() {
+                    const progress = (ls_currentQuestionIndex / ls_questions.length) * 100;
+                    ls_progressBar.style.width = `${progress}%`;
+                    ls_progressText.textContent = `السؤال ${ls_currentQuestionIndex + 1} / ${ls_questions.length}`;
+                }
+
+                function ls_selectAnswer(style) {
+                    ls_scores[style]++;
+                    ls_currentQuestionIndex++;
+                    ls_displayQuestion();
+                }
+
+                function ls_showResults() {
+                    ls_quizScreen.classList.add('animate-fade-out');
+                    setTimeout(() => {
+                        ls_quizScreen.classList.add('hidden');
+                        ls_quizScreen.classList.remove('animate-fade-out');
+                        ls_resultsScreen.classList.remove('hidden');
+                        ls_resultsScreen.classList.add('animate-fade-in');
+                        ls_displayResults();
+                    }, 500);
+                }
+
+                function ls_displayResults() {
+                    ls_resultsContainer.innerHTML = '';
+                    let dominantStyle = 'v';
+                    let maxScore = 0;
+
+                    for (const style in ls_scores) {
+                        if (ls_scores[style] > maxScore) {
+                            maxScore = ls_scores[style];
+                            dominantStyle = style;
+                        }
+                    }
+
+                    // Check for multimodal style
+                    const highScores = Object.keys(ls_scores).filter(s => ls_scores[s] === maxScore);
+                    let dominantInfo;
+                    if (highScores.length > 1) {
+                        dominantInfo = {
+                            name: 'متعدد الأساليب (Multimodal)',
+                            borderColor: 'border-purple-500',
+                            description: `لديك نقاط قوة في عدة أساليب تعلم (${highScores.map(s => ls_styleInfo[s].name).join('، ')}). هذا يعني أنك مرن ويمكنك التعلم بطرق متنوعة. استفد من هذه الميزة باختيار الطريقة الأنسب لكل موقف.`
+                        };
+                    } else {
+                        dominantInfo = ls_styleInfo[dominantStyle];
+                    }
+
+                    for (const style in ls_styleInfo) {
+                        const info = ls_styleInfo[style];
+                        const score = ls_scores[style];
+                        const percentage = (score / ls_questions.length) * 100;
+                        const resultElement = document.createElement('div');
+                        resultElement.innerHTML = `
+                            <div class="mb-1 flex justify-between items-center">
+                                <h3 class="text-base font-bold text-gray-800">${info.name}</h3>
+                                <p class="font-semibold text-gray-600 dark:text-gray-400 text-sm">${score} إجابة</p>
+                            </div>
+                            <div class="w-full ls-result-bar bg-gray-200 rounded-full h-6">
+                                <div class="ls-result-bar-inner ${info.color} h-6 rounded-full flex items-center justify-center text-white text-xs font-bold" style="width: 0%;" data-width="${percentage}%">
+                                    ${Math.round(percentage)}%
+                                </div>
+                            </div>
+                        `;
+                        ls_resultsContainer.appendChild(resultElement);
+                    }
+                    
+                    // Animate bars after they are in the DOM
+                    setTimeout(() => {
+                        document.querySelectorAll('.ls-result-bar-inner').forEach(bar => {
+                            bar.style.width = bar.dataset.width;
+                        });
+                    }, 100);
+
+                    ls_dominantStyleCard.className = `p-4 md:p-6 rounded-lg border-l-4 ${dominantInfo.borderColor}`;
+                    ls_dominantStyleCard.innerHTML = `
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${dominantInfo.name}</h3>
+                        <p class="text-gray-700">${dominantInfo.description}</p>
+                    `;
+                }
+
+                ls_startBtn.addEventListener('click', ls_startQuiz);
+                ls_restartBtn.addEventListener('click', ls_handleReset);
+            }
+
         });
     </script>
 </body>
