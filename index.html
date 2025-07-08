@@ -250,7 +250,7 @@
          @keyframes fadeOut {
              from { opacity: 1; transform: translateY(0); }
              to { opacity: 0; transform: translateY(-20px); visibility: hidden; }
-        }
+         }
 
         /* --- Personality Test Modal Styles --- */
         .pt-answer-btn { 
@@ -311,6 +311,69 @@
         .ls-result-bar-inner {
             transition: width 1s ease-out;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* --- Memory Game Styles --- */
+        #mg-game-board {
+            perspective: 1000px;
+        }
+        .mg-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+            border-radius: 0.5rem;
+        }
+        .mg-card.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .mg-card.is-matched {
+            transform: rotateY(180deg) scale(0.95);
+            opacity: 0.7;
+            cursor: default;
+        }
+        .mg-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .mg-card-front {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+        body.dark .mg-card-front {
+            background: linear-gradient(135deg, #3730a3, #5b21b6);
+        }
+        .mg-card-front i {
+            color: white;
+            font-size: 2.5rem;
+        }
+        .mg-card-back {
+            background-color: #e0e7ff;
+            transform: rotateY(180deg);
+        }
+        body.dark .mg-card-back {
+            background-color: #312e81;
+        }
+        .mg-card-back i {
+            font-size: 2.5rem;
+            color: #4338ca;
+        }
+        body.dark .mg-card-back i {
+            color: #a5b4fc;
+        }
+        @media (max-width: 640px) {
+            .mg-card-front i, .mg-card-back i {
+                font-size: 1.75rem;
+            }
         }
 
         /* --- Dark Mode Styles --- */
@@ -411,6 +474,7 @@
         body.dark #personality-test-modal .text-gray-800,
         body.dark #emotional-health-modal .text-gray-800,
         body.dark #learning-style-modal .text-gray-800,
+        body.dark #memory-game-modal .text-gray-800,
         body.dark .text-gray-800 {
             color: #f9fafb;
         }
@@ -672,12 +736,12 @@
                     </div>
                     <div class="text-center mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
                          <button id="pt-restart-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full text-base transition duration-300 shadow-lg w-full sm:w-auto">
-                            إعادة الاختبار
-                        </button>
-                        <button id="pt-share-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full text-base transition duration-300 shadow-lg w-full sm:w-auto flex items-center justify-center gap-2">
-                            <i class="fab fa-whatsapp"></i>
-                            <span>مشاركة عبر واتساب</span>
-                        </button>
+                             إعادة الاختبار
+                         </button>
+                         <button id="pt-share-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full text-base transition duration-300 shadow-lg w-full sm:w-auto flex items-center justify-center gap-2">
+                             <i class="fab fa-whatsapp"></i>
+                             <span>مشاركة عبر واتساب</span>
+                         </button>
                     </div>
                 </div>
             </div>
@@ -740,6 +804,49 @@
                             إعادة الاختبار
                         </button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Memory Game Modal -->
+    <div id="memory-game-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <div id="mg-app-container" class="w-full mx-auto overflow-hidden">
+                <!-- Start Screen -->
+                <div id="mg-start-screen" class="p-4 md:p-8 text-center animate-fade-in">
+                    <i class="fas fa-brain text-5xl text-indigo-500 mb-4"></i>
+                    <h1 class="text-2xl md:text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">لعبة الذاكرة</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 text-base md:text-lg">اختبر قوة ذاكرتك! جد كل زوجين من البطاقات المتشابهة في أقل عدد من الحركات والوقت.</p>
+                    <button id="mg-start-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-10 rounded-full text-lg md:text-xl transition duration-300 shadow-lg">
+                        ابدأ اللعبة
+                    </button>
+                </div>
+                <!-- Game Screen -->
+                <div id="mg-game-screen" class="hidden p-2 sm:p-4 md:p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                        <h2 class="text-lg sm:text-xl font-bold text-indigo-600 dark:text-indigo-400">لعبة الذاكرة</h2>
+                        <div class="flex items-center gap-4 text-sm sm:text-lg">
+                            <span class="font-semibold">الوقت: <span id="mg-timer">0s</span></span>
+                            <span class="font-semibold">الحركات: <span id="mg-moves">0</span></span>
+                        </div>
+                        <button id="mg-restart-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg text-sm transition duration-300 flex items-center gap-1">
+                            <i class="fas fa-redo"></i>إعادة
+                        </button>
+                    </div>
+                    <div id="mg-game-board" class="grid grid-cols-4 gap-2 sm:gap-4 aspect-square max-w-lg mx-auto">
+                        <!-- Cards will be injected here by JS -->
+                    </div>
+                </div>
+                 <!-- Win Message -->
+                <div id="mg-win-message" class="hidden p-4 md:p-8 text-center animate-fade-in">
+                    <i class="fas fa-trophy text-5xl text-amber-400 mb-4"></i>
+                    <h1 class="text-2xl md:text-3xl font-bold text-amber-500 mb-4">تهانينا، لقد فزت!</h1>
+                    <p id="mg-win-stats" class="text-gray-600 dark:text-gray-400 mb-8 text-base md:text-lg"></p>
+                    <button id="mg-play-again-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-10 rounded-full text-lg md:text-xl transition duration-300 shadow-lg">
+                        العب مرة أخرى
+                    </button>
                 </div>
             </div>
         </div>
@@ -846,7 +953,7 @@
              { type: 'quiz', title: "اختبار تحليل الشخصية", icon: "fas fa-brain", description: "اكتشف جوانب شخصيتك الخفية.", action: "personality-test" },
              { type: 'quiz', title: "مقياس الصحة العاطفية", icon: "fas fa-heart-pulse", description: "قيّم مستوى صحتك العاطفية.", action: "emotional-health-test" },
              { type: "quiz", title: "ما هو أسلوب تعلمك؟", icon: "fas fa-lightbulb", description: "اعرف الطريقة المثلى التي تتعلم بها.", action: "learning-style-test" },
-             { type: "game", title: "لعبة الذاكرة", icon: "fas fa-gamepad", description: "تحدى ذاكرتك وطابق البطاقات.", action: "soon" },
+             { type: "game", title: "لعبة الذاكرة", icon: "fas fa-gamepad", description: "تحدى ذاكرتك وطابق البطاقات.", action: "memory-game" },
         ];
 
 
@@ -870,6 +977,7 @@
             const personalityTestModal = document.getElementById('personality-test-modal');
             const emotionalHealthModal = document.getElementById('emotional-health-modal');
             const learningStyleModal = document.getElementById('learning-style-modal');
+            const memoryGameModal = document.getElementById('memory-game-modal');
             const courseModalBody = document.getElementById('course-modal-body');
             const offerModalBody = document.getElementById('offer-modal-body'); 
             const entertainmentModalIcon = document.getElementById('entertainment-modal-icon');
@@ -1087,6 +1195,9 @@
                     } else if (action === 'learning-style-test') {
                         ls_handleReset();
                         learningStyleModal.style.display = 'flex';
+                    } else if (action === 'memory-game') {
+                        mg_handleReset();
+                        memoryGameModal.style.display = 'flex';
                     } else { 
                         const title = card.dataset.title;
                         const icon = card.dataset.icon;
@@ -1186,6 +1297,7 @@
                 setupPersonalityTest();
                 setupEmotionalHealthTest();
                 setupLearningStyleTest();
+                setupMemoryGame();
             }
             
             initializePage();
@@ -1690,10 +1802,10 @@
                      const maxOverallScore = eh_questions.length * 5;
                      const overallPercentage = (overallScore / maxOverallScore) * 100;
                      let overallStatus = "";
-                         if (overallPercentage >= 80) { overallStatus = "ممتاز"; }
-                         else if (overallPercentage >= 60) { overallStatus = "جيد جداً"; }
-                         else if (overallPercentage >= 40) { overallStatus = "متوسط"; }
-                         else { overallStatus = "بحاجة للتطوير"; }
+                           if (overallPercentage >= 80) { overallStatus = "ممتاز"; }
+                           else if (overallPercentage >= 60) { overallStatus = "جيد جداً"; }
+                           else if (overallPercentage >= 40) { overallStatus = "متوسط"; }
+                           else { overallStatus = "بحاجة للتطوير"; }
                 
                     eh_appContainer.innerHTML = `
                         <div class="p-4 md:p-6 text-center animate-fade-in">
@@ -1707,8 +1819,8 @@
                                          <circle id="eh-gauge-fg" class="eh-result-gauge-fg" cx="50" cy="50" r="45" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>
                                      </svg>
                                      <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                        <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">${Math.round(overallPercentage)}%</span>
-                                        <span class="text-xs font-bold text-gray-500">${overallStatus}</span>
+                                         <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">${Math.round(overallPercentage)}%</span>
+                                         <span class="text-xs font-bold text-gray-500">${overallStatus}</span>
                                      </div>
                                  </div>
                             </div>
@@ -1976,6 +2088,157 @@
 
                 ls_startBtn.addEventListener('click', ls_startQuiz);
                 ls_restartBtn.addEventListener('click', ls_handleReset);
+            }
+
+            // --- MEMORY GAME LOGIC ---
+            function setupMemoryGame() {
+                const mg_app = document.getElementById('mg-app-container');
+                const mg_startScreen = mg_app.querySelector('#mg-start-screen');
+                const mg_gameScreen = mg_app.querySelector('#mg-game-screen');
+                const mg_winMessage = mg_app.querySelector('#mg-win-message');
+                const mg_startBtn = mg_app.querySelector('#mg-start-btn');
+                const mg_restartBtn = mg_app.querySelector('#mg-restart-btn');
+                const mg_playAgainBtn = mg_app.querySelector('#mg-play-again-btn');
+                const mg_gameBoard = mg_app.querySelector('#mg-game-board');
+                const mg_movesCounter = mg_app.querySelector('#mg-moves');
+                const mg_timerDisplay = mg_app.querySelector('#mg-timer');
+
+                const cardIcons = ['fa-star', 'fa-heart', 'fa-cloud', 'fa-car', 'fa-bicycle', 'fa-leaf', 'fa-bomb', 'fa-anchor'];
+
+                let firstCard, secondCard;
+                let hasFlippedCard = false;
+                let lockBoard = false;
+                let moves = 0;
+                let time = 0;
+                let timerInterval;
+                
+                function startGame() {
+                    mg_startScreen.classList.add('hidden');
+                    mg_winMessage.classList.add('hidden');
+                    mg_gameScreen.classList.remove('hidden');
+                    
+                    resetGame();
+                    
+                    const shuffledIcons = [...cardIcons, ...cardIcons].sort(() => Math.random() - 0.5);
+                    
+                    createBoard(shuffledIcons);
+                    startTimer();
+                }
+
+                function createBoard(icons) {
+                    mg_gameBoard.innerHTML = '';
+                    icons.forEach(icon => {
+                        const card = document.createElement('div');
+                        card.classList.add('mg-card');
+                        card.dataset.icon = icon;
+
+                        card.innerHTML = `
+                            <div class="mg-card-face mg-card-front">
+                                <i class="fas fa-question text-white"></i>
+                            </div>
+                            <div class="mg-card-face mg-card-back">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                        `;
+                        card.addEventListener('click', flipCard);
+                        mg_gameBoard.appendChild(card);
+                    });
+                }
+                
+                function flipCard() {
+                    if (lockBoard) return;
+                    if (this === firstCard) return;
+                    
+                    this.classList.add('is-flipped');
+                    
+                    if (!hasFlippedCard) {
+                        hasFlippedCard = true;
+                        firstCard = this;
+                        return;
+                    }
+                    
+                    secondCard = this;
+                    updateMoves();
+                    checkForMatch();
+                }
+                
+                function checkForMatch() {
+                    lockBoard = true;
+                    let isMatch = firstCard.dataset.icon === secondCard.dataset.icon;
+                    isMatch ? disableCards() : unflipCards();
+                }
+                
+                function disableCards() {
+                    firstCard.removeEventListener('click', flipCard);
+                    secondCard.removeEventListener('click', flipCard);
+                    firstCard.classList.add('is-matched');
+                    secondCard.classList.add('is-matched');
+                    
+                    if (document.querySelectorAll('.mg-card.is-matched').length === cardIcons.length * 2) {
+                        winGame();
+                    }
+                    
+                    resetBoard();
+                }
+                
+                function unflipCards() {
+                    setTimeout(() => {
+                        firstCard.classList.remove('is-flipped');
+                        secondCard.classList.remove('is-flipped');
+                        resetBoard();
+                    }, 1000);
+                }
+                
+                function resetBoard() {
+                    [hasFlippedCard, lockBoard] = [false, false];
+                    [firstCard, secondCard] = [null, null];
+                }
+                
+                function updateMoves() {
+                    moves++;
+                    mg_movesCounter.textContent = moves;
+                }
+                
+                function startTimer() {
+                    time = 0;
+                    timerInterval = setInterval(() => {
+                        time++;
+                        mg_timerDisplay.textContent = `${time}s`;
+                    }, 1000);
+                }
+                
+                function stopTimer() {
+                    clearInterval(timerInterval);
+                }
+                
+                function winGame() {
+                    stopTimer();
+                    setTimeout(() => {
+                        mg_gameScreen.classList.add('hidden');
+                        mg_winMessage.classList.remove('hidden');
+                        document.getElementById('mg-win-stats').textContent = `أكملت اللعبة في ${time} ثانية و ${moves} حركة!`;
+                    }, 500);
+                }
+
+                function resetGame() {
+                    stopTimer();
+                    moves = 0;
+                    time = 0;
+                    mg_movesCounter.textContent = moves;
+                    mg_timerDisplay.textContent = `${time}s`;
+                    resetBoard();
+                }
+                
+                window.mg_handleReset = function() {
+                    resetGame();
+                    mg_gameScreen.classList.add('hidden');
+                    mg_winMessage.classList.add('hidden');
+                    mg_startScreen.classList.remove('hidden');
+                }
+
+                mg_startBtn.addEventListener('click', startGame);
+                mg_restartBtn.addEventListener('click', startGame);
+                mg_playAgainBtn.addEventListener('click', startGame);
             }
 
         });
