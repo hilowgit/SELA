@@ -16,9 +16,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     
-    <!-- Tilt.js for 3D effect -->
-    <script type="text/javascript" src="https://micku7zu.github.io/vanilla-tilt.js/dist/vanilla-tilt.min.js"></script>
-
     <style>
         /* Custom Styles */
         html {
@@ -35,39 +32,32 @@
         .main-header {
             background: linear-gradient(90deg, #1e3a8a, #3b82f6);
         }
-
-        /* --- NEW: Reveal on Scroll Animation --- */
-        .course-card-small, .monthly-course-card, .offer-card, .entertainment-card {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Updated Card Styles (Removed old animation properties) */
         .course-card-small {
             background-color: white;
             border-radius: 1rem;
             padding: 1.5rem;
             text-align: center;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
             cursor: pointer;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
             color: inherit;
             text-decoration: none;
         }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
         .course-card-small:hover {
-            transform: translateY(-5px) !important; /* Use important to override reveal transform */
+            transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
         }
-
         /* Tab styling */
         .tabs-section {
             background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
-            transition: opacity 0.3s ease-in-out; /* Keep for search fade */
+            transition: opacity 0.3s ease;
         }
         .tab-button {
             background-color: #ffffff;
@@ -86,36 +76,10 @@
             box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
             transform: translateY(-2px);
         }
-        
-        /* --- NEW: Main Nav Indicator Styling --- */
-        #main-view-nav {
-            position: relative; /* Required for the indicator */
-        }
-        .main-view-button {
-            position: relative;
-            z-index: 2;
-             transition: color 0.3s ease-in-out;
-        }
         .main-view-button.active {
-            background-color: transparent !important;
-            color: white !important;
-        }
-        body.dark .main-view-button.active {
-             background-color: transparent !important;
-             color: white !important;
-        }
-        #nav-indicator {
-            position: absolute;
-            height: calc(100% - 0.5rem); /* p-2 on parent is 0.5rem */
-            top: 0.25rem;
-            right: 0.25rem;
-            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
-            border-radius: 0.5rem; /* rounded-lg */
-            z-index: 1;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        body.dark #nav-indicator {
-            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            background-color: #1e3a8a;
+            color: white;
+            border-color: #1e3a8a;
         }
         
         /* --- SLIDER STYLES (UPDATED) --- */
@@ -203,26 +167,18 @@
             border-radius: 1rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             overflow: hidden;
-            /* transition is now handled by the reveal animation classes */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
         .monthly-course-card:hover {
-             transform: translateY(-5px) !important;
+             transform: translateY(-5px);
              box-shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
-
-        /* --- NEW: Social Icons Interaction --- */
+        /* Social Icons Interaction */
         .social-icon {
             transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
         }
         .social-icon:hover {
             transform: translateY(-2px) scale(1.1);
-            animation: shake 0.5s;
-        }
-        @keyframes shake {
-          10%, 90% { transform: translateY(-2px) scale(1.1) rotate(-3deg); }
-          20%, 80% { transform: translateY(-2px) scale(1.1) rotate(3deg); }
-          30%, 50%, 70% { transform: translateY(-2px) scale(1.1) rotate(-3deg); }
-          40%, 60% { transform: translateY(-2px) scale(1.1) rotate(3deg); }
         }
         
         .offer-card {
@@ -230,11 +186,15 @@
             color: white;
             border-radius: 1rem;
             padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
             position: relative;
             overflow: hidden;
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-            /* Tilt.js will handle transforms */
+        }
+        .offer-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(30, 64, 175, 0.3), 0 10px 10px -5px rgba(30, 64, 175, 0.1);
         }
         .offer-card .offer-icon {
             font-size: 3rem;
@@ -309,6 +269,14 @@
             color: #1f2937;
         }
 
+        /* --- Animations --- */
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .animate-fade-out { animation: fadeOut 0.5s ease-in-out forwards; }
+         @keyframes fadeOut {
+             from { opacity: 1; transform: translateY(0); }
+             to { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+         }
+
         /* --- Dark Mode Styles --- */
         body.dark {
             background-color: #111827;
@@ -330,7 +298,11 @@
             background-color: #374151;
             color: #d1d5db;
         }
-        /* Active state handled by new indicator logic */
+        body.dark .main-view-button.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
         body.dark .tabs-section {
             background: #1f2937;
         }
@@ -348,21 +320,18 @@
             border-color: #2563eb;
         }
         body.dark .course-card-small, 
-        body.dark .monthly-course-card,
-        body.dark .entertainment-card {
+        body.dark .monthly-course-card {
             background-color: #1f2937;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5), 0 2px 4px -1px rgba(0,0,0,0.3);
         }
         body.dark .course-card-small h3, 
-        body.dark .monthly-course-card h3,
-        body.dark .entertainment-card h3 {
+        body.dark .monthly-course-card h3 {
             color: #f9fafb;
         }
         body.dark .monthly-course-card p {
             color: #9ca3af;
         }
-        body.dark .course-card-small .bg-blue-100,
-        body.dark .entertainment-card .bg-blue-100 {
+        body.dark .course-card-small .bg-blue-100 {
             background-color: #374151;
         }
         body.dark .monthly-course-card .details-button {
@@ -464,12 +433,10 @@
 
         <section class="mb-10">
             <div id="main-view-nav" class="flex flex-col sm:flex-row justify-center bg-white p-2 rounded-xl shadow-md gap-2">
-                <button data-view="all-courses" class="main-view-button w-full sm:w-auto flex-grow text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent active">أقسام الدورات</button>
-                <button data-view="monthly-courses" class="main-view-button w-full sm:w-auto flex-grow text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent">دورات الشهر</button>
-                <button data-view="offers" class="main-view-button w-full sm:w-auto flex-grow text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent">العروض</button>
-                <button data-view="entertainment" class="main-view-button w-full sm:w-auto flex-grow text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent">ترفيه واختبارات</button>
-                <!-- The moving indicator -->
-                <div id="nav-indicator"></div>
+                <button data-view="all-courses" class="main-view-button w-full sm:w-1/4 text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent active">أقسام الدورات</button>
+                <button data-view="monthly-courses" class="main-view-button w-full sm:w-1/4 text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent">دورات الشهر</button>
+                <button data-view="offers" class="main-view-button w-full sm:w-1/4 text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent">العروض</button>
+                <button data-view="entertainment" class="main-view-button w-full sm:w-1/4 text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent">ترفيه واختبارات</button>
             </div>
         </section>
 
@@ -494,7 +461,7 @@
                     <p class="font-bold">لا توجد نتائج مطابقة لبحثك.</p>
                     <p class="text-sm">حاول استخدام كلمات بحث أخرى.</p>
                 </div>
-                <section id="courses-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" style="transition: opacity 0.3s ease-in-out;"></section>
+                <section id="courses-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"></section>
             </div>
 
             <div id="view-monthly-courses" class="hidden">
@@ -761,26 +728,6 @@
 
             const categories = [...new Set(allCourses.map(course => course.category))];
             
-            // --- NEW: Reveal on Scroll Logic ---
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-
-            function observeVisibleElements() {
-                const elementsToAnimate = document.querySelectorAll('.course-card-small, .monthly-course-card, .offer-card, .entertainment-card');
-                elementsToAnimate.forEach(el => {
-                    el.classList.remove('is-visible'); // Reset for re-filtering
-                    observer.observe(el);
-                });
-            }
-
             const renderCourses = (coursesToShow) => {
                 coursesGrid.innerHTML = '';
                 searchNoResults.classList.add('hidden'); 
@@ -790,10 +737,11 @@
                     return;
                 }
                 
-                coursesToShow.forEach((course) => {
+                coursesToShow.forEach((course, index) => {
                     const card = document.createElement('div');
                     card.className = 'course-card-small flex flex-col justify-center items-center';
                     card.dataset.title = course.title;
+                    card.style.animationDelay = `${index * 50}ms`;
                     const iconClass = course.icon || 'fas fa-chalkboard-teacher';
                     card.innerHTML = `
                         <div class="w-12 h-12 mb-4 bg-blue-100 rounded-full flex items-center justify-center">
@@ -803,7 +751,6 @@
                     `;
                     coursesGrid.appendChild(card);
                 });
-                setTimeout(observeVisibleElements, 0);
             };
 
             const showCourseDetailsModal = (course) => {
@@ -845,22 +792,8 @@
                         </div>`;
                     container.appendChild(card);
                 });
-                setTimeout(observeVisibleElements, 0);
             };
             
-            // --- NEW: Tilt.js Initializer ---
-            function initializeTiltEffect() {
-                const offerCards = document.querySelectorAll('.offer-card');
-                if (window.VanillaTilt) {
-                    VanillaTilt.init(offerCards, {
-                        max: 10,
-                        speed: 400,
-                        glare: true,
-                        "max-glare": 0.2
-                    });
-                }
-            }
-
             const renderOffers = () => {
                 offersGrid.innerHTML = '';
                 offersData.forEach((offer, index) => {
@@ -875,21 +808,17 @@
                     `;
                     offersGrid.appendChild(card);
                 });
-                setTimeout(() => {
-                    observeVisibleElements();
-                    initializeTiltEffect();
-                }, 0);
             };
 
             const renderEntertainment = () => {
                 entertainmentGrid.innerHTML = '';
-                entertainmentData.forEach((item) => {
+                entertainmentData.forEach((item, index) => {
                     const card = document.createElement('a');
-                    // Add a specific class for animation targeting
-                    card.className = 'entertainment-card course-card-small flex flex-col justify-between items-center h-full'; 
+                    card.className = 'course-card-small flex flex-col justify-between items-center h-full';
                     card.href = item.url;
                     card.target = "_blank";
                     card.rel = "noopener noreferrer";
+                    card.style.animationDelay = `${index * 50}ms`;
                     card.innerHTML = `
                         <div>
                             <div class="w-12 h-12 mb-4 bg-blue-100 rounded-full flex items-center justify-center">
@@ -901,7 +830,6 @@
                     `;
                     entertainmentGrid.appendChild(card);
                 });
-                setTimeout(observeVisibleElements, 0);
             };
             
             const showOfferDetailsModal = (offer) => {
@@ -981,24 +909,17 @@
                 }
             });
             
-            // --- NEW: Smoother Tab Filtering ---
             tabsContainer.addEventListener('click', (e) => {
                 const button = e.target.closest('.tab-button');
                 if (button) {
-                    coursesGrid.style.opacity = '0'; // Fade out
+                    searchInput.value = '';
+                    document.querySelector('.tabs-section').style.opacity = '1';
                     
-                    setTimeout(() => {
-                        searchInput.value = '';
-                        document.querySelector('.tabs-section').style.opacity = '1';
-                        
-                        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                        button.classList.add('active');
-                        const category = button.dataset.category;
-                        const filteredCourses = allCourses.filter(course => course.category === category);
-                        
-                        renderCourses(filteredCourses);
-                        coursesGrid.style.opacity = '1'; // Fade in
-                    }, 300);
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const category = button.dataset.category;
+                    const filteredCourses = allCourses.filter(course => course.category === category);
+                    renderCourses(filteredCourses);
                 }
             });
             
@@ -1010,16 +931,9 @@
                     tabsSection.style.opacity = '1';
                     tabsSection.style.pointerEvents = 'auto';
                     const activeTab = tabsContainer.querySelector('.tab-button.active');
-                    if(activeTab) { // If a tab is active, filter by it
-                        const category = activeTab.dataset.category;
-                        const filteredCourses = allCourses.filter(course => course.category === category);
-                        renderCourses(filteredCourses);
-                    } else { // If no tab is active, show the first category by default
-                        const firstCategory = categories[0];
-                        document.querySelector(`.tab-button[data-category="${firstCategory}"]`).classList.add('active');
-                        const filteredCourses = allCourses.filter(course => course.category === firstCategory);
-                        renderCourses(filteredCourses);
-                    }
+                    const category = activeTab ? activeTab.dataset.category : categories[0];
+                    const filteredCourses = allCourses.filter(course => course.category === category);
+                    renderCourses(filteredCourses);
                     return;
                 }
 
@@ -1034,16 +948,6 @@
                 renderCourses(matchedCourses);
             });
 
-            // --- NEW: Main Nav Indicator Logic ---
-            function moveNavIndicator() {
-                const indicator = document.getElementById('nav-indicator');
-                const activeButton = document.querySelector('.main-view-button.active');
-                if (indicator && activeButton) {
-                    indicator.style.width = `${activeButton.offsetWidth}px`;
-                    indicator.style.transform = `translateX(-${activeButton.offsetLeft - mainViewNav.querySelector('button').offsetLeft}px)`;
-                }
-            }
-
             mainViewNav.addEventListener('click', (e) => {
                 const button = e.target.closest('.main-view-button');
                 if (button) {
@@ -1055,8 +959,6 @@
                     monthlyCoursesView.classList.toggle('hidden', view !== 'monthly-courses');
                     offersView.classList.toggle('hidden', view !== 'offers');
                     entertainmentView.classList.toggle('hidden', view !== 'entertainment');
-                    
-                    setTimeout(moveNavIndicator, 0); // Move indicator after class update
                 }
             });
 
@@ -1095,8 +997,6 @@
                 renderMonthlyCourses(nextMonthContainer, monthlyCoursesData.next);
                 renderOffers();
                 renderEntertainment();
-
-                moveNavIndicator(); // Set initial position for nav indicator
             }
             
             initializePage();
@@ -1176,9 +1076,6 @@
                 sliderDots[0].classList.add('active');
                 resetInterval();
             }
-
-            // Recalculate indicator on window resize
-            window.addEventListener('resize', moveNavIndicator);
         });
     </script>
 </body>
