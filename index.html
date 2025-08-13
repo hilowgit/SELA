@@ -28,7 +28,9 @@
             background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
             background-size: 25px 25px;
             transition: background-color 0.3s ease, color 0.3s ease;
+            position: relative;
         }
+
         .main-header {
             background: linear-gradient(90deg, #1e3a8a, #3b82f6);
         }
@@ -40,13 +42,7 @@
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
             transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
             cursor: pointer;
-            opacity: 0;
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
+            position: relative; /* Needed for tooltip positioning */
         }
         .course-card-small:hover {
             transform: translateY(-5px);
@@ -56,12 +52,27 @@
         .tabs-section {
             background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
             transition: opacity 0.3s ease;
+            position: relative;
+        }
+        #tabs {
+            position: relative;
+        }
+        /* --- NEW: Sliding Tab Indicator --- */
+        #tab-indicator {
+            position: absolute;
+            bottom: -4px;
+            height: 3px;
+            background-color: #2563eb;
+            border-radius: 2px;
+            transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         .tab-button {
             background-color: #ffffff;
             color: #374151;
             border: 1px solid #e5e7eb;
             transition: all 0.3s ease-in-out;
+            position: relative;
+            z-index: 2;
         }
         .tab-button:hover {
             background-color: #eff6ff;
@@ -92,13 +103,40 @@
                 height: 50vh; /* Original height on larger screens */
             }
         }
+
+        @keyframes zoomIn {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
         .slider-image {
             position: absolute;
             width: 100%;
             height: 100%;
             object-fit: cover; 
-            transition: transform 0.6s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
+            opacity: 0;
+            z-index: 1;
         }
+        .slider-image.active {
+            opacity: 1;
+            animation: zoomIn 4s forwards;
+        }
+        
+        .slider-image.fading-out {
+            opacity: 0;
+        }
+
+        /* --- NEW: Interactive Particles Canvas --- */
+        #particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
         .slider-button {
             position: absolute;
             top: 50%;
@@ -134,10 +172,11 @@
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .slider-dot.active {
             background-color: white;
+            transform: scale(1.2);
         }
 
         .monthly-course-card {
@@ -151,12 +190,25 @@
              transform: translateY(-5px);
              box-shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
-        /* Social Icons Interaction */
+        .monthly-course-card:hover img {
+            transform: scale(1.05);
+        }
+        .monthly-course-card img {
+            transition: transform 0.4s ease-out;
+        }
+        .details-button .arrow { 
+            transition: transform 0.3s ease; 
+            display: inline-block;
+        }
+        .details-button:hover .arrow { 
+            transform: translateX(-5px); 
+        }
+
         .social-icon {
             transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
         }
         .social-icon:hover {
-            transform: translateY(-2px) scale(1.1);
+            transform: translateY(-3px) scale(1.15) rotate(-8deg);
         }
         
         .offer-card {
@@ -181,9 +233,12 @@
             top: -10px;
             left: -10px;
             transform: rotate(-15deg);
+            transition: transform 0.4s ease-out;
+        }
+        .offer-card:hover .offer-icon {
+            transform: rotate(-5deg) scale(1.2);
         }
 
-        /* Modal Base Style */
         .modal {
             display: none;
             position: fixed;
@@ -198,44 +253,50 @@
             justify-content: center;
             padding-top: 5vh;
             padding-bottom: 5vh;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal.show {
+            opacity: 1;
         }
         .modal-content {
             background-color: #fefefe;
             margin: auto;
-            padding: 1.5rem; /* Smaller padding on mobile */
+            padding: 1.5rem;
             border: none;
             width: 90%;
             max-width: 800px;
             border-radius: 1rem;
             box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-            animation: fadeInDown 0.5s;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
+            transform: translateY(-50px);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+
         @media (min-width: 640px) {
             .modal-content {
-                padding: 2.5rem; /* Larger padding on larger screens */
+                padding: 2.5rem;
             }
         }
 
-        @keyframes fadeInDown {
-            from {opacity: 0; transform: translateY(-50px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
         .modal-close-button {
             position: absolute;
-            top: 0.75rem; /* 12px */
-            left: 0.75rem; /* 12px For RTL */
-            width: 2.5rem; /* 40px */
-            height: 2.5rem; /* 40px */
+            top: 0.75rem;
+            left: 0.75rem;
+            width: 2.5rem;
+            height: 2.5rem;
             background-color: #e5e7eb;
             color: #4b5563;
-            border-radius: 9999px; /* full circle */
+            border-radius: 9999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem; /* 20px */
+            font-size: 1.25rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s ease-in-out;
@@ -243,310 +304,52 @@
         }
         .modal-close-button:hover {
             background-color: #d1d5db;
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(90deg);
             color: #1f2937;
         }
 
-        /* --- Animations --- */
-        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        .animate-fade-out { animation: fadeOut 0.5s ease-in-out forwards; }
-         @keyframes fadeOut {
-             from { opacity: 1; transform: translateY(0); }
-             to { opacity: 0; transform: translateY(-20px); visibility: hidden; }
-         }
+        .view-transition-fade-out { animation: fadeOut 0.3s ease-in-out forwards; }
+        .view-transition-fade-in { animation: fadeIn 0.4s ease-out forwards; }
 
-        /* --- Personality Test Modal Styles --- */
-        .pt-answer-btn { 
-            transition: all 0.2s ease-in-out; 
-            border: 2px solid #3b82f6;
-            background-color: #eff6ff;
-            color: #1e3a8a;
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-        .pt-answer-btn:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-            background-color: #3b82f6;
-            color: white;
-        }
-        .pt-progress-bar-inner { 
-            transition: width 0.4s ease-in-out;
-            background-color: #3b82f6;
-        }
-        .pt-result-bar {
-            background-color: #dbeafe;
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
-        /* --- Emotional Health Test Styles --- */
-        .eh-radio-label {
-            transition: all 0.2s ease-in-out;
-        }
-        .eh-result-gauge {
-            width: 120px;
-            height: 120px;
-        }
-        .eh-result-gauge-bg {
-            fill: none;
-            stroke: #e5e7eb; /* gray-200 */
-            stroke-width: 10;
-        }
-        .eh-result-gauge-fg {
-            fill: none;
-            stroke: #3b82f6; /* blue-500 */
-            stroke-width: 10;
-            stroke-linecap: round;
-            transform: rotate(-90deg 50 50);
-            transition: stroke-dashoffset 1s ease-out;
-        }
-
-        /* --- Learning Style Test Styles --- */
-        .ls-answer-btn {
-            transition: all 0.2s ease-in-out;
-            border: 2px solid transparent;
-        }
-        .ls-answer-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .ls-progress-bar-inner {
-            transition: width 0.4s ease-in-out;
-            background: linear-gradient(90deg, #3b82f6, #60a5fa);
-        }
-        .ls-result-bar-inner {
-            transition: width 1s ease-out;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        /* --- Memory Game Styles --- */
-        #mg-game-board {
-            perspective: 1000px;
-        }
-        .mg-card {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-            cursor: pointer;
+        /* --- NEW: Smart Tooltip --- */
+        #smart-tooltip {
+            position: fixed;
+            background-color: #1f2937;
+            color: white;
+            padding: 0.5rem 1rem;
             border-radius: 0.5rem;
+            font-size: 0.875rem;
+            pointer-events: none;
+            z-index: 2000;
+            opacity: 0;
+            transform: scale(0.95) translateY(10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .mg-card.is-flipped {
-            transform: rotateY(180deg);
-        }
-        .mg-card.is-matched {
-            transform: rotateY(180deg) scale(0.95);
-            opacity: 0.7;
-            cursor: default;
-        }
-        .mg-card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .mg-card-front {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-        }
-        body.dark .mg-card-front {
-            background: linear-gradient(135deg, #3730a3, #5b21b6);
-        }
-        .mg-card-front i {
-            color: white;
-            font-size: 2.5rem;
-        }
-        .mg-card-back {
-            background-color: #e0e7ff;
-            transform: rotateY(180deg);
-        }
-        body.dark .mg-card-back {
-            background-color: #312e81;
-        }
-        .mg-card-back i {
-            font-size: 2.5rem;
-            color: #4338ca;
-        }
-        body.dark .mg-card-back i {
-            color: #a5b4fc;
-        }
-        @media (max-width: 640px) {
-            .mg-card-front i, .mg-card-back i {
-                font-size: 1.75rem;
-            }
-        }
-
-        /* --- Dark Mode Styles --- */
-        body.dark {
-            background-color: #111827;
-            color: #d1d5db;
-            background-image: radial-gradient(#374151 1px, transparent 1px);
-        }
-        body.dark .main-header {
-            background: linear-gradient(90deg, #1f2937, #374151);
-        }
-        body.dark h2, body.dark #view-monthly-courses h2, body.dark .section-title {
-            color: #f9fafb;
-            border-color: #3b82f6;
-        }
-        body.dark #main-view-nav {
-            background-color: #1f2937;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5), 0 2px 4px -1px rgba(0,0,0,0.3);
-        }
-        body.dark .main-view-button {
-            background-color: #374151;
-            color: #d1d5db;
-        }
-        body.dark .main-view-button.active {
-            background-color: #3b82f6;
-            color: white;
-            border-color: #3b82f6;
-        }
-        body.dark .tabs-section {
-            background: #1f2937;
-        }
-        body.dark .tab-button {
-            background-color: #374151;
-            color: #d1d5db;
-            border-color: #4b5563;
-        }
-        body.dark .tab-button:hover {
-            background-color: #4b5563;
-        }
-        body.dark .tab-button.active {
-            background-color: #3b82f6;
-            color: white;
-            border-color: #2563eb;
-        }
-        body.dark .course-card-small, 
-        body.dark .monthly-course-card {
-            background-color: #1f2937;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5), 0 2px 4px -1px rgba(0,0,0,0.3);
-        }
-        body.dark .course-card-small h3, 
-        body.dark .monthly-course-card h3 {
-            color: #f9fafb;
-        }
-        body.dark .monthly-course-card p {
-            color: #9ca3af;
-        }
-        body.dark .course-card-small .bg-blue-100 {
-            background-color: #374151;
-        }
-        body.dark .monthly-course-card .details-button {
-            background-color: #3b82f6;
-        }
-        body.dark .modal-content {
-            background-color: #1f2937;
-        }
-        body.dark .modal-close-button {
-            background-color: #4b5563;
-            color: #d1d5db;
-        }
-        body.dark .modal-close-button:hover {
-            background-color: #6b7280;
-            color: white;
-        }
-        body.dark #course-modal-body h3, body.dark #offer-modal-body h3 {
-            color: #f9fafb;
-            border-color: #4b5563;
-        }
-        body.dark #course-modal-body .text-gray-700, body.dark #offer-modal-body .text-gray-700, body.dark .text-gray-700 {
-            color: #d1d5db;
-        }
-        body.dark #course-modal-body .font-bold, body.dark #offer-modal-body .font-bold {
-             color: #f9fafb;
-        }
-        body.dark #course-modal-body .border-r-4 {
-            border-color: #4b5563 !important;
-        }
-        body.dark #course-modal-body .bg-gray-50, body.dark #offer-modal-body .bg-blue-50 {
-             background-color: #374151;
-        }
-        body.dark #tiktok-modal .text-gray-800,
-        body.dark #course-modal-body .text-gray-800,
-        body.dark .monthly-course-card .text-gray-900,
-        body.dark #view-monthly-courses h2,
-        body.dark #offers-grid h2,
-        body.dark #view-all-courses h2,
-        body.dark #course-modal-body .text-gray-900,
-        body.dark #offer-modal-body .text-gray-900,
-        body.dark #personality-test-modal .text-gray-800,
-        body.dark #emotional-health-modal .text-gray-800,
-        body.dark #learning-style-modal .text-gray-800,
-        body.dark #memory-game-modal .text-gray-800,
-        body.dark .text-gray-800 {
-            color: #f9fafb;
-        }
-        body.dark .text-gray-600 {
-            color: #9ca3af;
+        #smart-tooltip.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
         }
         
-        body.dark #search-input {
-            background-color: #1f2937;
-            border-color: #4b5563;
-            color: #f9fafb;
+        /* --- NEW: Search Icon Morphing --- */
+        #search-input + div .fa-search {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        body.dark #search-input::placeholder {
-            color: #9ca3af;
-        }
-        body.dark #search-input + div .fa-search {
-            color: #9ca3af;
-        }
-
-        body.dark footer {
-            background-color: #111827;
-            color: #9ca3af;
-        }
-        
-        /* Dark Mode for Personality Test */
-        body.dark #pt-start-screen h1, body.dark #pt-results-screen h1 { color: #5eead4; }
-        body.dark #pt-start-screen p, body.dark #pt-results-screen p, body.dark #pt-question-text { color: #d1d5db; }
-        body.dark #pt-progress-text { color: #5eead4; }
-        body.dark #pt-progress-bar-container { background-color: #4b5563; }
-        body.dark .pt-answer-btn {
-            border-color: #3b82f6;
-            background-color: #374151;
-            color: #d1d5db;
-        }
-        body.dark .pt-answer-btn:hover {
-            background-color: #3b82f6;
-            color: white;
-        }
-        body.dark #pt-results-container h3, body.dark #pt-results-container p { color: #d1d5db; }
-        body.dark .pt-result-bar {
-             background-color: #374151;
-        }
-        
-        /* Dark Mode for Emotional Health Test */
-        body.dark .eh-radio-label {
-            background-color: #374151;
-            border-color: #4b5563;
-            color: #d1d5db;
-        }
-        body.dark .eh-radio-label:hover {
-            background-color: #4b5563;
-        }
-        body.dark .eh-radio-label.selected {
-             background-color: #3b82f6;
-             border-color: #3b82f6;
-             color: white;
-        }
-        body.dark .eh-results-section {
-            background-color: #262f40; /* Darker bg for sections */
-            border-color: #374151;
-        }
-        body.dark .eh-results-section h3 {
-            color: #93c5fd; /* Light blue for headings */
-        }
-        body.dark .eh-result-gauge-bg {
-            stroke: #374151;
-        }
-         body.dark .eh-result-gauge-fg {
-            stroke: #60a5fa; /* blue-400 */
+        #search-input:focus + div .fa-search {
+            transform: rotate(90deg) scale(1.1);
         }
         
         /* Dark Mode for Learning Style Test */
