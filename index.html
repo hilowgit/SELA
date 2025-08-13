@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مركز صلة التدريبي الدولي</title>
     
+    <!-- Favicon Link -->
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/QdH180zs/image-2025-08-03-16-23-59.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -25,9 +28,7 @@
             background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
             background-size: 25px 25px;
             transition: background-color 0.3s ease, color 0.3s ease;
-            position: relative;
         }
-
         .main-header {
             background: linear-gradient(90deg, #1e3a8a, #3b82f6);
         }
@@ -39,6 +40,13 @@
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
             transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
             cursor: pointer;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
         }
         .course-card-small:hover {
             transform: translateY(-5px);
@@ -84,30 +92,13 @@
                 height: 50vh; /* Original height on larger screens */
             }
         }
-
-        @keyframes zoomIn {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
-        }
-
         .slider-image {
             position: absolute;
             width: 100%;
             height: 100%;
             object-fit: cover; 
-            transition: opacity 0.8s ease-in-out;
-            opacity: 0;
+            transition: transform 0.6s ease-in-out;
         }
-        .slider-image.active {
-            opacity: 1;
-            z-index: 1;
-            animation: zoomIn 4s forwards;
-        }
-        
-        .slider-image.fading-out {
-            opacity: 0;
-        }
-
         .slider-button {
             position: absolute;
             top: 50%;
@@ -143,11 +134,10 @@
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: background-color 0.3s ease;
         }
         .slider-dot.active {
             background-color: white;
-            transform: scale(1.2);
         }
 
         .monthly-course-card {
@@ -161,27 +151,12 @@
              transform: translateY(-5px);
              box-shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
-        .monthly-course-card:hover img {
-            transform: scale(1.05);
-        }
-        .monthly-course-card img {
-            transition: transform 0.4s ease-out;
-        }
-        /* --- NEW: Micro-interaction for button arrow --- */
-        .details-button .arrow { 
-            transition: transform 0.3s ease; 
-            display: inline-block;
-        }
-        .details-button:hover .arrow { 
-            transform: translateX(-5px); 
-        }
-
-        /* --- NEW: Enhanced social icon micro-interaction --- */
+        /* Social Icons Interaction */
         .social-icon {
             transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
         }
         .social-icon:hover {
-            transform: translateY(-3px) scale(1.15) rotate(-8deg);
+            transform: translateY(-2px) scale(1.1);
         }
         
         .offer-card {
@@ -206,10 +181,6 @@
             top: -10px;
             left: -10px;
             transform: rotate(-15deg);
-            transition: transform 0.4s ease-out;
-        }
-        .offer-card:hover .offer-icon {
-            transform: rotate(-5deg) scale(1.2);
         }
 
         /* Modal Base Style */
@@ -227,11 +198,6 @@
             justify-content: center;
             padding-top: 5vh;
             padding-bottom: 5vh;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .modal.show {
-            opacity: 1;
         }
         .modal-content {
             background-color: #fefefe;
@@ -242,22 +208,21 @@
             max-width: 800px;
             border-radius: 1rem;
             box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            animation: fadeInDown 0.5s;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
-            transform: translateY(-50px);
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .modal.show .modal-content {
-            transform: translateY(0);
-        }
-
         @media (min-width: 640px) {
             .modal-content {
                 padding: 2.5rem; /* Larger padding on larger screens */
             }
         }
 
+        @keyframes fadeInDown {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
         .modal-close-button {
             position: absolute;
             top: 0.75rem; /* 12px */
@@ -278,34 +243,18 @@
         }
         .modal-close-button:hover {
             background-color: #d1d5db;
-            transform: scale(1.05) rotate(90deg);
+            transform: scale(1.05);
             color: #1f2937;
         }
 
         /* --- Animations --- */
-        .view-transition-fade-out { animation: fadeOut 0.3s ease-in-out forwards; }
-        .view-transition-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .animate-fade-out { animation: fadeOut 0.5s ease-in-out forwards; }
+         @keyframes fadeOut {
+             from { opacity: 1; transform: translateY(0); }
+             to { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        /* Scroll Animations */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
         /* --- Personality Test Modal Styles --- */
         .pt-answer-btn { 
             transition: all 0.2s ease-in-out; 
@@ -347,6 +296,87 @@
             stroke-linecap: round;
             transform: rotate(-90deg 50 50);
             transition: stroke-dashoffset 1s ease-out;
+        }
+
+        /* --- Learning Style Test Styles --- */
+        .ls-answer-btn {
+            transition: all 0.2s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .ls-answer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .ls-progress-bar-inner {
+            transition: width 0.4s ease-in-out;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+        .ls-result-bar-inner {
+            transition: width 1s ease-out;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* --- Memory Game Styles --- */
+        #mg-game-board {
+            perspective: 1000px;
+        }
+        .mg-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+            border-radius: 0.5rem;
+        }
+        .mg-card.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .mg-card.is-matched {
+            transform: rotateY(180deg) scale(0.95);
+            opacity: 0.7;
+            cursor: default;
+        }
+        .mg-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .mg-card-front {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+        body.dark .mg-card-front {
+            background: linear-gradient(135deg, #3730a3, #5b21b6);
+        }
+        .mg-card-front i {
+            color: white;
+            font-size: 2.5rem;
+        }
+        .mg-card-back {
+            background-color: #e0e7ff;
+            transform: rotateY(180deg);
+        }
+        body.dark .mg-card-back {
+            background-color: #312e81;
+        }
+        .mg-card-back i {
+            font-size: 2.5rem;
+            color: #4338ca;
+        }
+        body.dark .mg-card-back i {
+            color: #a5b4fc;
+        }
+        @media (max-width: 640px) {
+            .mg-card-front i, .mg-card-back i {
+                font-size: 1.75rem;
+            }
         }
 
         /* --- Dark Mode Styles --- */
@@ -446,6 +476,8 @@
         body.dark #offer-modal-body .text-gray-900,
         body.dark #personality-test-modal .text-gray-800,
         body.dark #emotional-health-modal .text-gray-800,
+        body.dark #learning-style-modal .text-gray-800,
+        body.dark #memory-game-modal .text-gray-800,
         body.dark .text-gray-800 {
             color: #f9fafb;
         }
@@ -516,6 +548,23 @@
          body.dark .eh-result-gauge-fg {
             stroke: #60a5fa; /* blue-400 */
         }
+        
+        /* Dark Mode for Learning Style Test */
+        body.dark #ls-start-screen h1, body.dark #ls-results-screen h1 { color: #67e8f9; }
+        body.dark #ls-start-screen p, body.dark #ls-results-screen p, body.dark #ls-question-text { color: #d1d5db; }
+        body.dark #ls-progress-text { color: #67e8f9; }
+        body.dark #ls-progress-bar-container { background-color: #4b5563; }
+        body.dark .ls-answer-btn {
+            background-color: #374151;
+            color: #d1d5db;
+        }
+        body.dark .ls-answer-btn:hover {
+            border-color: #60a5fa;
+        }
+        body.dark #ls-results-container h3, body.dark #ls-results-container p { color: #d1d5db; }
+        body.dark .ls-result-bar { background-color: #374151; }
+        body.dark #ls-dominant-style-card { background-color: #262f40; border-color: #374151; }
+        body.dark #ls-dominant-style-card h3 { color: #93c5fd; }
     </style>
 </head>
 <body class="antialiased">
@@ -532,29 +581,27 @@
                 <a href="https://wa.me/+963991015651" target="_blank" class="text-lg sm:text-xl social-icon hover:text-green-400"><i class="fab fa-whatsapp"></i></a>
                 <a href="https://t.me/LINKSELA25" target="_blank" class="text-lg sm:text-xl social-icon hover:text-blue-400"><i class="fab fa-telegram"></i></a>
                 <a href="#" id="tiktok-link" class="text-lg sm:text-xl social-icon hover:text-gray-300"><i class="fab fa-tiktok"></i></a>
-                <button id="theme-toggle" class="text-lg sm:text-xl w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300">
-                    <i id="theme-icon" class="fas fa-moon transition-transform duration-300"></i>
+                <button id="theme-toggle" class="text-lg sm:text-xl w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
+                    <i id="theme-icon" class="fas fa-moon"></i>
                 </button>
             </div>
         </div>
     </header>
 
     <main class="container mx-auto p-4 md:p-8">
-        <section class="mb-12 shadow-2xl rounded-2xl animate-on-scroll" style="overflow: hidden;">
-            <div id="parallax-container">
-                <div class="slider-container">
-                    <img src="https://res.cloudinary.com/dnqhuye5h/image/upload/v1750088466/Code-img_crurh7.png" class="slider-image" alt="دورات برمجية متقدمة">
-                    <img src="https://res.cloudinary.com/dnqhuye5h/image/upload/v1750088464/%D8%AA%D9%86%D9%85%D9%8A%D8%A9_%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9_%D9%88%D8%A5%D8%AF%D8%A7%D8%B1%D9%8A%D8%A9_vprt1m.jpg" class="slider-image" alt="تنمية بشرية وإدارية">
-                    <img src="https://res.cloudinary.com/dnqhuye5h/image/upload/v1750088467/%D9%83%D9%88%D8%B1%D8%B3%D8%A7%D8%AA_%D9%87%D9%86%D8%AF%D8%B3%D9%8A%D8%A9_%D9%88%D8%AA%D9%82%D9%86%D9%8A%D8%A9_erekhm.png" class="slider-image" alt="كورسات هندسية وتقنية">
-                    <img src="https://res.cloudinary.com/dnqhuye5h/image/upload/v1750088467/%D8%AA%D8%B9%D9%84%D9%85_%D9%84%D8%BA%D8%A7%D8%AA_%D8%A7%D9%84%D8%B9%D8%A7%D9%84%D9%85_oeqjsk.jpg" class="slider-image" alt="تعلم لغات العالم">
-                    <button id="prev-slide" class="slider-button right-2 sm:right-4"><i class="fas fa-chevron-right"></i></button>
-                    <button id="next-slide" class="slider-button left-2 sm:left-4"><i class="fas fa-chevron-left"></i></button>
-                    <div id="slider-dots" class="slider-dots"></div>
-                </div>
+        <section class="mb-12 shadow-2xl rounded-2xl">
+            <div class="slider-container">
+                <img src="https://res.cloudinary.com/dnqhuye5h/image/upload/v1750088466/Code-img_crurh7.png" class="slider-image" alt="دورات برمجية متقدمة">
+                <img src="https://res.cloudinary.com/dnqhuye5h/image/upload/v1750088464/%D8%AA%D9%86%D9%85%D9%8A%D8%A9_%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9_%D9%88%D8%A5%D8%AF%D8%A7%D8%B1%D9%8A%D8%A9_vprt1m.jpg" class="slider-image" alt="تنمية بشرية وإدارية">
+                <img src="https://res.cloudinary.com/dnqhuye5h/image/upload/v1750088467/%D9%83%D9%88%D8%B1%D8%B3%D8%A7%D8%AA_%D9%87%D9%86%D8%AF%D8%B3%D9%8A%D8%A9_%D9%88%D8%AA%D9%82%D9%86%D9%8A%D8%A9_erekhm.png" class="slider-image" alt="كورسات هندسية وتقنية">
+                <img src="https://cdn.mos.cms.futurecdn.net/jTZ6rK3sVn4gDWxq9sHDXM.jpg" class="slider-image" alt="تعلم لغات العالم">
+                <button id="prev-slide" class="slider-button right-2 sm:right-4"><i class="fas fa-chevron-right"></i></button>
+                <button id="next-slide" class="slider-button left-2 sm:left-4"><i class="fas fa-chevron-left"></i></button>
+                <div id="slider-dots" class="slider-dots"></div>
             </div>
         </section>
 
-        <section class="mb-10 animate-on-scroll">
+        <section class="mb-10">
             <div id="main-view-nav" class="flex flex-col sm:flex-row justify-center bg-white p-2 rounded-xl shadow-md gap-2">
                 <button data-view="all-courses" class="main-view-button w-full sm:w-1/4 text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent active">أقسام الدورات</button>
                 <button data-view="monthly-courses" class="main-view-button w-full sm:w-1/4 text-center py-3 px-4 rounded-lg font-bold text-base sm:text-lg border-2 border-transparent">دورات الشهر</button>
@@ -566,7 +613,7 @@
         <div id="views-container">
             <div id="view-all-courses">
                 
-                <section class="mb-8 px-4 sm:px-6 animate-on-scroll">
+                <section class="mb-8 px-4 sm:px-6">
                     <div class="relative">
                         <input type="text" id="search-input" placeholder="ابحث عن دورة بالاسم أو القسم..." class="w-full py-3 pr-12 pl-4 text-base sm:text-lg border-2 border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm">
                         <div class="absolute top-1/2 -translate-y-1/2 right-4">
@@ -575,7 +622,7 @@
                     </div>
                 </section>
                 
-                <section class="tabs-section mb-8 p-4 sm:p-6 rounded-2xl shadow-lg animate-on-scroll">
+                <section class="tabs-section mb-8 p-4 sm:p-6 rounded-2xl shadow-lg">
                     <div id="tabs" class="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4"></div>
                 </section>
 
@@ -589,18 +636,18 @@
 
             <div id="view-monthly-courses" class="hidden">
                  <section class="mb-12">
-                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto animate-on-scroll">دورات الشهر الحالي</h2>
+                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto">دورات الشهر الحالي</h2>
                     <div id="current-month-courses" class="space-y-6"></div>
                 </section>
                 <section>
-                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto animate-on-scroll">دورات الشهر القادم</h2>
+                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto">دورات الشهر القادم</h2>
                     <div id="next-month-courses" class="space-y-6"></div>
                 </section>
             </div>
 
             <div id="view-offers" class="hidden">
                 <section class="mb-12">
-                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto animate-on-scroll">عروضنا المميزة</h2>
+                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-8 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto">عروضنا المميزة</h2>
                     <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         </div>
                 </section>
@@ -608,8 +655,8 @@
 
             <div id="view-entertainment" class="hidden">
                 <section class="mb-12">
-                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-4 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto animate-on-scroll">استراحة قصيرة</h2>
-                    <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto animate-on-scroll">استرح قليلاً، اختبر نفسك ببعض الاختبارات النفسية المسلية، أو تحدى صديقك في لعبة سريعة!</p>
+                    <h2 class="section-title text-2xl md:text-3xl font-extrabold text-center mb-4 text-gray-800 border-b-4 border-blue-500 pb-3 w-fit mx-auto">استراحة قصيرة</h2>
+                    <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">استرح قليلاً، اختبر نفسك ببعض الاختبارات النفسية المسلية، أو تحدى صديقك في لعبة سريعة!</p>
                     <div id="entertainment-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                         </div>
                 </section>
@@ -658,7 +705,7 @@
             <span class="modal-close-button">&times;</span>
             <div id="pt-app-container" class="w-full mx-auto overflow-hidden">
                 <!-- Start Screen -->
-                <div id="pt-start-screen" class="p-4 md:p-8 text-center view-transition-fade-in">
+                <div id="pt-start-screen" class="p-4 md:p-8 text-center animate-fade-in">
                     <h1 class="text-2xl md:text-3xl font-bold text-blue-600 mb-4">اختبار تحليل الشخصية</h1>
                     <p class="text-gray-600 dark:text-gray-400 mb-8 text-base md:text-lg">اكتشف أبعاد شخصيتك الأساسية. الاختبار سريع ومصمم ليعطيك لمحة عن سماتك الفريدة.</p>
                     <button id="pt-start-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-10 rounded-full text-lg md:text-xl transition duration-300 shadow-lg">
@@ -692,12 +739,12 @@
                     </div>
                     <div class="text-center mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
                          <button id="pt-restart-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full text-base transition duration-300 shadow-lg w-full sm:w-auto">
-                            إعادة الاختبار
-                        </button>
-                        <button id="pt-share-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full text-base transition duration-300 shadow-lg w-full sm:w-auto flex items-center justify-center gap-2">
-                            <i class="fab fa-whatsapp"></i>
-                            <span>مشاركة عبر واتساب</span>
-                        </button>
+                             إعادة الاختبار
+                         </button>
+                         <button id="pt-share-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full text-base transition duration-300 shadow-lg w-full sm:w-auto flex items-center justify-center gap-2">
+                             <i class="fab fa-whatsapp"></i>
+                             <span>مشاركة عبر واتساب</span>
+                         </button>
                     </div>
                 </div>
             </div>
@@ -711,6 +758,100 @@
              <div id="eh-app-container" class="w-full mx-auto overflow-hidden">
                 <!-- Content will be injected here by JavaScript -->
              </div>
+        </div>
+    </div>
+
+    <!-- Learning Style Test Modal -->
+    <div id="learning-style-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <div id="ls-app-container" class="w-full mx-auto overflow-hidden">
+                <!-- Start Screen -->
+                <div id="ls-start-screen" class="p-4 md:p-8 text-center animate-fade-in">
+                    <i class="fas fa-lightbulb text-5xl text-cyan-500 mb-4"></i>
+                    <h1 class="text-2xl md:text-3xl font-bold text-cyan-600 mb-4">ما هو أسلوب تعلمك؟ (VARK)</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 text-base md:text-lg">اكتشف الطريقة التي تفضلها لاستقبال ومعالجة المعلومات. سيساعدك هذا الاختبار على فهم نقاط قوتك في التعلم.</p>
+                    <button id="ls-start-btn" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-10 rounded-full text-lg md:text-xl transition duration-300 shadow-lg">
+                        ابدأ الاختبار
+                    </button>
+                </div>
+
+                <!-- Quiz Screen -->
+                <div id="ls-quiz-screen" class="hidden p-4 md:p-8">
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-semibold text-gray-500">التقدم</span>
+                            <span id="ls-progress-text" class="text-sm font-bold text-cyan-600"></span>
+                        </div>
+                        <div id="ls-progress-bar-container" class="w-full bg-gray-200 rounded-full h-3">
+                            <div id="ls-progress-bar" class="ls-progress-bar-inner h-3 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div id="ls-question-container" class="text-center">
+                        <h2 id="ls-question-text" class="text-xl md:text-2xl font-semibold mb-8 min-h-[60px] text-gray-800"></h2>
+                        <div id="ls-answers-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                    </div>
+                </div>
+
+                <!-- Results Screen -->
+                <div id="ls-results-screen" class="hidden p-4 md:p-8">
+                    <h1 class="text-2xl md:text-3xl font-bold text-cyan-600 mb-4 text-center">أسلوب تعلمك هو...</h1>
+                    <div id="ls-results-container" class="space-y-4 mb-8">
+                        <!-- Results bars are injected here -->
+                    </div>
+                    <div id="ls-dominant-style-card" class="bg-gray-50 p-6 rounded-lg border-l-4">
+                        <!-- Dominant style description is injected here -->
+                    </div>
+                    <div class="text-center mt-10">
+                        <button id="ls-restart-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-8 rounded-full text-base transition duration-300 shadow-lg">
+                            إعادة الاختبار
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Memory Game Modal -->
+    <div id="memory-game-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <div id="mg-app-container" class="w-full mx-auto overflow-hidden">
+                <!-- Start Screen -->
+                <div id="mg-start-screen" class="p-4 md:p-8 text-center animate-fade-in">
+                    <i class="fas fa-brain text-5xl text-indigo-500 mb-4"></i>
+                    <h1 class="text-2xl md:text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">لعبة الذاكرة</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 text-base md:text-lg">اختبر قوة ذاكرتك! جد كل زوجين من البطاقات المتشابهة في أقل عدد من الحركات والوقت.</p>
+                    <button id="mg-start-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-10 rounded-full text-lg md:text-xl transition duration-300 shadow-lg">
+                        ابدأ اللعبة
+                    </button>
+                </div>
+                <!-- Game Screen -->
+                <div id="mg-game-screen" class="hidden p-2 sm:p-4 md:p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                        <h2 class="text-lg sm:text-xl font-bold text-indigo-600 dark:text-indigo-400">لعبة الذاكرة</h2>
+                        <div class="flex items-center gap-4 text-sm sm:text-lg">
+                            <span class="font-semibold">الوقت: <span id="mg-timer">0s</span></span>
+                            <span class="font-semibold">الحركات: <span id="mg-moves">0</span></span>
+                        </div>
+                        <button id="mg-restart-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg text-sm transition duration-300 flex items-center gap-1">
+                            <i class="fas fa-redo"></i>إعادة
+                        </button>
+                    </div>
+                    <div id="mg-game-board" class="grid grid-cols-4 gap-2 sm:gap-4 aspect-square max-w-lg mx-auto">
+                        <!-- Cards will be injected here by JS -->
+                    </div>
+                </div>
+                 <!-- Win Message -->
+                <div id="mg-win-message" class="hidden p-4 md:p-8 text-center animate-fade-in">
+                    <i class="fas fa-trophy text-5xl text-amber-400 mb-4"></i>
+                    <h1 class="text-2xl md:text-3xl font-bold text-amber-500 mb-4">تهانينا، لقد فزت!</h1>
+                    <p id="mg-win-stats" class="text-gray-600 dark:text-gray-400 mb-8 text-base md:text-lg"></p>
+                    <button id="mg-play-again-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-10 rounded-full text-lg md:text-xl transition duration-300 shadow-lg">
+                        العب مرة أخرى
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -822,17 +963,17 @@
             { category: "قسم اللغات", title: "اللغة الألمانية (A1)", icon: "fas fa-language", hours: "26 ساعة (17 جلسة), مدة الجلسة: 1:30, المدة: شهرين", objectives: ["تعلم الأبجدية والنطق الصحيح.", "تقديم النفس والسؤال عن المعلومات الشخصية.", "استخدام اللغة في مواقف يومية (التسوق، السفر).", "تكوين جمل بسيطة في الزمن الحاضر."], prerequisites: "لا يشترط معرفة مسبقة.", info: "يحصل المتدرب على شهادة حضور من المركز." },
             { category: "قسم اللغات", title: "اللغة الألمانية (A2)", icon: "fas fa-language", hours: "26 ساعة (17 جلسة), مدة الجلسة: 1:30, المدة: شهرين", objectives: ["التواصل في مواقف يومية أكثر تنوعًا.", "وصف الأشخاص والأماكن والخطط.", "استخدام أزمنة بسيطة (الماضي القريب، المستقبل).", "فهم نصوص أطول وحوارات عامة."], prerequisites: "إنهاء مستوى A1 أو اجتياز اختبار تحديد مستوى.", info: "يحصل المتدرب على شهادة حضور من المركز." }
         ];
-       
+        
         const monthlyCoursesData = {
             current: [
-                { title: "Front-end", category: "القسم البرمجي", description: "دورة شاملة لتصميم وتنفيذ واجهات الويب المرئية والتفاعلية.", image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" },
-                { title: "Etabs + Safe", category: "القسم الهندسي", description: "إتقان برامج التحليل والتصميم الإنشائي للمباني والأساسات.", image: "https://images.unsplash.com/photo-1600585152915-d208bec867a1?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" },
-                { title: "Social Media Marketing", category: "قسم الإدارة والقيادة", description: "تعلم استراتيجيات التسويق الرقمي وإدارة الحملات الإعلانية.", image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" },
+                { title: "Front-end", category: "القسم البرمجي", description: "دورة شاملة لتصميم وتنفيذ واجهات الويب المرئية والتفاعلية.", image: "https://placehold.co/600x400/10b981/ffffff?text=Front-end" },
+                { title: "Etabs + Safe", category: "القسم الهندسي", description: "إتقان برامج التحليل والتصميم الإنشائي للمباني والأساسات.", image: "https://placehold.co/600x400/f59e0b/ffffff?text=Etabs+%2B+Safe" },
+                { title: "Social Media Marketing", category: "قسم الإدارة والقيادة", description: "تعلم استراتيجيات التسويق الرقمي وإدارة الحملات الإعلانية.", image: "https://placehold.co/600x400/3b82f6/ffffff?text=Social+Media" },
             ],
             next: [
-                { title: "Cyber Security", category: "القسم البرمجي", description: "اكتساب مهارات اختبار الاختراق وحماية الأنظمة والشبكات.", image: "https://www.toriglobal.com/wp-content/uploads/2023/02/hacker-6586113_1920.jpg.webp" },
-                { title: "TOT (Training of Trainers)", category: "قسم التنمية البشرية", description: "تأهيل مدربين محترفين لتصميم وتقديم برامج تدريبية فعالة.", image: "https://i0.wp.com/simspace.com/wp-content/uploads/2024/08/GovWare-2024-Speaker.png?fit=1024,683&ssl=1" },
-                { title: "Motion Graphic", category: "القسم التقني", description: "تعلم فن تحريك الرسومات لإنشاء فيديوهات إعلانية جذابة.", image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" },
+                { title: "Cyber Security", category: "القسم البرمجي", description: "اكتساب مهارات اختبار الاختراق وحماية الأنظمة والشبكات.", image: "https://placehold.co/600x400/ef4444/ffffff?text=Cyber+Security" },
+                { title: "TOT (Training of Trainers)", category: "قسم التنمية البشرية", description: "تأهيل مدربين محترفين لتصميم وتقديم برامج تدريبية فعالة.", image: "https://placehold.co/600x400/8b5cf6/ffffff?text=TOT" },
+                { title: "Motion Graphic", category: "القسم التقني", description: "تعلم فن تحريك الرسومات لإنشاء فيديوهات إعلانية جذابة.", image: "https://placehold.co/600x400/ec4899/ffffff?text=Motion+Graphic" },
             ]
         };
 
@@ -872,8 +1013,8 @@
         const entertainmentData = [
              { type: 'quiz', title: "اختبار تحليل الشخصية", icon: "fas fa-brain", description: "اكتشف جوانب شخصيتك الخفية.", action: "personality-test" },
              { type: 'quiz', title: "مقياس الصحة العاطفية", icon: "fas fa-heart-pulse", description: "قيّم مستوى صحتك العاطفية.", action: "emotional-health-test" },
-             { type: "quiz", title: "ما هو أسلوب تعلمك؟", icon: "fas fa-lightbulb", description: "اعرف الطريقة المثلى التي تتعلم بها.", action: "soon" },
-             { type: "game", title: "لعبة الذاكرة", icon: "fas fa-gamepad", description: "تحدى ذاكرتك وطابق البطاقات.", action: "soon" },
+             { type: "quiz", title: "ما هو أسلوب تعلمك؟", icon: "fas fa-lightbulb", description: "اعرف الطريقة المثلى التي تتعلم بها.", action: "learning-style-test" },
+             { type: "game", title: "لعبة الذاكرة", icon: "fas fa-gamepad", description: "تحدى ذاكرتك وطابق البطاقات.", action: "memory-game" },
         ];
 
 
@@ -883,7 +1024,6 @@
             const tabsContainer = document.getElementById('tabs');
             const coursesGrid = document.getElementById('courses-grid');
             const mainViewNav = document.getElementById('main-view-nav');
-            const viewsContainer = document.getElementById('views-container');
             const allCoursesView = document.getElementById('view-all-courses');
             const monthlyCoursesView = document.getElementById('view-monthly-courses');
             const offersView = document.getElementById('view-offers'); 
@@ -897,6 +1037,8 @@
             const entertainmentModal = document.getElementById('entertainment-modal');
             const personalityTestModal = document.getElementById('personality-test-modal');
             const emotionalHealthModal = document.getElementById('emotional-health-modal');
+            const learningStyleModal = document.getElementById('learning-style-modal');
+            const memoryGameModal = document.getElementById('memory-game-modal');
             const courseModalBody = document.getElementById('course-modal-body');
             const offerModalBody = document.getElementById('offer-modal-body'); 
             const entertainmentModalIcon = document.getElementById('entertainment-modal-icon');
@@ -904,7 +1046,6 @@
             const tiktokModal = document.getElementById('tiktok-modal');
             const themeToggle = document.getElementById('theme-toggle');
             const themeIcon = document.getElementById('theme-icon');
-            const parallaxContainer = document.getElementById('parallax-container');
             
             // --- SEARCH ELEMENTS ---
             const searchInput = document.getElementById('search-input');
@@ -930,9 +1071,9 @@
                 
                 coursesToShow.forEach((course, index) => {
                     const card = document.createElement('div');
-                    card.className = 'course-card-small flex flex-col justify-center items-center animate-on-scroll';
+                    card.className = 'course-card-small flex flex-col justify-center items-center';
                     card.dataset.title = course.title;
-                    card.style.transitionDelay = `${index * 50}ms`;
+                    card.style.animationDelay = `${index * 50}ms`;
                     const iconClass = course.icon || 'fas fa-chalkboard-teacher';
                     card.innerHTML = `
                         <div class="w-12 h-12 mb-4 bg-blue-100 rounded-full flex items-center justify-center">
@@ -942,22 +1083,6 @@
                     `;
                     coursesGrid.appendChild(card);
                 });
-                observeElements();
-            };
-            
-            // --- MODAL HELPER FUNCTIONS ---
-            const openModal = (modal) => {
-                modal.style.display = 'flex';
-                setTimeout(() => {
-                    modal.classList.add('show');
-                }, 10); 
-            };
-
-            const closeModal = (modal) => {
-                modal.classList.remove('show');
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 400); 
             };
 
             const showCourseDetailsModal = (course) => {
@@ -973,8 +1098,7 @@
                         <div class="border-r-4 border-yellow-500 pr-4"><h4 class="font-bold text-lg md:text-xl mb-2">مدة الدورة:</h4><p class="pr-4">${course.hours}</p></div>
                         <div class="border-r-4 border-red-500 pr-4"><h4 class="font-bold text-lg md:text-xl mb-2">معلومات إضافية:</h4><p class="pr-4">${course.info}</p></div>
                         <div class="p-4 md:p-6 mt-6 bg-gray-50 rounded-xl text-center">
-                            <p class="text-md md:text-lg font-semibold text-gray-700 mb-2">تكلفة الاستثمار في مستقبلك هي:</p>
-                            <p class="text-3xl md:text-4xl font-extrabold text-blue-600 mb-5">${course.price}</p>
+                            <p class="text-lg md:text-xl font-semibold text-gray-700 mb-5">إذا أردت معرفة تكلفة الاستثمار في مستقبلك وتطوير مهاراتك تواصل عبر واتساب</p>
                             <div class="mt-6 flex justify-center">
                                 <a href="${whatsappURL}" target="_blank" class="inline-flex items-center justify-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-green-500 text-white font-bold text-base sm:text-lg rounded-full shadow-lg hover:bg-green-600 transform hover:scale-105 transition-all duration-300 ease-in-out">
                                     <i class="fab fa-whatsapp text-xl sm:text-2xl"></i><span>سجل الآن عبر واتساب</span>
@@ -982,24 +1106,21 @@
                             </div>
                         </div>
                     </div>`;
-                openModal(courseDetailsModal);
+                courseDetailsModal.style.display = 'flex';
             };
 
             const renderMonthlyCourses = (container, courses) => {
                 container.innerHTML = '';
-                courses.forEach((course, index) => {
+                courses.forEach(course => {
                     const card = document.createElement('div');
-                    card.className = 'monthly-course-card md:flex items-center gap-6 p-4 animate-on-scroll';
-                    card.style.transitionDelay = `${index * 100}ms`;
+                    card.className = 'monthly-course-card md:flex items-center gap-6 p-4';
                     card.innerHTML = `
-                        <div class="md:w-1/3 h-48 md:h-auto self-stretch overflow-hidden rounded-lg"><img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover rounded-lg" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Image+Not+Found';"></div>
+                        <div class="md:w-1/3 h-48 md:h-auto self-stretch"><img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover rounded-lg" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Image+Not+Found';"></div>
                         <div class="md:w-2/3 pt-4 md:pt-0">
                            <span class="inline-block bg-blue-100 text-blue-800 text-sm font-semibold mb-2 px-3 py-1 rounded-full">${course.category}</span>
                            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">${course.title}</h3>
                            <p class="text-gray-600 mb-4">${course.description}</p>
-                           <button data-title="${course.title}" class="details-button bg-blue-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
-                                تفاصيل أكثر <span class="arrow">&larr;</span>
-                           </button>
+                           <button data-title="${course.title}" class="details-button bg-blue-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-700 transition-colors">تفاصيل أكثر</button>
                         </div>`;
                     container.appendChild(card);
                 });
@@ -1009,9 +1130,8 @@
                 offersGrid.innerHTML = '';
                 offersData.forEach((offer, index) => {
                     const card = document.createElement('div');
-                    card.className = 'offer-card animate-on-scroll';
+                    card.className = 'offer-card';
                     card.dataset.index = index; 
-                    card.style.transitionDelay = `${index * 100}ms`;
                     card.innerHTML = `
                         <i class="${offer.icon} offer-icon"></i>
                         <h3 class="text-xl sm:text-2xl font-extrabold mb-3 relative z-10">${offer.title}</h3>
@@ -1026,11 +1146,11 @@
                 entertainmentGrid.innerHTML = '';
                 entertainmentData.forEach((item, index) => {
                     const card = document.createElement('div');
-                    card.className = 'course-card-small flex flex-col justify-between items-center h-full animate-on-scroll'; 
+                    card.className = 'course-card-small flex flex-col justify-between items-center h-full'; 
+                    card.style.animationDelay = `${index * 50}ms`;
                     card.dataset.title = item.title;
                     card.dataset.icon = item.icon;
                     card.dataset.action = item.action;
-                    card.style.transitionDelay = `${index * 100}ms`;
                     card.innerHTML = `
                         <div>
                            <div class="w-12 h-12 mb-4 bg-blue-100 rounded-full flex items-center justify-center">
@@ -1065,13 +1185,13 @@
                         </a>
                     </div>
                 `;
-                openModal(offerDetailsModal);
+                offerDetailsModal.style.display = 'flex';
             };
             
             const showEntertainmentModal = (title, icon) => {
                 entertainmentModalIcon.className = `${icon} text-5xl sm:text-6xl text-blue-500 mb-4`;
                 entertainmentModalTitle.textContent = title;
-                openModal(entertainmentModal);
+                entertainmentModal.style.display = 'flex';
             };
 
             // --- Theme Toggle Logic ---
@@ -1080,12 +1200,10 @@
                     document.body.classList.add('dark');
                     themeIcon.classList.remove('fa-moon');
                     themeIcon.classList.add('fa-sun');
-                    themeIcon.style.transform = 'rotate(360deg)';
                 } else {
                     document.body.classList.remove('dark');
                     themeIcon.classList.remove('fa-sun');
                     themeIcon.classList.add('fa-moon');
-                    themeIcon.style.transform = 'rotate(0deg)';
                 }
             };
             
@@ -1130,10 +1248,16 @@
                     const action = card.dataset.action;
                     if (action === 'personality-test') {
                         pt_handleReset(true); 
-                        openModal(personalityTestModal);
+                        personalityTestModal.style.display = 'flex';
                     } else if (action === 'emotional-health-test') {
                         eh_handleReset(); 
-                        openModal(emotionalHealthModal);
+                        emotionalHealthModal.style.display = 'flex';
+                    } else if (action === 'learning-style-test') {
+                        ls_handleReset();
+                        learningStyleModal.style.display = 'flex';
+                    } else if (action === 'memory-game') {
+                        mg_handleReset();
+                        memoryGameModal.style.display = 'flex';
                     } else { 
                         const title = card.dataset.title;
                         const icon = card.dataset.icon;
@@ -1183,67 +1307,30 @@
 
             mainViewNav.addEventListener('click', (e) => {
                 const button = e.target.closest('.main-view-button');
-                if (button && !button.classList.contains('active')) {
-                    const viewIdToShow = button.dataset.view;
-                    
+                if (button) {
+                    const view = button.dataset.view;
                     document.querySelectorAll('#main-view-nav button').forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
                     
-                    const currentActiveView = viewsContainer.querySelector(':not(.hidden)');
-                    if (currentActiveView) {
-                        currentActiveView.classList.add('view-transition-fade-out');
-                        setTimeout(() => {
-                            currentActiveView.classList.add('hidden');
-                            currentActiveView.classList.remove('view-transition-fade-out');
-
-                            const newView = document.getElementById(`view-${viewIdToShow}`);
-                            newView.classList.remove('hidden');
-                            newView.classList.add('view-transition-fade-in');
-                            setTimeout(() => newView.classList.remove('view-transition-fade-in'), 400);
-                            observeElements();
-                        }, 300);
-                    }
+                    allCoursesView.classList.toggle('hidden', view !== 'all-courses');
+                    monthlyCoursesView.classList.toggle('hidden', view !== 'monthly-courses');
+                    offersView.classList.toggle('hidden', view !== 'offers');
+                    entertainmentView.classList.toggle('hidden', view !== 'entertainment');
                 }
             });
 
+            // Generic modal close logic
             document.querySelectorAll('.modal').forEach(modal => {
                 const closeButton = modal.querySelector('.modal-close-button');
                 if (closeButton) {
-                    closeButton.onclick = () => { closeModal(modal); };
+                    closeButton.onclick = () => { modal.style.display = "none"; };
                 }
                 modal.addEventListener('click', (event) => {
-                    if (event.target === modal) closeModal(modal);
+                    if (event.target === modal) modal.style.display = "none";
                 });
             });
 
-            document.getElementById('tiktok-link').onclick = (e) => { e.preventDefault(); openModal(tiktokModal); };
-
-            // --- Parallax Effect Listener ---
-            window.addEventListener('scroll', () => {
-                const rect = parallaxContainer.getBoundingClientRect();
-                if (rect.top < window.innerHeight && rect.bottom >= 0) {
-                    parallaxContainer.style.transform = `translateY(${rect.top * 0.2}px)`;
-                }
-            });
-
-            // --- SCROLL ANIMATION LOGIC ---
-            let observer;
-            function observeElements() {
-                if (observer) {
-                    observer.disconnect();
-                }
-                observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-visible');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.1 });
-
-                const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
-                elementsToAnimate.forEach(el => observer.observe(el));
-            }
+            document.getElementById('tiktok-link').onclick = (e) => { e.preventDefault(); tiktokModal.style.display = 'flex'; };
 
             // --- INITIALIZATION ---
             function initializePage() {
@@ -1269,7 +1356,8 @@
                 renderEntertainment();
                 setupPersonalityTest();
                 setupEmotionalHealthTest();
-                observeElements();
+                setupLearningStyleTest();
+                setupMemoryGame();
             }
             
             initializePage();
@@ -1278,8 +1366,6 @@
             let currentSlide = 0;
             let slideInterval;
             const totalSlides = sliderImages.length;
-            const SLIDE_DURATION = 4000;
-            const FADE_DURATION = 800; 
 
             if (totalSlides > 0) {
                 for (let i = 0; i < totalSlides; i++) {
@@ -1291,37 +1377,20 @@
                 }
                 
                 const updateSlider = (newIndex) => {
-                    const oldIndex = currentSlide;
-                    if (newIndex === oldIndex || document.querySelector('.slider-image.fading-out')) return;
-
-                    currentSlide = (newIndex + totalSlides) % totalSlides;
-
-                    const oldSlide = sliderImages[oldIndex];
-                    const newSlide = sliderImages[currentSlide];
-
-                    newSlide.style.animation = 'none';
-                    void newSlide.offsetWidth; 
-                    newSlide.style.animation = ''; 
-
-                    newSlide.classList.add('active');
-
-                    if (oldSlide) {
-                        oldSlide.classList.add('fading-out');
-                        setTimeout(() => {
-                            oldSlide.classList.remove('active', 'fading-out');
-                        }, FADE_DURATION);
-                    }
-                    
+                    currentSlide = newIndex;
+                    sliderImages.forEach((img, i) => {
+                        img.style.transform = `translateX(${(i - currentSlide) * 100}%)`;
+                    });
                     sliderDots.forEach(dot => dot.classList.remove('active'));
                     sliderDots[currentSlide].classList.add('active');
                 };
 
-                const nextSlide = () => updateSlider(currentSlide + 1);
-                const prevSlide = () => updateSlider(currentSlide - 1);
+                const nextSlide = () => updateSlider((currentSlide + 1) % totalSlides);
+                const prevSlide = () => updateSlider((currentSlide - 1 + totalSlides) % totalSlides);
                 
                 const resetInterval = () => {
                     clearInterval(slideInterval);
-                    slideInterval = setInterval(nextSlide, SLIDE_DURATION);
+                    slideInterval = setInterval(nextSlide, 3000);
                 };
 
                 prevSlideBtn.addEventListener('click', () => { prevSlide(); resetInterval(); });
@@ -1334,8 +1403,7 @@
                     }
                 });
                 
-                sliderImages[0].classList.add('active');
-                sliderDots[0].classList.add('active');
+                updateSlider(0);
                 resetInterval();
             }
 
@@ -1421,34 +1489,32 @@
                     pt_startScreen.classList.remove('hidden');
 
                     if (!isSilent) {
-                        pt_startScreen.classList.remove('view-transition-fade-out');
-                        pt_startScreen.classList.add('view-transition-fade-in');
+                       pt_startScreen.classList.remove('animate-fade-out');
+                       pt_startScreen.classList.add('animate-fade-in');
                     } else {
-                        pt_startScreen.classList.remove('view-transition-fade-in', 'view-transition-fade-out');
+                       pt_startScreen.classList.remove('animate-fade-in', 'animate-fade-out');
                     }
                 }
                 
                 function pt_startQuiz() {
                     pt_questions.sort(() => Math.random() - 0.5);
-                    pt_startScreen.classList.add('view-transition-fade-out');
+                    pt_startScreen.classList.add('animate-fade-out');
                     setTimeout(() => {
                         pt_startScreen.classList.add('hidden');
-                        pt_startScreen.classList.remove('view-transition-fade-out');
+                        pt_startScreen.classList.remove('animate-fade-out');
                         pt_quizScreen.classList.remove('hidden');
-                        pt_quizScreen.classList.add('view-transition-fade-in');
+                        pt_quizScreen.classList.add('animate-fade-in');
                         pt_displayQuestion();
-                    }, 300);
+                    }, 500);
                 }
                 
                 function pt_displayQuestion() {
                     if (pt_currentQuestionIndex < pt_questions.length) {
                         const question = pt_questions[pt_currentQuestionIndex];
                         pt_questionText.textContent = question.text;
-                        
-                        const questionContainer = pt_app.querySelector('#pt-question-container');
-                        questionContainer.classList.remove('view-transition-fade-in');
-                        void questionContainer.offsetWidth; 
-                        questionContainer.classList.add('view-transition-fade-in');
+                        pt_quizScreen.classList.remove('animate-fade-in');
+                        void pt_quizScreen.offsetWidth; 
+                        pt_quizScreen.classList.add('animate-fade-in');
 
                         pt_answersContainer.innerHTML = '';
                         const answers = [ { text: 'نعم', value: 2 }, { text: 'غير متأكد', value: 1 }, { text: 'لا', value: 0 } ];
@@ -1480,14 +1546,14 @@
                 }
 
                 function pt_showResults() {
-                    pt_quizScreen.classList.add('view-transition-fade-out');
+                    pt_quizScreen.classList.add('animate-fade-out');
                     setTimeout(() => {
                         pt_quizScreen.classList.add('hidden');
-                        pt_quizScreen.classList.remove('view-transition-fade-out');
+                        pt_quizScreen.classList.remove('animate-fade-out');
                         pt_resultsScreen.classList.remove('hidden');
-                        pt_resultsScreen.classList.add('view-transition-fade-in');
+                        pt_resultsScreen.classList.add('animate-fade-in');
                         pt_displayResults();
-                    }, 300);
+                    }, 500);
                 }
 
                 function pt_displayResults() {
@@ -1508,7 +1574,7 @@
                                 <p class="font-semibold text-gray-600 dark:text-gray-400 text-sm">${description}</p>
                             </div>
                             <div class="w-full pt-result-bar rounded-full h-5">
-                                <div class="pt-progress-bar-inner ${colorClass} h-5 rounded-full flex items-center justify-center text-white text-xs font-bold" style="width: ${percentage}%">${percentage > 10 ? percentage + '%' : ''}</div>
+                                <div class="pt-result-bar-inner ${colorClass} h-5 rounded-full flex items-center justify-center text-white text-xs font-bold" style="width: ${percentage}%">${percentage > 10 ? percentage + '%' : ''}</div>
                             </div>
                         `;
                         pt_resultsContainer.appendChild(resultElement);
@@ -1586,14 +1652,14 @@
                 
                 function eh_renderWelcomeScreen() {
                     eh_appContainer.innerHTML = `
-                        <div class="flex flex-col items-center justify-center p-4 text-center view-transition-fade-in">
+                        <div class="flex flex-col items-center justify-center p-4 text-center animate-fade-in">
                             <div class="mb-4 text-blue-500">
                                 <i class="fas fa-heart-pulse fa-4x"></i>
                             </div>
                             <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-2">مقياس الصحة العاطفية</h2>
                              <p class="text-gray-600 mb-6 max-w-lg">
-                                أجب بصدق على الأسئلة التالية لاكتشاف جوانب صحتك العاطفية والحصول على تحليل شخصي ونصائح قيمة.
-                            </p>
+                                 أجب بصدق على الأسئلة التالية لاكتشاف جوانب صحتك العاطفية والحصول على تحليل شخصي ونصائح قيمة.
+                             </p>
                             <button id="eh-startButton" class="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white font-bold rounded-full shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300">
                                 ابدأ الاختبار
                             </button>
@@ -1617,7 +1683,7 @@
                     const answeredValue = eh_answers[currentQuestion.id] || 0;
 
                     eh_appContainer.innerHTML = `
-                        <div class="space-y-6 view-transition-fade-in" data-question-index="${eh_currentQuestionIndex}">
+                        <div class="space-y-6 animate-fade-in" data-question-index="${eh_currentQuestionIndex}">
                             <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-4 overflow-hidden">
                                 <div class="bg-blue-500 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: ${progressPercentage}%;"></div>
                             </div>
@@ -1705,6 +1771,7 @@
                     }
                 }
                 
+                // REFACTORED FUNCTION
                 function eh_generateLocalAnalysisAndAdvice(categoryScores, overallScore) {
                     let overallAnalysis = "";
                     let detailedAnalysisHTML = "";
@@ -1790,17 +1857,18 @@
                     setTimeout(() => eh_renderResults(analysisData, categoryScores, overallScore), 500);
                 }
 
+                // REFACTORED FUNCTION
                 function eh_renderResults(analysisData, categoryScores, overallScore) {
-                       const maxOverallScore = eh_questions.length * 5;
-                       const overallPercentage = (overallScore / maxOverallScore) * 100;
-                       let overallStatus = "";
-                            if (overallPercentage >= 80) { overallStatus = "ممتاز"; }
-                            else if (overallPercentage >= 60) { overallStatus = "جيد جداً"; }
-                            else if (overallPercentage >= 40) { overallStatus = "متوسط"; }
-                            else { overallStatus = "بحاجة للتطوير"; }
+                     const maxOverallScore = eh_questions.length * 5;
+                     const overallPercentage = (overallScore / maxOverallScore) * 100;
+                     let overallStatus = "";
+                           if (overallPercentage >= 80) { overallStatus = "ممتاز"; }
+                           else if (overallPercentage >= 60) { overallStatus = "جيد جداً"; }
+                           else if (overallPercentage >= 40) { overallStatus = "متوسط"; }
+                           else { overallStatus = "بحاجة للتطوير"; }
                 
                     eh_appContainer.innerHTML = `
-                        <div class="p-4 md:p-6 text-center view-transition-fade-in">
+                        <div class="p-4 md:p-6 text-center animate-fade-in">
                             <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4">النتائج النهائية</h2>
                             <p class="text-gray-600 mb-8">هذا تحليل عام لصحتك العاطفية بناءً على إجاباتك.</p>
                             
@@ -1811,8 +1879,8 @@
                                          <circle id="eh-gauge-fg" class="eh-result-gauge-fg" cx="50" cy="50" r="45" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>
                                      </svg>
                                      <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                        <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">${Math.round(overallPercentage)}%</span>
-                                        <span class="text-xs font-bold text-gray-500">${overallStatus}</span>
+                                         <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">${Math.round(overallPercentage)}%</span>
+                                         <span class="text-xs font-bold text-gray-500">${overallStatus}</span>
                                      </div>
                                  </div>
                             </div>
@@ -1858,6 +1926,381 @@
                     document.getElementById('eh-resetButton').addEventListener('click', eh_handleReset);
                 }
             }
+
+            // --- LEARNING STYLE TEST (VARK) LOGIC ---
+            function setupLearningStyleTest() {
+                const ls_app = document.getElementById('ls-app-container');
+                const ls_startScreen = ls_app.querySelector('#ls-start-screen');
+                const ls_quizScreen = ls_app.querySelector('#ls-quiz-screen');
+                const ls_resultsScreen = ls_app.querySelector('#ls-results-screen');
+                const ls_startBtn = ls_app.querySelector('#ls-start-btn');
+                const ls_restartBtn = ls_app.querySelector('#ls-restart-btn');
+                const ls_questionText = ls_app.querySelector('#ls-question-text');
+                const ls_answersContainer = ls_app.querySelector('#ls-answers-container');
+                const ls_progressBar = ls_app.querySelector('#ls-progress-bar');
+                const ls_progressText = ls_app.querySelector('#ls-progress-text');
+                const ls_resultsContainer = ls_app.querySelector('#ls-results-container');
+                const ls_dominantStyleCard = ls_app.querySelector('#ls-dominant-style-card');
+
+                const ls_questions = [
+                    {
+                        question: "عندما أتعلم شيئًا جديدًا، أفضل...",
+                        answers: [
+                            { text: "مشاهدة الرسومات البيانية والمخططات.", style: 'v' },
+                            { text: "الاستماع إلى شرح أو نقاش.", style: 'a' },
+                            { text: "قراءة الكتب والملاحظات المكتوبة.", style: 'r' },
+                            { text: "التجربة العملية والقيام بالشيء بنفسي.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "عند تجميع أثاث جديد، ماذا تفعل أولاً؟",
+                        answers: [
+                            { text: "أنظر إلى الصور والرسوم في دليل التعليمات.", style: 'v' },
+                            { text: "أطلب من شخص أن يقرأ لي التعليمات بصوت عالٍ.", style: 'a' },
+                            { text: "أقرأ التعليمات المكتوبة خطوة بخطوة.", style: 'r' },
+                            { text: "أبدأ مباشرة في محاولة تجميع القطع معًا.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "ما هي الطريقة الأفضل لك لتذكر رقم هاتف؟",
+                        answers: [
+                            { text: "أتخيل شكل الأرقام في ذهني.", style: 'v' },
+                            { text: "أكرره بصوت عالٍ عدة مرات.", style: 'a' },
+                            { text: "أكتبه على ورقة.", style: 'r' },
+                            { text: "أضغط على الأرقام على لوحة مفاتيح وهمية.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "عندما تكون في مدينة جديدة وتريد الوصول إلى مكان ما، تفضل...",
+                        answers: [
+                            { text: "استخدام خريطة ورقية أو تطبيق خرائط.", style: 'v' },
+                            { text: "سؤال المارة عن الاتجاهات.", style: 'a' },
+                            { text: "قراءة قائمة بالاتجاهات المكتوبة.", style: 'r' },
+                            { text: "البدء في المشي واستكشاف الطريق بنفسي.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "ما نوع المحتوى الذي يجذبك أكثر على الإنترنت؟",
+                        answers: [
+                            { text: "الصور والرسوم البيانية (Infographics).", style: 'v' },
+                            { text: "البودكاست والمقابلات الصوتية.", style: 'a' },
+                            { text: "المقالات والمدونات الإخبارية.", style: 'r' },
+                            { text: "الفيديوهات التعليمية التي تظهر كيفية عمل الأشياء.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "في دورة تدريبية، ما هو الجزء الذي تستمتع به أكثر؟",
+                        answers: [
+                            { text: "العروض التقديمية المليئة بالصور والرسوم.", style: 'v' },
+                            { text: "المناقشات الجماعية والأسئلة والأجوبة.", style: 'a' },
+                            { text: "الحصول على مواد مطبوعة للمراجعة لاحقًا.", style: 'r' },
+                            { text: "الأنشطة العملية وتمثيل الأدوار.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "عندما تشرح فكرة لشخص ما، فإنك تميل إلى...",
+                        answers: [
+                            { text: "رسم مخطط أو خربشة على ورقة.", style: 'v' },
+                            { text: "شرحها شفهيًا بالتفصيل.", style: 'a' },
+                            { text: "كتابة النقاط الرئيسية في رسالة أو بريد إلكتروني.", style: 'r' },
+                            { text: "استخدام يديك وحركات جسدك للتوضيح.", style: 'k' }
+                        ]
+                    },
+                    {
+                        question: "ماذا تفضل أن تتلقى كهدية؟",
+                        answers: [
+                            { text: "كتاب فني أو ألبوم صور.", style: 'v' },
+                            { text: "كتاب صوتي أو اشتراك في بودكاست.", style: 'a' },
+                            { text: "رواية أو كتاب غير خيالي.", style: 'r' },
+                            { text: "مجموعة أدوات لهواية عملية أو معدات رياضية.", style: 'k' }
+                        ]
+                    }
+                ];
+
+                const ls_styleInfo = {
+                    v: { name: 'بصري (Visual)', color: 'bg-blue-500', borderColor: 'border-blue-500', description: 'أنت تتعلم بشكل أفضل عندما ترى المعلومات. الرسوم البيانية، المخططات، الصور، والفيديوهات تساعدك على الفهم. حاول استخدام الألوان والخرائط الذهنية في دراستك.' },
+                    a: { name: 'سمعي (Aural)', color: 'bg-green-500', borderColor: 'border-green-500', description: 'أنت تتعلم بشكل أفضل من خلال الاستماع. المناقشات، الشرح الشفهي، والبودكاست هي أدواتك المفضلة. حاول تسجيل المحاضرات أو شرح المفاهيم بصوت عالٍ لنفسك.' },
+                    r: { name: 'قرائي/كتابي (Read/Write)', color: 'bg-amber-500', borderColor: 'border-amber-500', description: 'أنت تفضل التعامل مع الكلمات المكتوبة. قراءة الكتب، كتابة الملاحظات، وإنشاء القوائم هي طرق فعالة لك. إعادة صياغة المعلومات بكلماتك الخاصة ترسخها في ذهنك.' },
+                    k: { name: 'حركي (Kinesthetic)', color: 'bg-red-500', borderColor: 'border-red-500', description: 'أنت تتعلم من خلال العمل والتجربة. التطبيق العملي، التجارب، ولمس الأشياء يساعدك على الاستيعاب. ابحث عن طرق لتحويل التعلم إلى نشاط بدني.' }
+                };
+
+                let ls_currentQuestionIndex = 0;
+                let ls_scores = { v: 0, a: 0, r: 0, k: 0 };
+
+                window.ls_handleReset = function() {
+                    ls_currentQuestionIndex = 0;
+                    ls_scores = { v: 0, a: 0, r: 0, k: 0 };
+                    ls_resultsScreen.classList.add('hidden');
+                    ls_quizScreen.classList.add('hidden');
+                    ls_startScreen.classList.remove('hidden', 'animate-fade-out');
+                    ls_startScreen.classList.add('animate-fade-in');
+                };
+
+                function ls_startQuiz() {
+                    ls_startScreen.classList.add('animate-fade-out');
+                    setTimeout(() => {
+                        ls_startScreen.classList.add('hidden');
+                        ls_startScreen.classList.remove('animate-fade-out');
+                        ls_quizScreen.classList.remove('hidden');
+                        ls_quizScreen.classList.add('animate-fade-in');
+                        ls_displayQuestion();
+                    }, 500);
+                }
+
+                function ls_displayQuestion() {
+                    if (ls_currentQuestionIndex < ls_questions.length) {
+                        const q = ls_questions[ls_currentQuestionIndex];
+                        ls_questionText.textContent = q.question;
+                        ls_answersContainer.innerHTML = '';
+                        q.answers.forEach(answer => {
+                            const button = document.createElement('button');
+                            button.innerHTML = `<span>${answer.text}</span>`;
+                            button.className = 'ls-answer-btn w-full font-semibold py-4 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-gray-100 text-gray-800';
+                            button.onclick = () => ls_selectAnswer(answer.style);
+                            ls_answersContainer.appendChild(button);
+                        });
+                        ls_updateProgress();
+                    } else {
+                        ls_showResults();
+                    }
+                }
+
+                function ls_updateProgress() {
+                    const progress = (ls_currentQuestionIndex / ls_questions.length) * 100;
+                    ls_progressBar.style.width = `${progress}%`;
+                    ls_progressText.textContent = `السؤال ${ls_currentQuestionIndex + 1} / ${ls_questions.length}`;
+                }
+
+                function ls_selectAnswer(style) {
+                    ls_scores[style]++;
+                    ls_currentQuestionIndex++;
+                    ls_displayQuestion();
+                }
+
+                function ls_showResults() {
+                    ls_quizScreen.classList.add('animate-fade-out');
+                    setTimeout(() => {
+                        ls_quizScreen.classList.add('hidden');
+                        ls_quizScreen.classList.remove('animate-fade-out');
+                        ls_resultsScreen.classList.remove('hidden');
+                        ls_resultsScreen.classList.add('animate-fade-in');
+                        ls_displayResults();
+                    }, 500);
+                }
+
+                function ls_displayResults() {
+                    ls_resultsContainer.innerHTML = '';
+                    let dominantStyle = 'v';
+                    let maxScore = 0;
+
+                    for (const style in ls_scores) {
+                        if (ls_scores[style] > maxScore) {
+                            maxScore = ls_scores[style];
+                            dominantStyle = style;
+                        }
+                    }
+
+                    // Check for multimodal style
+                    const highScores = Object.keys(ls_scores).filter(s => ls_scores[s] === maxScore);
+                    let dominantInfo;
+                    if (highScores.length > 1) {
+                        dominantInfo = {
+                            name: 'متعدد الأساليب (Multimodal)',
+                            borderColor: 'border-purple-500',
+                            description: `لديك نقاط قوة في عدة أساليب تعلم (${highScores.map(s => ls_styleInfo[s].name).join('، ')}). هذا يعني أنك مرن ويمكنك التعلم بطرق متنوعة. استفد من هذه الميزة باختيار الطريقة الأنسب لكل موقف.`
+                        };
+                    } else {
+                        dominantInfo = ls_styleInfo[dominantStyle];
+                    }
+
+                    for (const style in ls_styleInfo) {
+                        const info = ls_styleInfo[style];
+                        const score = ls_scores[style];
+                        const percentage = (score / ls_questions.length) * 100;
+                        const resultElement = document.createElement('div');
+                        resultElement.innerHTML = `
+                            <div class="mb-1 flex justify-between items-center">
+                                <h3 class="text-base font-bold text-gray-800">${info.name}</h3>
+                                <p class="font-semibold text-gray-600 dark:text-gray-400 text-sm">${score} إجابة</p>
+                            </div>
+                            <div class="w-full ls-result-bar bg-gray-200 rounded-full h-6">
+                                <div class="ls-result-bar-inner ${info.color} h-6 rounded-full flex items-center justify-center text-white text-xs font-bold" style="width: 0%;" data-width="${percentage}%">
+                                    ${Math.round(percentage)}%
+                                </div>
+                            </div>
+                        `;
+                        ls_resultsContainer.appendChild(resultElement);
+                    }
+                    
+                    // Animate bars after they are in the DOM
+                    setTimeout(() => {
+                        document.querySelectorAll('.ls-result-bar-inner').forEach(bar => {
+                            bar.style.width = bar.dataset.width;
+                        });
+                    }, 100);
+
+                    ls_dominantStyleCard.className = `p-4 md:p-6 rounded-lg border-l-4 ${dominantInfo.borderColor}`;
+                    ls_dominantStyleCard.innerHTML = `
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${dominantInfo.name}</h3>
+                        <p class="text-gray-700">${dominantInfo.description}</p>
+                    `;
+                }
+
+                ls_startBtn.addEventListener('click', ls_startQuiz);
+                ls_restartBtn.addEventListener('click', ls_handleReset);
+            }
+
+            // --- MEMORY GAME LOGIC ---
+            function setupMemoryGame() {
+                const mg_app = document.getElementById('mg-app-container');
+                const mg_startScreen = mg_app.querySelector('#mg-start-screen');
+                const mg_gameScreen = mg_app.querySelector('#mg-game-screen');
+                const mg_winMessage = mg_app.querySelector('#mg-win-message');
+                const mg_startBtn = mg_app.querySelector('#mg-start-btn');
+                const mg_restartBtn = mg_app.querySelector('#mg-restart-btn');
+                const mg_playAgainBtn = mg_app.querySelector('#mg-play-again-btn');
+                const mg_gameBoard = mg_app.querySelector('#mg-game-board');
+                const mg_movesCounter = mg_app.querySelector('#mg-moves');
+                const mg_timerDisplay = mg_app.querySelector('#mg-timer');
+
+                const cardIcons = ['fa-star', 'fa-heart', 'fa-cloud', 'fa-car', 'fa-bicycle', 'fa-leaf', 'fa-bomb', 'fa-anchor'];
+
+                let firstCard, secondCard;
+                let hasFlippedCard = false;
+                let lockBoard = false;
+                let moves = 0;
+                let time = 0;
+                let timerInterval;
+                
+                function startGame() {
+                    mg_startScreen.classList.add('hidden');
+                    mg_winMessage.classList.add('hidden');
+                    mg_gameScreen.classList.remove('hidden');
+                    
+                    resetGame();
+                    
+                    const shuffledIcons = [...cardIcons, ...cardIcons].sort(() => Math.random() - 0.5);
+                    
+                    createBoard(shuffledIcons);
+                    startTimer();
+                }
+
+                function createBoard(icons) {
+                    mg_gameBoard.innerHTML = '';
+                    icons.forEach(icon => {
+                        const card = document.createElement('div');
+                        card.classList.add('mg-card');
+                        card.dataset.icon = icon;
+
+                        card.innerHTML = `
+                            <div class="mg-card-face mg-card-front">
+                                <i class="fas fa-question text-white"></i>
+                            </div>
+                            <div class="mg-card-face mg-card-back">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                        `;
+                        card.addEventListener('click', flipCard);
+                        mg_gameBoard.appendChild(card);
+                    });
+                }
+                
+                function flipCard() {
+                    if (lockBoard) return;
+                    if (this === firstCard) return;
+                    
+                    this.classList.add('is-flipped');
+                    
+                    if (!hasFlippedCard) {
+                        hasFlippedCard = true;
+                        firstCard = this;
+                        return;
+                    }
+                    
+                    secondCard = this;
+                    updateMoves();
+                    checkForMatch();
+                }
+                
+                function checkForMatch() {
+                    lockBoard = true;
+                    let isMatch = firstCard.dataset.icon === secondCard.dataset.icon;
+                    isMatch ? disableCards() : unflipCards();
+                }
+                
+                function disableCards() {
+                    firstCard.removeEventListener('click', flipCard);
+                    secondCard.removeEventListener('click', flipCard);
+                    firstCard.classList.add('is-matched');
+                    secondCard.classList.add('is-matched');
+                    
+                    if (document.querySelectorAll('.mg-card.is-matched').length === cardIcons.length * 2) {
+                        winGame();
+                    }
+                    
+                    resetBoard();
+                }
+                
+                function unflipCards() {
+                    setTimeout(() => {
+                        firstCard.classList.remove('is-flipped');
+                        secondCard.classList.remove('is-flipped');
+                        resetBoard();
+                    }, 1000);
+                }
+                
+                function resetBoard() {
+                    [hasFlippedCard, lockBoard] = [false, false];
+                    [firstCard, secondCard] = [null, null];
+                }
+                
+                function updateMoves() {
+                    moves++;
+                    mg_movesCounter.textContent = moves;
+                }
+                
+                function startTimer() {
+                    time = 0;
+                    timerInterval = setInterval(() => {
+                        time++;
+                        mg_timerDisplay.textContent = `${time}s`;
+                    }, 1000);
+                }
+                
+                function stopTimer() {
+                    clearInterval(timerInterval);
+                }
+                
+                function winGame() {
+                    stopTimer();
+                    setTimeout(() => {
+                        mg_gameScreen.classList.add('hidden');
+                        mg_winMessage.classList.remove('hidden');
+                        document.getElementById('mg-win-stats').textContent = `أكملت اللعبة في ${time} ثانية و ${moves} حركة!`;
+                    }, 500);
+                }
+
+                function resetGame() {
+                    stopTimer();
+                    moves = 0;
+                    time = 0;
+                    mg_movesCounter.textContent = moves;
+                    mg_timerDisplay.textContent = `${time}s`;
+                    resetBoard();
+                }
+                
+                window.mg_handleReset = function() {
+                    resetGame();
+                    mg_gameScreen.classList.add('hidden');
+                    mg_winMessage.classList.add('hidden');
+                    mg_startScreen.classList.remove('hidden');
+                }
+
+                mg_startBtn.addEventListener('click', startGame);
+                mg_restartBtn.addEventListener('click', startGame);
+                mg_playAgainBtn.addEventListener('click', startGame);
+            }
+
         });
     </script>
 </body>
