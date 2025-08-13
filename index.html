@@ -81,6 +81,8 @@
             color: white;
             border-color: #1e3a8a;
         }
+        
+        /* --- SLIDER STYLES (UPDATED) --- */
         .slider-container {
             position: relative;
             width: 100%;
@@ -94,13 +96,30 @@
                 height: 50vh; /* Original height on larger screens */
             }
         }
+        
+        @keyframes zoomIn {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
         .slider-image {
             position: absolute;
             width: 100%;
             height: 100%;
             object-fit: cover; 
-            transition: transform 0.6s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
+            opacity: 0;
+            z-index: 1;
         }
+        .slider-image.active {
+            opacity: 1;
+            animation: zoomIn 5s forwards; /* Increased duration for slower zoom */
+        }
+        
+        .slider-image.fading-out {
+            opacity: 0;
+        }
+        
         .slider-button {
             position: absolute;
             top: 50%;
@@ -136,10 +155,11 @@
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .slider-dot.active {
             background-color: white;
+            transform: scale(1.2);
         }
 
         .monthly-course-card {
@@ -619,14 +639,14 @@
         
         const monthlyCoursesData = {
             current: [
-                { title: "Front-end", category: "القسم البرمجي", description: "دورة شاملة لتصميم وتنفيذ واجهات الويب المرئية والتفاعلية.", image: "https://placehold.co/600x400/10b981/ffffff?text=Front-end" },
-                { title: "Etabs + Safe", category: "القسم الهندسي", description: "إتقان برامج التحليل والتصميم الإنشائي للمباني والأساسات.", image: "https://placehold.co/600x400/f59e0b/ffffff?text=Etabs+%2B+Safe" },
-                { title: "Social Media Marketing", category: "قسم الإدارة والقيادة", description: "تعلم استراتيجيات التسويق الرقمي وإدارة الحملات الإعلانية.", image: "https://placehold.co/600x400/3b82f6/ffffff?text=Social+Media" },
+                { title: "Front-end", category: "القسم البرمجي", description: "دورة شاملة لتصميم وتنفيذ واجهات الويب المرئية والتفاعلية.", image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" },
+                { title: "Etabs + Safe", category: "القسم الهندسي", description: "إتقان برامج التحليل والتصميم الإنشائي للمباني والأساسات.", image: "https://images.unsplash.com/photo-1600585152915-d208bec867a1?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" },
+                { title: "Social Media Marketing", category: "قسم الإدارة والقيادة", description: "تعلم استراتيجيات التسويق الرقمي وإدارة الحملات الإعلانية.", image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" },
             ],
             next: [
-                { title: "Cyber Security", category: "القسم البرمجي", description: "اكتساب مهارات اختبار الاختراق وحماية الأنظمة والشبكات.", image: "https://placehold.co/600x400/ef4444/ffffff?text=Cyber+Security" },
-                { title: "TOT (Training of Trainers)", category: "قسم التنمية البشرية", description: "تأهيل مدربين محترفين لتصميم وتقديم برامج تدريبية فعالة.", image: "https://placehold.co/600x400/8b5cf6/ffffff?text=TOT" },
-                { title: "Motion Graphic", category: "القسم التقني", description: "تعلم فن تحريك الرسومات لإنشاء فيديوهات إعلانية جذابة.", image: "https://placehold.co/600x400/ec4899/ffffff?text=Motion+Graphic" },
+                { title: "Cyber Security", category: "القسم البرمجي", description: "اكتساب مهارات اختبار الاختراق وحماية الأنظمة والشبكات.", image: "https://www.toriglobal.com/wp-content/uploads/2023/02/hacker-6586113_1920.jpg.webp" },
+                { title: "TOT (Training of Trainers)", category: "قسم التنمية البشرية", description: "تأهيل مدربين محترفين لتصميم وتقديم برامج تدريبية فعالة.", image: "https://i0.wp.com/simspace.com/wp-content/uploads/2024/08/GovWare-2024-Speaker.png?fit=1024,683&ssl=1" },
+                { title: "Motion Graphic", category: "القسم التقني", description: "تعلم فن تحريك الرسومات لإنشاء فيديوهات إعلانية جذابة.", image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" },
             ]
         };
 
@@ -669,7 +689,6 @@
              { type: "quiz", title: "ما هو أسلوب تعلمك؟", icon: "fas fa-lightbulb", description: "اعرف الطريقة المثلى التي تتعلم بها.", url: "https://whatisyourlearningstyle.netlify.app/" },
              { type: "game", title: "لعبة الذاكرة", icon: "fas fa-gamepad", description: "تحدى ذاكرتك وطابق البطاقات.", url: "https://memorygamesela.netlify.app/" },
         ];
-
 
         // --- LOGIC ---
         document.addEventListener('DOMContentLoaded', function () {
@@ -863,7 +882,6 @@
                 localStorage.setItem('theme', newTheme);
             });
 
-
             // --- EVENT LISTENERS ---
             coursesGrid.addEventListener('click', (e) => {
                 const card = e.target.closest('.course-card-small');
@@ -983,12 +1001,15 @@
             
             initializePage();
             
-            // --- SLIDER LOGIC ---
+            // --- SLIDER LOGIC (UPDATED) ---
             let currentSlide = 0;
             let slideInterval;
             const totalSlides = sliderImages.length;
+            const SLIDE_DURATION = 5000; // Time each slide is visible
+            const FADE_DURATION = 800; // Duration of the fade transition
 
             if (totalSlides > 0) {
+                // Create dots for each slide
                 for (let i = 0; i < totalSlides; i++) {
                     const dot = document.createElement('div');
                     dot.classList.add('slider-dot');
@@ -997,23 +1018,49 @@
                     sliderDots.push(dot);
                 }
                 
+                // Function to update the slider to a new slide index
                 const updateSlider = (newIndex) => {
-                    currentSlide = newIndex;
-                    sliderImages.forEach((img, i) => {
-                        img.style.transform = `translateX(${(i - currentSlide) * 100}%)`;
-                    });
+                    const oldIndex = currentSlide;
+                    // Prevent changing if a transition is already in progress
+                    if (newIndex === oldIndex || document.querySelector('.slider-image.fading-out')) return;
+
+                    currentSlide = (newIndex + totalSlides) % totalSlides;
+
+                    const oldSlide = sliderImages[oldIndex];
+                    const newSlide = sliderImages[currentSlide];
+                    
+                    // Reset animation for the new slide to ensure it plays again
+                    newSlide.style.animation = 'none';
+                    void newSlide.offsetWidth; // Trigger reflow
+                    newSlide.style.animation = ''; 
+
+                    // Make the new slide active (visible)
+                    newSlide.classList.add('active');
+
+                    // Start fading out the old slide
+                    if (oldSlide) {
+                        oldSlide.classList.add('fading-out');
+                        setTimeout(() => {
+                            // Clean up classes from the old slide after transition ends
+                            oldSlide.classList.remove('active', 'fading-out');
+                        }, FADE_DURATION);
+                    }
+                    
+                    // Update the active state of the dots
                     sliderDots.forEach(dot => dot.classList.remove('active'));
                     sliderDots[currentSlide].classList.add('active');
                 };
 
-                const nextSlide = () => updateSlider((currentSlide + 1) % totalSlides);
-                const prevSlide = () => updateSlider((currentSlide - 1 + totalSlides) % totalSlides);
+                const nextSlide = () => updateSlider(currentSlide + 1);
+                const prevSlide = () => updateSlider(currentSlide - 1);
                 
+                // Function to reset the automatic sliding interval
                 const resetInterval = () => {
                     clearInterval(slideInterval);
-                    slideInterval = setInterval(nextSlide, 3000);
+                    slideInterval = setInterval(nextSlide, SLIDE_DURATION);
                 };
 
+                // Add event listeners to buttons and dots
                 prevSlideBtn.addEventListener('click', () => { prevSlide(); resetInterval(); });
                 nextSlideBtn.addEventListener('click', () => { nextSlide(); resetInterval(); });
                 
@@ -1024,10 +1071,11 @@
                     }
                 });
                 
-                updateSlider(0);
+                // Initialize the slider
+                sliderImages[0].classList.add('active');
+                sliderDots[0].classList.add('active');
                 resetInterval();
             }
-
         });
     </script>
 </body>
